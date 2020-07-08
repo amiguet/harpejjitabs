@@ -6,7 +6,6 @@ Ce projet porte sur la réalisation d'une application web (SPA/PWA?) permettant 
 
 L'*harpejji* est un instrument de musique développé au début du XXIe siècle par Tim Meeks. Il s'agit d'un instrument électroacoustique construit comme une guitare mais se jouant comme un clavier (cf https://www.marcodi.com/ pour plus de détails).
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/mCOFwpK_NKM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 Une communauté est en train de se former autour de l'instrument (notamment via le [forum](https://www.marcodi.com/pages/harpejji-hangout) dédié) et des échanges se mettent en place autour de sa technique de jeu.
 
 Dans ce contexte, le besoin se fait sentir de développer des moyens simples de communiquer autour des doigtés pour les gammes, accords et autres motifs (voir par exemple http://www.matthieuamiguet.ch/blog/harpejji-jazz-voicings-2)
