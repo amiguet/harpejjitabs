@@ -1,23 +1,29 @@
 <template>
-    <g transform="translate(0, 230)">
+    <g :transform="'translate(' + x +', ' + y +')'">
         <rect :width="this.$parent.frets_size" height="30" @click.stop="editTitle" style="fill: transparent"></rect>
         <transition name="fade">
-            <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle">{{ title }}</text>
+            <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle">{{ titleT }}</text>
         </transition>
         <transition name="fade">
             <foreignObject height="30" :width="this.$parent.frets_size" v-if="editing" @click.stop>
-                <input type="text" id="title" v-model="title" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" ref="textEdit" :width="this.$parent.frets_size" />
+                <input type="text" id="title" v-model="titleT" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" ref="textEdit" :width="this.$parent.frets_size" />
             </foreignObject>
         </transition>
     </g>
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
         name: "Title",
+        props: [
+            'x',
+            'y'
+        ],
         data: function() {
             return {
-                title: '',
+                titleT: '',
                 editing: false
             }
         },
@@ -42,11 +48,19 @@
             },
             doneEdit() {
                 this.editing = false;
-                this.$store.dispatch('changeTitle', this.title);
+                this.$store.dispatch('changeTitle', this.titleT);
+            }
+        },
+        computed: {
+            ...mapState(['string_spacing', 'frets_spacing', 'title'])
+        },
+        watch: {
+            title(newTitle) {
+                this.titleT = newTitle;
             }
         },
         mounted() {
-            this.title = this.$store.state.title;
+            this.titleT = this.$store.state.title;
         }
     }
 </script>

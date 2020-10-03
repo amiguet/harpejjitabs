@@ -12,7 +12,12 @@
                 <li>
                     <span role="button" title="Edit" @click="editZone()">Recadrer</span>
                 </li>
-                <li>btn3</li>
+                <li>
+                    <span role="button" title="Save" @click="save()">Save</span>
+                </li>
+                <li>
+                    <span role="button" title="Load" @click="load()">Load</span>
+                </li>
             </ul>
         </div>
     </header>
@@ -24,6 +29,23 @@
         methods: {
             editZone() {
                 this.$root.$emit('editZone');
+            },
+            save() {
+                this.$root.$emit('save');
+            },
+            load() {
+                document.getElementById('loadFile').click();
+            },
+            readFile(e) {
+                let fileReader = new FileReader();
+                fileReader.onload = () => {
+                    let data = JSON.parse(fileReader.result);
+                    this.$root.$emit('loadData', data);
+                    e.target.value = "";
+                };
+
+                fileReader.readAsText(e.target.files[0]);
+
             },
             downloadSVG() {
                 let title = this.$store.state.title;
@@ -51,8 +73,6 @@
                 t.setAttribute("height", previousSize.height);
             },
             downloadPNG() {
-
-
                 let w = document.getElementById('workzone');
                 let t = document.getElementById('tablature');
                 w.style.transform = "scale(1)";
@@ -85,6 +105,9 @@
                 t.setAttribute("width", previousSize.width);
                 t.setAttribute("height", previousSize.height);
             }
+        },
+        mounted() {
+            document.getElementById('loadFile').addEventListener('change', this.readFile);
         }
     }
 
@@ -176,6 +199,10 @@
 
     ul {
         padding: 0;
+    }
+
+    ul li span {
+        cursor: pointer;
     }
 
     .icon {

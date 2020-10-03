@@ -14,7 +14,7 @@
                 transform="translate(-5, 10)"
                 style="fill:transparent;stroke:black;">
         </rect>
-        <Finger :isVisible="isVisible" @deleteFinger="isVisible = false"></Finger>
+        <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>
     </g>
 </template>
 
@@ -40,8 +40,9 @@
         },
         methods: {
             toggleVisible() {
-                console.log("yoo");
                 this.isVisible = !this.isVisible;
+                if (this.isVisible)
+                    this.$refs.finger.startEdit();
             }
         },
         computed: {

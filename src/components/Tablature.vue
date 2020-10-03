@@ -39,7 +39,8 @@
                                 v-if="isVisible(posX, posY)"
                                 :pos-x="(posX) * string_spacing + string_spacing"
                                 :pos-y="(posY) * frets_spacing + frets_spacing / 2"
-                                :x="(posX)" :y="(posY)">
+                                :x="(posX)" :y="(posY)"
+                                ref="keys">
                         </Key>
                     </g>
                 </g>
@@ -50,7 +51,11 @@
                 </Resizer>
 
                 <Title
-                        v-if="!editingZone && false"></Title>
+                        v-if="!editingZone"
+                        :x="decX * string_spacing"
+                        :y="decY * frets_spacing + string_size"
+                        ref="title">
+                </Title>
             </g>
         </svg>
     </div>
@@ -81,9 +86,6 @@
             }
         },
         methods: {
-            startDrag() {
-
-            },
             calculateSize() {
                 let workzone = document.getElementById('workzone');
                 let wWidth = workzone.getBoundingClientRect().width / this.scale; //todo
@@ -108,59 +110,114 @@
                 //this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing;
                 this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing * this.scale;
                 this.yOffset = -this.decY * this.frets_spacing * this.scale;
-
-
-                //let number
             },
             isVisible(posX, posY) {
                 posX++;
-                return posX > this.$store.state.zone.x1 && posX < this.$store.state.zone.x2 && posY >= this.$store.state.zone.y1 && posY < this.$store.state.zone.y2 || this.editingZone;
+                return posX > this.x1 && posX < this.x2 && posY >= this.y1 && posY < this.y2 || this.editingZone;
+            },
+            editZone() {
+                document.getElementById('workzone').classList.add("animate-workzone");
+                this.editingZone = !this.editingZone;
+                setTimeout(() => {
+                    document.getElementById('workzone').classList.remove("animate-workzone");
+                }, 600);
+            },
+            save() {
+                if (this.editingZone) return;
+                let saveData = {
+                    "v": "1.0", //version
+                    "x1": this.x1,
+                    "y1": this.y1,
+                    "x2": this.x2,
+                    "y2": this.y2,
+                    "t": this.$refs.title.title,
+                    "k": []
+                };
+                for (let key of this.$refs.keys) {
+                    if (key.isVisible) {
+                        saveData.k.push({
+                            "v": key.$refs.finger.value,
+                            "c": key.$refs.finger.color,
+                        });
+                    } else {
+                        saveData.k.push(0);
+                    }
+                }
+                download(JSON.stringify(saveData), 'tablature_' + this.$store.state.title + '.htab');
+            },
+            loadData(data) {
+                this.$store.dispatch('changeTitle', data.t);
+                this.$store.dispatch('changeZone', {
+                        'x1': data.x1,
+                        'y1': data.y1,
+                        'x2': data.x2,
+                        'y2': data.y2,
+                    }
+                );
+                setTimeout(() => {
+
+                    for (let [i, key] of this.$refs.keys.entries()) {
+                        if (data.k[i] !== 0) {
+                            key.isVisible = true;
+                            key.$refs.finger.value = data.k[i].v;
+                            key.$refs.finger.color = data.k[i].c;
+                            key.$refs.finger.editing = false;
+                        }
+                    }
+                }, 0);
             }
         },
         computed: {
             number_frets() {
-                console.log("number_frets");
                 if (this.editingZone) {
                     return this.number_frets_default;
                 } else {
-                    return this.$store.state.zone.y2 - this.$store.state.zone.y1
+                    return this.y2 - this.y1
                 }
             },
 
             number_string() {
-                console.log("number_string");
                 if (this.editingZone) {
                     return this.number_string_default;
                 } else {
-                    return this.$store.state.zone.x2 - this.$store.state.zone.x1
+                    return this.x2 - this.x1
                 }
             },
 
             decX() {
-                console.log("decX");
                 if (this.editingZone) {
                     return 0;
                 } else {
-                    return this.$store.state.zone.x1;
+                    return this.x1;
                 }
             },
             decY() {
-                console.log("decY");
                 if (this.editingZone) {
                     return 0;
                 } else {
-                    return this.$store.state.zone.y1;
+                    return this.y1;
                 }
             },
 
             string_size() {
-                console.log("string_size");
                 return this.frets_spacing * (this.number_frets + 0.5);
             },
 
             frets_size() {
-                console.log("frets_size");
                 return this.string_spacing * (this.number_string);
+            },
+
+            x1() {
+                return this.$store.state.zone.x1;
+            },
+            y1() {
+                return this.$store.state.zone.y1;
+            },
+            x2() {
+                return this.$store.state.zone.x2;
+            },
+            y2() {
+                return this.$store.state.zone.y2;
             },
 
 
@@ -170,22 +227,36 @@
         mounted() {
             window.addEventListener('resize', this.calculateSize);
             this.calculateSize();
-            this.$root.$on('editZone', () => {
-                document.getElementById('workzone').classList.add("animate-workzone");
-                this.editingZone = !this.editingZone;
-                setTimeout(() => {
-                    document.getElementById('workzone').classList.remove("animate-workzone");
-                }, 600);
-            });
+            this.$root.$on('editZone', this.editZone);
+            this.$root.$on('save', this.save);
+            this.$root.$on('loadData', this.loadData);
+            this.$root.$on('needResize', this.calculateSize);
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
         },
         watch: {
-            editingZone: function () {
+            editingZone () {
                 setTimeout(() => this.calculateSize(), 1);
-            }
+            },
+            x1() { this.calculateSize(); },
+            y1() { this.calculateSize(); },
+            x2() { this.calculateSize(); },
+            y2() { this.calculateSize(); }
         }
+    }
+
+    function download(text, filename) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.getElementById('hidden').appendChild(element);
+
+        element.click();
+
+        document.getElementById('hidden').removeChild(element);
     }
 </script>
 

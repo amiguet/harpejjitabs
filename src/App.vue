@@ -4,6 +4,9 @@
     <div id="main">
       <Tablature class="tablature"></Tablature>
     </div>
+    <div id="hidden">
+      <input type="file" name="loadFile" id="loadFile">
+    </div>
   </div>
 </template>
 
@@ -45,5 +48,12 @@ body {
   body, html {
     margin: 0;
     padding: 0;
+  }
+
+  #hidden {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
   }
 </style>

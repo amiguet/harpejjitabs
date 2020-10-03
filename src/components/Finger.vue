@@ -21,6 +21,7 @@
         data: function() {
             return {
                 value: '1',
+                color: '#000000',
                 editing: false
             }
         },
@@ -32,7 +33,7 @@
                 let input = document.createElement("input");
                 input.type = "text";
                 input.style.opacity = "0";
-                document.body.appendChild(input);
+                document.getElementById('hidden').appendChild(input);
                 input.focus();
 
                 setTimeout(() => {
@@ -40,7 +41,7 @@
                     el.focus();
                     el.select();
                     el.setSelectionRange(0, 9999); //iOS
-                    document.body.removeChild(input)
+                    document.getElementById('hidden').removeChild(input)
                 }, 0);
             },
             doneEdit() {
@@ -54,16 +55,7 @@
                     this.$emit('deleteFinger');
                 }
             }
-        },
-        watch: {
-            'isVisible': function(newVal) {
-                if (newVal) {
-                    this.startEdit();
-                }
-            }
         }
-
-
     }
 </script>
 
