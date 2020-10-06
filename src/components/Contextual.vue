@@ -20,7 +20,7 @@
                         </svg>
                     </div>
                 </div>
-                <div class="triangle"></div>
+                <div class="triangle" :style="{left: this.x - this.left - 7 + 'px'}"></div>
             </div>
         </div>
     </transition>
@@ -69,7 +69,8 @@
         computed: {
             left() {
                 //manually computed bubble width because it won't update correctly when not visible
-                return this.x - 80;
+                console.log(this.x - 80, 0, window.innerWidth - 160);
+                return clamp(this.x - 80, 0, window.innerWidth - 160);
             },
             top() {
                 return this.y - 55 - 10;
@@ -79,6 +80,9 @@
             this.$root.$on('summonContextual', this.summonContextual);
             this.$root.$on('unSummonContextual', this.unSummonContextual);
         }
+    }
+    function clamp(v, min, max) {
+        return Math.max(Math.min(v, max), min);
     }
 </script>
 
