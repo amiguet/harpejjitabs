@@ -4,6 +4,7 @@
     <div id="main">
       <Tablature class="tablature"></Tablature>
     </div>
+    <Contextual></Contextual>
     <div id="hidden">
       <input type="file" name="loadFile" id="loadFile">
     </div>
@@ -13,10 +14,12 @@
 <script>
 import Tablature from './components/Tablature.vue'
 import Toolsbar from './components/Toolsbar.vue'
+import Contextual from "@/components/Contextual";
 
 export default {
   name: 'App',
   components: {
+    Contextual,
     Tablature,
     Toolsbar
   }

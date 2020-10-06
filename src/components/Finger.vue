@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <g v-if="isVisible">
-            <circle r="12" cy="20"></circle>
+            <circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>
             <text y="22" style="fill: white; font-size: 16px;font-family: Avenir, Helvetica, Arial, sans-serif;" alignment-baseline="middle" text-anchor="middle" @click.stop="startEdit">{{ value }}</text>
             <transition name="fade">
                 <foreignObject height="24" width="24" x="-12" :y="-12 + 20"  v-if="editing" @click.stop="" ref="fo">
@@ -18,7 +18,7 @@
         props: [
             'isVisible'
         ],
-        data: function() {
+        data() {
             return {
                 value: '1',
                 color: '#000000',
@@ -42,8 +42,11 @@
                     el.focus();
                     el.select();
                     el.setSelectionRange(0, 9999); //iOS
-                    document.getElementById('hidden').removeChild(input)
+                    document.getElementById('hidden').removeChild(input);
+
+                    this.$root.$emit('summonContextual', this);
                 }, 0);
+
             },
             doneEdit() {
                 this.editing = false;
@@ -55,11 +58,25 @@
                     this.editing = false;
                     this.$emit('deleteFinger');
                 }
+            },
+            delete() {
+                this.editing = false;
+                this.$emit('deleteFinger');
+            },
+            changeColor(color) {
+                this.color = color;
             }
         },
         computed: {
             animationName() {
                 return this.animate ? "fade" : "disable";
+            }
+        },
+        watch: {
+            editing(newValue) {
+                if (!newValue) {
+                    this.$root.$emit('unSummonContextual');
+                }
             }
         }
     }
