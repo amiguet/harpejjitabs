@@ -16,9 +16,9 @@
 
                 <!-- strings -->
                 <line
-                        v-for="(i, pos) in number_string - 1" :key="'strings' + i"
+                        v-for="(i, pos) in number_string" :key="'strings' + i"
                         :x1="(pos + decX) * string_spacing + string_spacing"
-                        :y1="0 + decY * frets_spacing"
+                        :y1="decY * frets_spacing"
                         :x2="(pos + decX) * string_spacing + string_spacing"
                         :y2="decY * frets_spacing + string_size"
                         style="fill:black;stroke-width:1px;stroke:#CCC">
@@ -146,6 +146,7 @@
                 download(JSON.stringify(saveData), 'tablature_' + this.$store.state.title + '.htab');
             },
             loadData(data) {
+                this.editingZone = false;
                 this.$store.dispatch('changeTitle', data.t);
                 this.$store.dispatch('changeZone', {
                         'x1': data.x1,
@@ -180,7 +181,7 @@
                 if (this.editingZone) {
                     return this.number_string_default;
                 } else {
-                    return this.x2 - this.x1
+                    return this.x2 - this.x1 - 1;
                 }
             },
 
@@ -204,7 +205,7 @@
             },
 
             frets_size() {
-                return this.string_spacing * (this.number_string);
+                return this.string_spacing * (this.number_string + 1);
             },
 
             x1() {
@@ -236,13 +237,21 @@
             window.removeEventListener('resize', this.calculateSize);
         },
         watch: {
-            editingZone () {
+            editingZone() {
                 setTimeout(() => this.calculateSize(), 1);
             },
-            x1() { this.calculateSize(); },
-            y1() { this.calculateSize(); },
-            x2() { this.calculateSize(); },
-            y2() { this.calculateSize(); }
+            x1() {
+                this.calculateSize();
+            },
+            y1() {
+                this.calculateSize();
+            },
+            x2() {
+                this.calculateSize();
+            },
+            y2() {
+                this.calculateSize();
+            }
         }
     }
 

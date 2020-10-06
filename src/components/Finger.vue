@@ -2,9 +2,9 @@
     <transition name="fade">
         <g v-if="isVisible">
             <circle r="12" cy="20"></circle>
-            <text y="22" style="fill: white; font-size: 16px;" alignment-baseline="middle" text-anchor="middle" @click.stop="startEdit">{{ value }}</text>
+            <text y="22" style="fill: white; font-size: 16px;font-family: Avenir, Helvetica, Arial, sans-serif;" alignment-baseline="middle" text-anchor="middle" @click.stop="startEdit">{{ value }}</text>
             <transition name="fade">
-                <foreignObject height="24" width="24" x="-12" :y="-12 + 20"  v-if="editing" @click.stop="">
+                <foreignObject height="24" width="24" x="-12" :y="-12 + 20"  v-if="editing" @click.stop="" ref="fo">
                     <input type="text" v-model="value" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" @keydown.delete="deleteDown" ref="textEdit" />
                 </foreignObject>
             </transition>
@@ -22,7 +22,8 @@
             return {
                 value: '1',
                 color: '#000000',
-                editing: false
+                editing: false,
+                animate: true
             }
         },
         methods: {
@@ -55,6 +56,11 @@
                     this.$emit('deleteFinger');
                 }
             }
+        },
+        computed: {
+            animationName() {
+                return this.animate ? "fade" : "disable";
+            }
         }
     }
 </script>
@@ -74,7 +80,7 @@
     }
 
     .fade-enter-active {
-        animation: fade-animation 0.4s;
+        animation: fade-animation 0.2s;
     }
     .fade-leave-active {
         animation: fade-animation 0.2s reverse;

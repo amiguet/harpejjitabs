@@ -2,7 +2,8 @@
     <g :transform="'translate(' + x +', ' + y +')'">
         <rect :width="this.$parent.frets_size" height="30" @click.stop="editTitle" style="fill: transparent"></rect>
         <transition name="fade">
-            <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle">{{ titleT }}</text>
+            <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle"
+                style="font-family: Avenir, Helvetica, Arial, sans-serif;">{{ titleT }}</text>
         </transition>
         <transition name="fade">
             <foreignObject height="30" :width="this.$parent.frets_size" v-if="editing" @click.stop>

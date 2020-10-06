@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
         name: "Toolsbar",
         methods: {
@@ -48,34 +50,33 @@
 
             },
             downloadSVG() {
-                let title = this.$store.state.title;
+                setTimeout(() => { // To avoid having text field in the SVG (because of the transition animation)
+                    let title = this.$store.state.title;
 
-                let w = document.getElementById('workzone');
-                let t = document.getElementById('tablature');
-                w.style.transform = "scale(1)";
-
-                let size = {
-                    width: w.getBoundingClientRect().width,
-                    height: w.getBoundingClientRect().height,
-                };
-
-                let previousSize = {
-                    width: t.getAttribute('width'),
-                    height: t.getAttribute('height')
-                };
-
-                t.setAttribute("width", size.width);
-                t.setAttribute("height", size.height);
-                saveSvg(document.getElementById('tablature'), 'tablature_' + title + '.svg');
-
-                w.style.transform = "";
-                t.setAttribute("width", previousSize.width);
-                t.setAttribute("height", previousSize.height);
+                    this.prepareCanvas(() => {
+                        saveSvg(document.getElementById('tablature'), 'tablature_' + title + '.svg');
+                    });
+                }, 200);
             },
             downloadPNG() {
+                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
+                    let title = this.$store.state.title;
+
+                    this.prepareCanvas((t, size) => {
+                        svgToPng(t, size, (imgData) => {
+                            downloadFromLink(imgData, 'tablature_' + title + '.png');
+                        });
+                    });
+                }, 200);
+            },
+
+
+            prepareCanvas(callback) {
+                this.$root.$emit('stopEditing');
                 let w = document.getElementById('workzone');
                 let t = document.getElementById('tablature');
-                w.style.transform = "scale(1)";
+                let tr = "scale(1) translate(" + -this.x1 * this.string_spacing + "px, " + -this.y1 * this.frets_spacing + "px)";
+                w.style.transform = tr;
 
                 let size = {
                     width: w.getBoundingClientRect().width,
@@ -90,21 +91,31 @@
                 t.setAttribute("width", size.width);
                 t.setAttribute("height", size.height);
 
-
-                svgToPng(t, size, (imgData) => {
-                    const pngImage = document.createElement('img');
-                    document.body.appendChild(pngImage);
-                    pngImage.style.width = size.width + "px";
-                    pngImage.style.height = size.height + "px";
-                    pngImage.src = imgData;
-
-
-                });
+                callback(t, size);
 
                 w.style.transform = "";
                 t.setAttribute("width", previousSize.width);
                 t.setAttribute("height", previousSize.height);
+                console.log("yo2");
+
+                // Fix for Safari
+                w.setAttribute("transform", w.getAttribute("transform"));
             }
+        },
+        computed: {
+            x1() {
+                return this.$store.state.zone.x1;
+            },
+            y1() {
+                return this.$store.state.zone.y1;
+            },
+            x2() {
+                return this.$store.state.zone.x2;
+            },
+            y2() {
+                return this.$store.state.zone.y2;
+            },
+            ...mapState(['frets_spacing', 'string_spacing'])
         },
         mounted() {
             document.getElementById('loadFile').addEventListener('change', this.readFile);
@@ -112,12 +123,14 @@
     }
 
 
+
+
     // Create a blob from a svg element
     function svgToUrl(svgEl) {
         svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
         let svgData = svgEl.outerHTML;
         let preface = '<?xml version="1.0" standalone="no"?>\r\n';
-        let svgBlob = new Blob([preface, svgData], {type: "image/svg+xml;charset=utf-8"});
+        let svgBlob = new Blob([preface, svgData], {type: "image/svg+xml"});
         let url = URL.createObjectURL(svgBlob);
         console.log(url);
         return url;
@@ -126,13 +139,7 @@
     // Download an svg
     function saveSvg(svgEl, name) {
         let svgUrl = svgToUrl(svgEl);
-        let downloadLink = document.createElement("a");
-        downloadLink.href = svgUrl;
-        downloadLink.innerHTML = "Download";
-        document.body.appendChild(downloadLink);
-        /*downloadLink.download = name;
-        downloadLink.click();
-        document.body.removeChild(downloadLink);*/
+        downloadFromLink(svgUrl, name);
     }
 
     // Convert a svg element to a png image
@@ -140,7 +147,7 @@
         const url = svgToUrl(svgEl);
         svgUrlToPng(url, size, (imgData) => {
             callback(imgData);
-            //URL.revokeObjectURL(url);
+            URL.revokeObjectURL(url);
         });
     }
 
@@ -149,7 +156,7 @@
         const svgImage = document.createElement('img');
         // imgPreview.style.position = 'absolute';
         // imgPreview.style.top = '-9999px';
-        document.body.appendChild(svgImage);
+        document.getElementById('hidden').appendChild(svgImage);
         svgImage.onload = function () {
             const canvas = document.createElement('canvas');
             //canvas.width = svgImage.clientWidth;
@@ -163,12 +170,13 @@
             const canvasCtx = canvas.getContext('2d');
             canvasCtx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
             canvasCtx.imageSmoothingEnabled = false;
-            document.body.appendChild(canvas);
+            document.getElementById('hidden').appendChild(canvas);
             canvasCtx.drawImage(svgImage, 0, 0, size.width * 1, size.height * 1);
             const imgData = canvas.toDataURL('image/png');
             callback(imgData);
 
-            // document.body.removeChild(imgPreview);
+            document.getElementById('hidden').removeChild(canvas);
+            document.getElementById('hidden').removeChild(svgImage);
         };
         svgImage.src = svgUrl;
     }
@@ -179,6 +187,16 @@
         let w = s.getElementById(nodeIdToReset);
         w.setAttribute("transform", "");
         return s;
+    }
+
+    function downloadFromLink(url, name) {
+        let downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.innerHTML = "Download";
+        document.getElementById('hidden').appendChild(downloadLink);
+        downloadLink.download = name;
+        downloadLink.click();
+        document.getElementById('hidden').removeChild(downloadLink);
     }
 
 </script>

@@ -40,6 +40,7 @@
         },
         methods: {
             toggleVisible() {
+                if (this.$parent.editingZone) return;
                 this.isVisible = !this.isVisible;
                 if (this.isVisible)
                     this.$refs.finger.startEdit();

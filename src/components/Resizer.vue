@@ -5,6 +5,7 @@
                 :y="(y1 * frets_spacing + frets_spacing / 2)"
                 :width="(x2 - x1) * string_spacing" :height="(y2 - y1) *  frets_spacing"
                 style="fill: rgba(46, 213, 115, 0.2); cursor: grab;"
+                ref="grabZone"
                 @mousedown="startDragRect"></rect>
 
         <!-- top left -->
@@ -75,7 +76,14 @@
 
 
                 dragged: null,
-                pt: null
+                pt: null,
+
+                saved : {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0
+                }
             }
         },
         methods: {
@@ -86,8 +94,12 @@
             },
             onMove(e) {
                 let pos = this.cursorPoint(e);
+                this.savePosition();
                 this[this.dragged.getAttribute('x')] = Math.floor(pos.x / this.string_spacing);
                 this[this.dragged.getAttribute('y')] = Math.floor((pos.y - this.frets_spacing / 2) / this.frets_spacing);
+                if (this.notValidPosition()) {
+                    this.restorePosition();
+                }
                 //this.y1 = pos
             },
             stopDrag() {
@@ -100,7 +112,6 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
-                console.log("stop drag");
             },
             cursorPoint(e) {
                 this.pt.x = e.clientX;
@@ -108,6 +119,8 @@
                 return this.pt.matrixTransform(this.workzone.getScreenCTM().inverse());
             },
             startDragRect(e) {
+                document.body.style.cursor = "grabbing";
+                this.$refs.grabZone.style.cursor = "grabbing";
                 let pos = this.cursorPoint(e);
                 this.xGrab = pos.x - this.x1 * this.string_spacing;
                 this.yGrab = pos.y - this.y1 * this.frets_spacing;
@@ -117,13 +130,19 @@
                 window.addEventListener('mouseup', this.stopDragRect, false);
             },
             onMoveRect(e) {
+                this.savePosition();
                 let pos = this.cursorPoint(e);
                 this.x1 = Math.floor((pos.x - this.xGrab) / this.string_spacing);
                 this.y1 = Math.floor((pos.y - this.yGrab) / this.frets_spacing);
                 this.x2 = this.x1 + this.widthGrab;
                 this.y2 = this.y1 + this.heightGrab;
+                if (this.notValidPosition()) {
+                    this.restorePosition();
+                }
             },
             stopDragRect() {
+                document.body.style.cursor = "";
+                this.$refs.grabZone.style.cursor = "grab";
                 this.workzone.removeEventListener('mousemove', this.onMoveRect, false);
                 window.removeEventListener('mouseup', this.stopDragRect, false);
                 this.$store.dispatch('changeZone', {
@@ -132,7 +151,25 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
-                console.log("stop drag rect");
+            },
+            savePosition() {
+                this.saved.x1 = this.x1;
+                this.saved.y1 = this.y1;
+                this.saved.x2 = this.x2;
+                this.saved.y2 = this.y2;
+            },
+            restorePosition() {
+                this.x1 = this.saved.x1;
+                this.y1 = this.saved.y1;
+                this.x2 = this.saved.x2;
+                this.y2 = this.saved.y2;
+            },
+            notValidPosition() {
+                if (this.x1 > this.x2 - 2 || this.y1 > this.y2 - 1 || this.x1 < 0 || this.x2 > this.number_string_default + 1 || this.y1 < 0 || this.y2 > this.number_frets_default) {
+                    console.log("invalid");
+                    return true;
+                }
+                return false;
             }
         },
         mounted() {
@@ -143,7 +180,7 @@
             this.y2 = this.$store.state.zone.y2;
         },
         computed: {
-            ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string', 'number_frets']),
+            ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string', 'number_frets', 'number_string_default', 'number_frets_default']),
             workzone() {
                 return document.getElementById('workzone');
             }
