@@ -4,13 +4,15 @@
         <div class="tools">
             <ul>
                 <li>
-                    <span role="button" class="icon download" title="Download SVG" @click="downloadSVG"></span>
+                    <span role="button" title="Edit" @click="editZone()">Reframe</span>
                 </li>
                 <li>
-                    <span role="button" class="icon download" title="Download PNG" @click="downloadPNG"></span>
+                    <!--<span role="button" class="icon download" title="Download SVG" @click="downloadSVG"></span>-->
+                    <span role="button" title="Download SVG" @click="downloadSVG">Download SVG</span>
                 </li>
                 <li>
-                    <span role="button" title="Edit" @click="editZone()">Recadrer</span>
+                    <!--<span role="button" class="icon download" title="Download PNG" @click="downloadPNG"></span>-->
+                    <span role="button" title="Download PNG" @click="downloadPNG">Download PNG</span>
                 </li>
                 <li>
                     <span role="button" title="Save" @click="save()">Save</span>

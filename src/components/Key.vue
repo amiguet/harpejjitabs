@@ -11,7 +11,7 @@
                 v-if="isDo"
                 width="10"
                 height="5"
-                transform="translate(-5, 10)"
+                transform="translate(-5, 7)"
                 style="fill:transparent;stroke:black;">
         </rect>
         <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>

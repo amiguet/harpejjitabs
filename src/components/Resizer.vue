@@ -16,7 +16,7 @@
                 fill="green"
                 class="resize tl"
                 @mousedown="startDrag"
-                x="x1" y="y1"
+                x="x1" y="y1" cursor="nwse-resize"
         >
         </polygon>
 
@@ -28,7 +28,7 @@
                 fill="green"
                 class="resize tr"
                 @mousedown="startDrag"
-                x="x2" y="y1">
+                x="x2" y="y1" cursor="nesw-resize">
         </polygon>
 
         <!-- bottom left -->
@@ -39,7 +39,7 @@
                 fill="green"
                 class="resize bl"
                 @mousedown="startDrag"
-                x="x1" y="y2">
+                x="x1" y="y2" cursor="nesw-resize">
         </polygon>
 
         <!-- bottom right -->
@@ -50,7 +50,7 @@
                 fill="green"
                 class="resize br"
                 @mousedown="startDrag"
-                x="x2" y="y2">
+                x="x2" y="y2" cursor="nwse-resize">
         </polygon>
 
     </g>
@@ -89,8 +89,11 @@
         methods: {
             startDrag(e) {
                 this.dragged = e.target;
-                this.workzone.addEventListener('mousemove', this.onMove, false);
+                window.addEventListener('mousemove', this.onMove, false);
                 window.addEventListener('mouseup', this.stopDrag, false);
+
+                document.getElementById('app').style.cursor = this.dragged.getAttribute('cursor');
+                this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
             },
             onMove(e) {
                 let pos = this.cursorPoint(e);
@@ -100,10 +103,11 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
+                e.preventDefault();
                 //this.y1 = pos
             },
             stopDrag() {
-                this.workzone.removeEventListener('mousemove', this.onMove, false);
+                window.removeEventListener('mousemove', this.onMove, false);
                 window.removeEventListener('mouseup', this.stopDrag, false);
 
                 this.$store.dispatch('changeZone', {
@@ -112,6 +116,8 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
+                document.getElementById('app').style.cursor = "";
+                this.$refs.grabZone.style.cursor = "grab";
             },
             cursorPoint(e) {
                 this.pt.x = e.clientX;
@@ -126,7 +132,7 @@
                 this.yGrab = pos.y - this.y1 * this.frets_spacing;
                 this.widthGrab = this.x2 - this.x1;
                 this.heightGrab = this.y2 - this.y1;
-                this.workzone.addEventListener('mousemove', this.onMoveRect, false);
+                window.addEventListener('mousemove', this.onMoveRect, false);
                 window.addEventListener('mouseup', this.stopDragRect, false);
             },
             onMoveRect(e) {
@@ -139,11 +145,12 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
+                e.preventDefault();
             },
             stopDragRect() {
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
-                this.workzone.removeEventListener('mousemove', this.onMoveRect, false);
+                window.removeEventListener('mousemove', this.onMoveRect, false);
                 window.removeEventListener('mouseup', this.stopDragRect, false);
                 this.$store.dispatch('changeZone', {
                     'x1': this.x1,
@@ -190,7 +197,7 @@
 
 <style scoped>
     .tl, .br {
-        cursor: nwse-resize;;
+        cursor: nwse-resize;
     }
 
     .bl, .tr {

@@ -36,7 +36,7 @@
                 <g v-for="(j, posY) in number_frets_default" :key="j">
                     <g v-for="(i, posX) in number_string_default" :key="i+';'+j">
                         <Key
-                                v-if="isVisible(posX, posY)"
+                                v-show="isVisible(posX, posY)"
                                 :pos-x="(posX) * string_spacing + string_spacing"
                                 :pos-y="(posY) * frets_spacing + frets_spacing / 2"
                                 :x="(posX)" :y="(posY)"
