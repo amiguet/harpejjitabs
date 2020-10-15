@@ -6,52 +6,66 @@
                 :width="(x2 - x1) * string_spacing" :height="(y2 - y1) *  frets_spacing"
                 style="fill: rgba(46, 213, 115, 0.2); cursor: grab;"
                 ref="grabZone"
-                @mousedown="startDragRect"></rect>
+                @mousedown.stop="startDragRect"
+                @touchstart.stop="startDragRect"
+        ></rect>
 
         <!-- top left -->
-        <polygon
-                :transform="'translate(' + (x1 * string_spacing) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'"
-                v-show="true"
-                points="0,0 10,0 10,4, 4,4 4,10, 0,10"
-                fill="green"
-                class="resize tl"
-                @mousedown="startDrag"
-                x="x1" y="y1" cursor="nwse-resize"
-        >
-        </polygon>
+        <g :transform="'translate(' + (x1 * string_spacing) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'">
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x1" y="y1" cursor="nwse-resize"></circle>
+            <polygon
+                    v-show="true"
+                    points="0,0 10,0 10,4, 4,4 4,10, 0,10"
+                    fill="green"
+                    class="resize tl"></polygon>
+        </g>
+
 
         <!-- top right -->
-        <polygon
-                :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'"
-                v-show="true"
-                points="0,0 10,0 10,10, 6,10 6,4 0,4"
-                fill="green"
-                class="resize tr"
-                @mousedown="startDrag"
-                x="x2" y="y1" cursor="nesw-resize">
-        </polygon>
+        <g :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'">
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x2" y="y1" cursor="nesw-resize"></circle>
+            <polygon
+                    v-show="true"
+                    points="0,0 10,0 10,10, 6,10 6,4 0,4"
+                    fill="green"
+                    class="resize tr"></polygon>
+        </g>
 
         <!-- bottom left -->
-        <polygon
-                :transform="'translate(' + (x1 * string_spacing) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'"
-                v-show="true"
-                points="0,0 4,0 4,6 10,6 10,10 0,10"
-                fill="green"
-                class="resize bl"
-                @mousedown="startDrag"
-                x="x1" y="y2" cursor="nesw-resize">
-        </polygon>
+        <g :transform="'translate(' + (x1 * string_spacing) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x1" y="y2" cursor="nesw-resize"></circle>
+            <polygon
+                    v-show="true"
+                    points="0,0 4,0 4,6 10,6 10,10 0,10"
+                    fill="green"
+                    class="resize bl"></polygon>
+        </g>
 
         <!-- bottom right -->
-        <polygon
-                :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'"
-                v-show="true"
-                points="6,0 10,0 10,10 0,10 0,6 6,6"
-                fill="green"
-                class="resize br"
-                @mousedown="startDrag"
-                x="x2" y="y2" cursor="nwse-resize">
-        </polygon>
+        <g :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x2" y="y2" cursor="nwse-resize"></circle>
+            <polygon
+                    v-show="true"
+                    points="6,0 10,0 10,10 0,10 0,6 6,6"
+                    fill="green"
+                    class="resize br"></polygon>
+        </g>
 
     </g>
 </template>
@@ -78,7 +92,7 @@
                 dragged: null,
                 pt: null,
 
-                saved : {
+                saved: {
                     x1: 0,
                     y1: 0,
                     x2: 0,
@@ -88,9 +102,12 @@
         },
         methods: {
             startDrag(e) {
+                console.log("startDrag");
                 this.dragged = e.target;
                 window.addEventListener('mousemove', this.onMove, false);
                 window.addEventListener('mouseup', this.stopDrag, false);
+                window.addEventListener('touchmove', this.onMove, false);
+                window.addEventListener('touchend', this.stopDrag, false);
 
                 document.getElementById('app').style.cursor = this.dragged.getAttribute('cursor');
                 this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
@@ -103,12 +120,15 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
-                e.preventDefault();
-                //this.y1 = pos
+                if (e instanceof MouseEvent)
+                    e.preventDefault();
             },
             stopDrag() {
                 window.removeEventListener('mousemove', this.onMove, false);
                 window.removeEventListener('mouseup', this.stopDrag, false);
+                window.removeEventListener('touchmove', this.onMove, false);
+                window.removeEventListener('touchend', this.stopDrag, false);
+                this.dragged = null;
 
                 this.$store.dispatch('changeZone', {
                     'x1': this.x1,
@@ -120,11 +140,17 @@
                 this.$refs.grabZone.style.cursor = "grab";
             },
             cursorPoint(e) {
-                this.pt.x = e.clientX;
-                this.pt.y = e.clientY;
+                if (e.touches !== undefined) {
+                    this.pt.x = e.touches[0].clientX;
+                    this.pt.y = e.touches[0].clientY;
+                } else {
+                    this.pt.x = e.clientX;
+                    this.pt.y = e.clientY;
+                }
                 return this.pt.matrixTransform(this.workzone.getScreenCTM().inverse());
             },
             startDragRect(e) {
+                console.log("startDrag");
                 document.body.style.cursor = "grabbing";
                 this.$refs.grabZone.style.cursor = "grabbing";
                 let pos = this.cursorPoint(e);
@@ -134,6 +160,8 @@
                 this.heightGrab = this.y2 - this.y1;
                 window.addEventListener('mousemove', this.onMoveRect, false);
                 window.addEventListener('mouseup', this.stopDragRect, false);
+                window.addEventListener('touchmove', this.onMoveRect, false);
+                window.addEventListener('touchend', this.stopDragRect, false);
             },
             onMoveRect(e) {
                 this.savePosition();
@@ -145,19 +173,26 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
-                e.preventDefault();
+                if (e instanceof MouseEvent)
+                    e.preventDefault();
             },
             stopDragRect() {
+                console.log("stopDrag");
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
                 window.removeEventListener('mousemove', this.onMoveRect, false);
                 window.removeEventListener('mouseup', this.stopDragRect, false);
+                window.removeEventListener('touchmove', this.onMoveRect, false);
+                window.removeEventListener('touchend', this.stopDragRect, false);
                 this.$store.dispatch('changeZone', {
                     'x1': this.x1,
                     'x2': this.x2,
                     'y1': this.y1,
                     'y2': this.y2,
                 });
+            },
+            startTouch(e) {
+                console.log("yo");
             },
             savePosition() {
                 this.saved.x1 = this.x1;
@@ -177,6 +212,9 @@
                     return true;
                 }
                 return false;
+            },
+            test() {
+                console.log("test");
             }
         },
         mounted() {

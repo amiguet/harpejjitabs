@@ -288,4 +288,9 @@
         transition: transform 500ms;
     }
 
+    #tablature {
+        touch-action: none;
+    }
+
+
 </style>
