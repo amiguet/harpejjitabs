@@ -12,59 +12,59 @@
 
         <!-- top left -->
         <g :transform="'translate(' + (x1 * string_spacing) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'">
-            <circle r="30"
-                    opacity="0"
-                    @mousedown.capture.stop="startDrag"
-                    @touchstart.capture.stop="startDrag"
-                    x="x1" y="y1" cursor="nwse-resize"></circle>
             <polygon
                     v-show="true"
                     points="0,0 10,0 10,4, 4,4 4,10, 0,10"
                     fill="green"
                     class="resize tl"></polygon>
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x1" y="y1" cursor="nwse-resize"></circle>
         </g>
 
 
         <!-- top right -->
         <g :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y1 * frets_spacing + frets_spacing / 2) + ')'">
-            <circle r="30"
-                    opacity="0"
-                    @mousedown.capture.stop="startDrag"
-                    @touchstart.capture.stop="startDrag"
-                    x="x2" y="y1" cursor="nesw-resize"></circle>
             <polygon
                     v-show="true"
                     points="0,0 10,0 10,10, 6,10 6,4 0,4"
                     fill="green"
                     class="resize tr"></polygon>
-        </g>
-
-        <!-- bottom left -->
-        <g :transform="'translate(' + (x1 * string_spacing) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
             <circle r="30"
                     opacity="0"
                     @mousedown.capture.stop="startDrag"
                     @touchstart.capture.stop="startDrag"
-                    x="x1" y="y2" cursor="nesw-resize"></circle>
+                    x="x2" y="y1" cursor="nesw-resize"></circle>
+        </g>
+
+        <!-- bottom left -->
+        <g :transform="'translate(' + (x1 * string_spacing) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
             <polygon
                     v-show="true"
                     points="0,0 4,0 4,6 10,6 10,10 0,10"
                     fill="green"
                     class="resize bl"></polygon>
-        </g>
-
-        <!-- bottom right -->
-        <g :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
             <circle r="30"
                     opacity="0"
                     @mousedown.capture.stop="startDrag"
                     @touchstart.capture.stop="startDrag"
-                    x="x2" y="y2" cursor="nwse-resize"></circle>
+                    x="x1" y="y2" cursor="nesw-resize"></circle>
+        </g>
+
+        <!-- bottom right -->
+        <g :transform="'translate(' + (x2 * string_spacing - 10) + ', ' + (y2 * frets_spacing + frets_spacing / 2 - 10) + ')'">
             <polygon
                     v-show="true"
                     points="6,0 10,0 10,10 0,10 0,6 6,6"
                     fill="green"
                     class="resize br"></polygon>
+            <circle r="30"
+                    opacity="0"
+                    @mousedown.capture.stop="startDrag"
+                    @touchstart.capture.stop="startDrag"
+                    x="x2" y="y2" cursor="nwse-resize"></circle>
         </g>
 
     </g>

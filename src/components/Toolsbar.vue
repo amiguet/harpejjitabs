@@ -205,7 +205,7 @@
 
 <style scoped>
     header {
-        height: 60px;
+        /*height: 60px;*/
         border-bottom: 1px solid #d9d9d9;
         background-color: #FAFAFA;
         position: relative;
@@ -214,15 +214,22 @@
     li {
         display: inline;
         list-style-type: none;
-        margin: 0 10px;
+        padding: 16px 10px 0;
     }
 
     ul {
         padding: 0;
+        margin: 16px 0 5px;
     }
 
     ul li span {
         cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 10px;
+    }
+
+    ul li span:active {
+        background-color: #EEEEEE;
     }
 
     .icon {
@@ -236,5 +243,6 @@
     .download {
         background-image: url("../assets/icons/download.png");
     }
+
 
 </style>

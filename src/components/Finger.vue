@@ -2,7 +2,7 @@
     <transition name="fade">
         <g v-if="isVisible">
             <circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>
-            <text y="22" style="fill: white; font-size: 16px;font-family: Avenir, Helvetica, Arial, sans-serif;" alignment-baseline="middle" text-anchor="middle" @click.stop="startEdit">{{ value }}</text>
+            <text y="20" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;" text-anchor="middle" dominant-baseline="middle" @click.stop="startEdit">{{ value }}</text>
             <transition name="fade">
                 <foreignObject height="24" width="24" x="-12" :y="-12 + 20"  v-if="editing" @click.stop="" ref="fo">
                     <input type="text" v-model="value" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" @keydown.delete="deleteDown" ref="textEdit" />
@@ -90,7 +90,7 @@
         padding: 0;
         border-radius: 100%;
         text-align: center;
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-family: Helvetica, Arial, sans-serif;
         background: aliceblue;
         outline: none;
         border: 2px solid #015ECC;

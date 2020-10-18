@@ -3,7 +3,7 @@
         <rect :width="this.$parent.frets_size" height="30" @click.stop="editTitle" style="fill: transparent"></rect>
         <transition name="fade">
             <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle"
-                style="font-family: Avenir, Helvetica, Arial, sans-serif;">{{ titleT }}</text>
+                style="font-family: Helvetica, Arial, sans-serif" :fill="color">{{ titleT }}</text>
         </transition>
         <transition name="fade">
             <foreignObject height="30" :width="this.$parent.frets_size" v-if="editing" @click.stop>
@@ -25,7 +25,8 @@
         data: function() {
             return {
                 titleT: '',
-                editing: false
+                editing: false,
+                color: "#000000"
             }
         },
         methods: {
@@ -46,10 +47,18 @@
                     el.setSelectionRange(0, 9999); //iOS
                     document.body.removeChild(input)
                 }, 0);
+                this.$root.$emit('summonContextual', this);
             },
             doneEdit() {
                 this.editing = false;
                 this.$store.dispatch('changeTitle', this.titleT);
+                this.$root.$emit('unSummonContextual');
+            },
+            changeColor(color) {
+                this.color = color;
+            },
+            delete() {
+                this.titleT = "";
             }
         },
         computed: {

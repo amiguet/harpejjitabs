@@ -11,8 +11,8 @@ export default new Vuex.Store({
         marker_width: 15,
         marker_height: 25,
         text_height: 20,
-        number_string_default: 24,
-        number_frets_default: 15,
+        number_string_default: 18, //24
+        number_frets_default: 6, //15
 
         zone: {
             x1: 4,

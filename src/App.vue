@@ -8,27 +8,31 @@
         <div id="hidden">
             <input type="file" name="loadFile" id="loadFile">
         </div>
+        <Testing></Testing>
     </div>
 </template>
 
 <script>
     import Tablature from './components/Tablature.vue'
     import Toolsbar from './components/Toolsbar.vue'
-    import Contextual from "@/components/Contextual";
+    import Contextual from "./components/Contextual.vue";
+    import Testing from './components/Testing.vue'
 
     export default {
         name: 'App',
         components: {
+            Testing,
             Contextual,
             Tablature,
-            Toolsbar
+            Toolsbar,
+            Testing
         }
     }
 </script>
 
 <style>
     #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
+        font-family: Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;

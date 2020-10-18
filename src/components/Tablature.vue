@@ -2,60 +2,61 @@
     <div>
         <svg width="100%" :height="svgHeight" id="tablature">
             <rect width="100%" height="100%" style="fill:white"/>
-            <g :transform="'translate('+xOffset+', '+yOffset+'), scale('+scale+')'" id="workzone">
+            <g :style="{transform: 'translate('+xOffset+'px, '+yOffset+'px) scale('+scale+')'}" id="workzone">
+                <g id="workzoneContainer">
+                    <!-- frets -->
+                    <line
+                            v-for="(i, pos) in number_frets" :key="'frets' + i"
+                            :x1="decX * string_spacing"
+                            :y1="(pos + decY) * frets_spacing + frets_spacing / 2"
+                            :x2="decX * string_spacing + frets_size"
+                            :y2="(pos + decY) * frets_spacing + frets_spacing / 2"
+                            style="fill:black;stroke-width:1px;stroke:black">
+                    </line>
 
-                <!-- frets -->
-                <line
-                        v-for="(i, pos) in number_frets" :key="'frets' + i"
-                        :x1="decX * string_spacing"
-                        :y1="(pos + decY) * frets_spacing + frets_spacing / 2"
-                        :x2="decX * string_spacing + frets_size"
-                        :y2="(pos + decY) * frets_spacing + frets_spacing / 2"
-                        style="fill:black;stroke-width:1px;stroke:black">
-                </line>
-
-                <!-- strings -->
-                <line
-                        v-for="(i, pos) in number_string" :key="'strings' + i"
-                        :x1="(pos + decX) * string_spacing + string_spacing"
-                        :y1="decY * frets_spacing"
-                        :x2="(pos + decX) * string_spacing + string_spacing"
-                        :y2="decY * frets_spacing + string_size"
-                        style="fill:black;stroke-width:1px;stroke:#CCC">
-                </line>
+                    <!-- strings -->
+                    <line
+                            v-for="(i, pos) in number_string" :key="'strings' + i"
+                            :x1="(pos + decX) * string_spacing + string_spacing"
+                            :y1="decY * frets_spacing"
+                            :x2="(pos + decX) * string_spacing + string_spacing"
+                            :y2="decY * frets_spacing + string_size"
+                            style="fill:black;stroke-width:1px;stroke:#CCC">
+                    </line>
 
 
-                <!--<g v-for="(j, posY) in number_frets" :key="j+decY">
-                    <g v-for="(i, posX) in number_string" :key="i+decX+';'+j+decY">
-                        <Key :pos-x="(posX + decX) * string_spacing + string_spacing"
-                             :pos-y="(posY + decY) * frets_spacing + frets_spacing / 2"
-                             :x="(posX + decX)" :y="(posY + decY)"></Key>
+                    <!--<g v-for="(j, posY) in number_frets" :key="j+decY">
+                        <g v-for="(i, posX) in number_string" :key="i+decX+';'+j+decY">
+                            <Key :pos-x="(posX + decX) * string_spacing + string_spacing"
+                                 :pos-y="(posY + decY) * frets_spacing + frets_spacing / 2"
+                                 :x="(posX + decX)" :y="(posY + decY)"></Key>
+                        </g>
+                    </g>-->
+
+                    <g v-for="(j, posY) in number_frets_default" :key="j">
+                        <g v-for="(i, posX) in number_string_default" :key="i+';'+j">
+                            <Key
+                                    v-show="isVisible(posX, posY)"
+                                    :pos-x="(posX) * string_spacing + string_spacing"
+                                    :pos-y="(posY) * frets_spacing + frets_spacing / 2"
+                                    :x="(posX)" :y="(posY)"
+                                    ref="keys">
+                            </Key>
+                        </g>
                     </g>
-                </g>-->
-
-                <g v-for="(j, posY) in number_frets_default" :key="j">
-                    <g v-for="(i, posX) in number_string_default" :key="i+';'+j">
-                        <Key
-                                v-show="isVisible(posX, posY)"
-                                :pos-x="(posX) * string_spacing + string_spacing"
-                                :pos-y="(posY) * frets_spacing + frets_spacing / 2"
-                                :x="(posX)" :y="(posY)"
-                                ref="keys">
-                        </Key>
-                    </g>
+                    <Title
+                            v-if="!editingZone"
+                            :x="decX * string_spacing"
+                            :y="decY * frets_spacing + string_size"
+                            ref="title">
+                    </Title>
                 </g>
-
 
                 <Resizer
                         v-if="editingZone">
                 </Resizer>
 
-                <Title
-                        v-if="!editingZone"
-                        :x="decX * string_spacing"
-                        :y="decY * frets_spacing + string_size"
-                        ref="title">
-                </Title>
+
             </g>
         </svg>
     </div>
@@ -87,9 +88,9 @@
         },
         methods: {
             calculateSize() {
-                let workzone = document.getElementById('workzone');
-                let wWidth = workzone.getBoundingClientRect().width / this.scale; //todo
-                let wHeight = workzone.getBoundingClientRect().height / this.scale;
+                let workzoneC = document.getElementById('workzoneContainer');
+                let wWidth = workzoneC.getBoundingClientRect().width / this.scale; //todo
+                let wHeight = workzoneC.getBoundingClientRect().height / this.scale;
                 let wRatio = wHeight / wWidth;
 
                 let app = document.getElementById('main');
@@ -288,8 +289,15 @@
         transition: transform 500ms;
     }
 
+
     #tablature {
         touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
 
