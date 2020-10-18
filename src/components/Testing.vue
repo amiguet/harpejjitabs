@@ -1,5 +1,5 @@
 <template>
-    <svg height="1000">
+    <svg height="1000" width="600">
         <g transform="translate(30, 30) scale(2)">
             <g v-for="(dominantBaselineAttr, j) in dominantBaselineAttrs" :transform="'translate(50, ' + j * 30 + ')'">
                 <text x="-20px" text-anchor="end" font-size="6px">{{dominantBaselineAttr}}</text>
@@ -32,7 +32,7 @@
         name: "Testing.vue",
         data: function () {
             return {
-                characters: ['g', 'A', '2'],
+                characters: ['g', 'A', '2', 'a'],
                 dominantBaselineAttrs: ["auto", "text-bottom", "alphabetic", "ideographic", "middle", "central", "mathematical", "hanging", "text-top"],
                 alignmentBaselineAttrs: ["auto", "baseline", "before-edge", "text-before-edge", "middle", "central", "after-edge", "text-after-edge", "ideographic", "alphabetic", "hanging", "mathematical", "top", "center", "bottom"]
             }
