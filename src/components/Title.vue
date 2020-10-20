@@ -49,11 +49,13 @@
                 }, 0);
                 this.$root.$emit('summonContextual', this);
             },
+
             doneEdit() {
                 this.editing = false;
                 this.$store.dispatch('changeTitle', this.titleT);
                 this.$root.$emit('unSummonContextual');
             },
+
             changeColor(color) {
                 this.color = color;
             },

@@ -8,7 +8,6 @@
         <div id="hidden">
             <input type="file" name="loadFile" id="loadFile">
         </div>
-        <Testing></Testing>
     </div>
 </template>
 
@@ -35,7 +34,6 @@
         font-family: Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        text-align: center;
         color: #2c3e50;
     }
 
@@ -43,17 +41,13 @@
         max-width: 800px;
         width: 100%;
         margin: 0 auto;
+        /*padding-top: 10px;*/
     }
 
-    .tablature {
-        margin-top: 10px;
-    }
 
-    body {
-        background-color: #eee;
-    }
 
     body, html {
+        background-color: #eee !important;
         margin: 0;
         padding: 0;
     }

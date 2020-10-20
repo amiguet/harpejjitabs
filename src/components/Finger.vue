@@ -84,8 +84,8 @@
 
 <style scoped>
     input[type=text] {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         /*margin: 4px auto;*/
         padding: 0;
         border-radius: 100%;

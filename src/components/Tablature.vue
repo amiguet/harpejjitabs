@@ -1,6 +1,6 @@
 <template>
     <div>
-        <svg width="100%" :height="svgHeight" id="tablature">
+        <svg :width="svgWidth" :height="svgHeight" id="tablature">
             <rect width="100%" height="100%" style="fill:white"/>
             <g :style="{transform: 'translate('+xOffset+'px, '+yOffset+'px) scale('+scale+')'}" id="workzone">
                 <g id="workzoneContainer">
@@ -68,6 +68,7 @@
     import Resizer from './Resizer.vue'
     import Title from './Title.vue'
     import {mapState} from 'vuex'
+    import * as Versionning from '../js/versionning.js'
 
 
     export default {
@@ -82,6 +83,7 @@
                 editingZone: false,
                 scale: 3,
                 svgHeight: 800,
+                svgWidth: 800,
                 xOffset: 0,
                 yOffset: 0
             }
@@ -95,7 +97,7 @@
 
                 let app = document.getElementById('main');
                 let maxWidth = app.clientWidth;
-                let maxHeight = Math.min(window.innerHeight - 80, 650);
+                let maxHeight = Math.min(window.innerHeight - 0, 650);
                 let maxRatio = maxHeight / maxWidth;
 
 
@@ -107,10 +109,17 @@
 
 
                 this.svgHeight = wHeight * this.scale;
+                this.svgWidth = wWidth * this.scale;
                 //this.xOffset = Math.round((maxWidth - wWidth * this.scale - this.decX * this.string_spacing * this.scale) / 2);
                 //this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing;
-                this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing * this.scale;
+                //this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing * this.scale;
+                this.xOffset = -this.decX * this.string_spacing * this.scale;
                 this.yOffset = -this.decY * this.frets_spacing * this.scale;
+
+                this.$root.$emit('isTooSmall', this.svgWidth > window.innerWidth - 70 * 2);
+
+
+                //if (document.getElementById("main").getBoundingClientRect().w)
             },
             isVisible(posX, posY) {
                 posX++;
@@ -126,12 +135,15 @@
             save() {
                 if (this.editingZone) return;
                 let saveData = {
-                    "v": "1.0", //version
+                    "v": "1.1", //version
                     "x1": this.x1,
                     "y1": this.y1,
                     "x2": this.x2,
                     "y2": this.y2,
-                    "t": this.$refs.title.title,
+                    "t": {
+                        "v": this.$refs.title.title,
+                        "c": this.$refs.title.color
+                    },
                     "k": []
                 };
                 for (let key of this.$refs.keys) {
@@ -147,7 +159,8 @@
                 download(JSON.stringify(saveData), 'tablature_' + this.$store.state.title + '.htab');
             },
             loadData(data) {
-                this.editingZone = false;
+                Versionning.loadData(data, this);
+                /*this.editingZone = false;
                 this.$store.dispatch('changeTitle', data.t);
                 this.$store.dispatch('changeZone', {
                         'x1': data.x1,
@@ -166,7 +179,8 @@
                             key.$refs.finger.editing = false;
                         }
                     }
-                }, 0);
+                }, 0);*/
+
             }
         },
         computed: {
@@ -298,6 +312,8 @@
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        margin: auto;
+        display: block;
     }
 
 

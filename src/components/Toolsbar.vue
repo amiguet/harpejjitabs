@@ -1,38 +1,56 @@
 <template>
-    <header>
-        <div>Harpejji Tabs</div>
-        <div class="tools">
-            <ul>
-                <li>
-                    <span role="button" title="Edit" @click="editZone()">Reframe</span>
-                </li>
-                <li>
-                    <!--<span role="button" class="icon download" title="Download SVG" @click="downloadSVG"></span>-->
-                    <span role="button" title="Download SVG" @click="downloadSVG">Download SVG</span>
-                </li>
-                <li>
-                    <!--<span role="button" class="icon download" title="Download PNG" @click="downloadPNG"></span>-->
-                    <span role="button" title="Download PNG" @click="downloadPNG">Download PNG</span>
-                </li>
-                <li>
-                    <span role="button" title="Save" @click="save()">Save</span>
-                </li>
-                <li>
-                    <span role="button" title="Load" @click="load()">Load</span>
-                </li>
-            </ul>
-        </div>
-    </header>
+    <div>
+        <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
+            <md-list>
+                <md-list-item @click="toggleMenu">
+                    <font-awesome-icon icon="bars"/>
+                    <span class="md-list-item-text">Harpejji Tabs</span>
+                </md-list-item>
+                <md-list-item @click="editZone">
+                    <font-awesome-icon icon="expand"/>
+                    <span class="md-list-item-text">Reframe</span>
+                </md-list-item>
+
+                <md-list-item @click="downloadPNG">
+                    <font-awesome-icon icon="file-image" size="lg"/>
+                    <span class="md-list-item-text">Download png</span>
+                </md-list-item>
+
+                <md-list-item @click="downloadSVG">
+                    <font-awesome-icon icon="file-code" size="lg"/>
+                    <span class="md-list-item-text">Download SVG</span>
+                </md-list-item>
+
+                <md-list-item @click="save">
+                    <font-awesome-icon icon="file-download" size="lg"/>
+                    <span class="md-list-item-text">Export</span>
+                </md-list-item>
+
+                <md-list-item @click="load">
+                    <font-awesome-icon icon="file-upload" size="lg"/>
+                    <span class="md-list-item-text">Import</span>
+                </md-list-item>
+            </md-list>
+        </md-drawer>
+    </div>
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-
     export default {
         name: "Toolsbar",
+        data: function () {
+            return {
+                menuVisible: false,
+                isSmaller: false
+            }
+        },
         methods: {
+            toggleMenu() {
+                this.menuVisible = !this.menuVisible;
+            },
             editZone() {
                 this.$root.$emit('editZone');
+                this.menuVisible = false;
             },
             save() {
                 this.$root.$emit('save');
@@ -52,196 +70,52 @@
 
             },
             downloadSVG() {
-                setTimeout(() => { // To avoid having text field in the SVG (because of the transition animation)
-                    let title = this.$store.state.title;
 
-                    this.prepareCanvas(() => {
-                        saveSvg(document.getElementById('tablature'), 'tablature_' + title + '.svg');
-                    });
-                }, 200);
             },
             downloadPNG() {
-                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
-                    let title = this.$store.state.title;
 
-                    this.prepareCanvas((t, size) => {
-                        svgToPng(t, size, (imgData) => {
-                            downloadFromLink(imgData, 'tablature_' + title + '.png');
-                        });
-                    });
-                }, 200);
             },
-
-
-            prepareCanvas(callback) {
-                this.$root.$emit('stopEditing');
-                let w = document.getElementById('workzone');
-                let t = document.getElementById('tablature');
-                let tr = "scale(1) translate(" + -this.x1 * this.string_spacing + "px, " + -this.y1 * this.frets_spacing + "px)";
-                w.style.transform = tr;
-
-                let size = {
-                    width: w.getBoundingClientRect().width,
-                    height: w.getBoundingClientRect().height,
-                };
-
-                let previousSize = {
-                    width: t.getAttribute('width'),
-                    height: t.getAttribute('height')
-                };
-
-                t.setAttribute("width", size.width);
-                t.setAttribute("height", size.height);
-
-                callback(t, size);
-
-                w.style.transform = "";
-                t.setAttribute("width", previousSize.width);
-                t.setAttribute("height", previousSize.height);
-                console.log("yo2");
-
-                // Fix for Safari
-                w.setAttribute("transform", w.getAttribute("transform"));
+            changeIsTooSmall(isTooSmall) {
+                this.isSmaller = isTooSmall
             }
         },
-        computed: {
-            x1() {
-                return this.$store.state.zone.x1;
-            },
-            y1() {
-                return this.$store.state.zone.y1;
-            },
-            x2() {
-                return this.$store.state.zone.x2;
-            },
-            y2() {
-                return this.$store.state.zone.y2;
-            },
-            ...mapState(['frets_spacing', 'string_spacing'])
-        },
         mounted() {
-            document.getElementById('loadFile').addEventListener('change', this.readFile);
+            this.$root.$on('isTooSmall', this.changeIsTooSmall);
         }
     }
-
-
-
-
-    // Create a blob from a svg element
-    function svgToUrl(svgEl) {
-        svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        let svgData = svgEl.outerHTML;
-        let preface = '<?xml version="1.0" standalone="no"?>\r\n';
-        let svgBlob = new Blob([preface, svgData], {type: "image/svg+xml"});
-        let url = URL.createObjectURL(svgBlob);
-        console.log(url);
-        return url;
-    }
-
-    // Download an svg
-    function saveSvg(svgEl, name) {
-        let svgUrl = svgToUrl(svgEl);
-        downloadFromLink(svgUrl, name);
-    }
-
-    // Convert a svg element to a png image
-    function svgToPng(svgEl, size, callback) {
-        const url = svgToUrl(svgEl);
-        svgUrlToPng(url, size, (imgData) => {
-            callback(imgData);
-            URL.revokeObjectURL(url);
-        });
-    }
-
-    // Convert from a svg url to a png image
-    function svgUrlToPng(svgUrl, size, callback) {
-        const svgImage = document.createElement('img');
-        // imgPreview.style.position = 'absolute';
-        // imgPreview.style.top = '-9999px';
-        document.getElementById('hidden').appendChild(svgImage);
-        svgImage.onload = function () {
-            const canvas = document.createElement('canvas');
-            //canvas.width = svgImage.clientWidth;
-            //canvas.height = svgImage.clientHeight;
-            let pixelRatio = window.devicePixelRatio || 1;
-            canvas.width = size.width * pixelRatio;
-            canvas.height = size.height * pixelRatio;
-            canvas.style.width = size.width + "px";
-            canvas.style.height = size.height + "px";
-            console.log(size);
-            const canvasCtx = canvas.getContext('2d');
-            canvasCtx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-            canvasCtx.imageSmoothingEnabled = false;
-            document.getElementById('hidden').appendChild(canvas);
-            canvasCtx.drawImage(svgImage, 0, 0, size.width * 1, size.height * 1);
-            const imgData = canvas.toDataURL('image/png');
-            callback(imgData);
-
-            document.getElementById('hidden').removeChild(canvas);
-            document.getElementById('hidden').removeChild(svgImage);
-        };
-        svgImage.src = svgUrl;
-    }
-
-    // return another svg element with default scale and translate
-    function resetSize(svgEl, nodeIdToReset) {
-        let s = svgEl.cloneNode(true);
-        let w = s.getElementById(nodeIdToReset);
-        w.setAttribute("transform", "");
-        return s;
-    }
-
-    function downloadFromLink(url, name) {
-        let downloadLink = document.createElement("a");
-        downloadLink.href = url;
-        downloadLink.innerHTML = "Download";
-        document.getElementById('hidden').appendChild(downloadLink);
-        downloadLink.download = name;
-        downloadLink.click();
-        document.getElementById('hidden').removeChild(downloadLink);
-    }
-
 </script>
 
+
 <style scoped>
-    header {
-        /*height: 60px;*/
-        border-bottom: 1px solid #d9d9d9;
-        background-color: #FAFAFA;
-        position: relative;
+    .md-drawer {
+        width: 230px;
+        max-width: calc(100vw - 125px);
     }
 
-    li {
-        display: inline;
-        list-style-type: none;
-        padding: 16px 10px 0;
+    .md-list-item svg {
+        margin-right: 20px;
+        width: 24px;
     }
 
-    ul {
-        padding: 0;
-        margin: 16px 0 5px;
+    .md-drawer {
+        transform: initial !important;
     }
 
-    ul li span {
-        cursor: pointer;
-        padding: 5px 10px;
-        border-radius: 10px;
+    .md-drawer.md-persistent-mini.md-active {
+        position: absolute !important;
     }
 
-    ul li span:active {
-        background-color: #EEEEEE;
+    .smaller:not(.md-active) {
+        bottom: initial !important;
     }
 
-    .icon {
-        height: 16px;
-        width: 16px;
-        display: inline-block;
-        background-size: contain;
-        cursor: pointer;
+    .smaller:not(.md-active) ul li:not(:first-child) {
+        display: none;
     }
 
-    .download {
-        background-image: url("../assets/icons/download.png");
+    .smaller:not(.md-active) ul, .smaller:not(.md-active) {
+        background-color: unset !important;
+        border: none !important;
     }
 
 
