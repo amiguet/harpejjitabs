@@ -35,7 +35,10 @@
     </div>
 </template>
 
+
 <script>
+    import * as Exportation from '../js/exportation.js'
+
     export default {
         name: "Toolsbar",
         data: function () {
@@ -70,10 +73,14 @@
 
             },
             downloadSVG() {
-
+                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
+                    Exportation.downloadSVG(this.$store.state.title || "untitled", this);
+                }, 200);
             },
             downloadPNG() {
-
+                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
+                    Exportation.downloadPNG(this.$store.state.title || "untitled", this);
+                }, 200);
             },
             changeIsTooSmall(isTooSmall) {
                 this.isSmaller = isTooSmall
