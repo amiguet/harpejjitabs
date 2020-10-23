@@ -11,6 +11,10 @@
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
 
+                <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+
                 <md-list-item @click="downloadPNG">
                     <font-awesome-icon icon="file-image" size="lg"/>
                     <span class="md-list-item-text">Download png</span>
@@ -21,6 +25,10 @@
                     <span class="md-list-item-text">Download SVG</span>
                 </md-list-item>
 
+                <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+
                 <md-list-item @click="save">
                     <font-awesome-icon icon="file-download" size="lg"/>
                     <span class="md-list-item-text">Export</span>
@@ -29,6 +37,15 @@
                 <md-list-item @click="load">
                     <font-awesome-icon icon="file-upload" size="lg"/>
                     <span class="md-list-item-text">Import</span>
+                </md-list-item>
+
+                <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <md-list-item>
+                    <md-switch v-model="showNumbers" class="md-primary"></md-switch>
+                    <span class="md-list-item-text">Show frets numbers</span>
                 </md-list-item>
             </md-list>
         </md-drawer>
@@ -44,7 +61,8 @@
         data: function () {
             return {
                 menuVisible: false,
-                isSmaller: false
+                isSmaller: false,
+                showNumbers: false
             }
         },
         methods: {
@@ -86,6 +104,11 @@
                 this.isSmaller = isTooSmall
             }
         },
+        watch: {
+            showNumbers(value) {
+                this.$root.$emit('changeShowNumbers', value);
+            }
+        },
         mounted() {
             this.$root.$on('isTooSmall', this.changeIsTooSmall);
         }
@@ -99,7 +122,7 @@
         max-width: calc(100vw - 125px);
     }
 
-    .md-list-item svg {
+    .md-list-item-content>*:first-child:not(.md-divider) {
         margin-right: 20px;
         width: 24px;
     }
@@ -123,6 +146,10 @@
     .smaller:not(.md-active) ul, .smaller:not(.md-active) {
         background-color: unset !important;
         border: none !important;
+    }
+
+    .md-divider {
+        width: 100%;
     }
 
 

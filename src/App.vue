@@ -20,11 +20,9 @@
     export default {
         name: 'App',
         components: {
-            Testing,
             Contextual,
             Tablature,
             Toolsbar,
-            Testing
         }
     }
 </script>

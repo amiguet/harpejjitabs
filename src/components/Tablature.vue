@@ -24,6 +24,25 @@
                             style="fill:black;stroke-width:1px;stroke:#CCC">
                     </line>
 
+                    <g v-if="showNumbers">
+                        <text
+                                v-for="(i, pos) in number_frets" :key="'fretsID' + i"
+                                :x="decX * string_spacing + 5"
+                                :y="(pos + decY) * frets_spacing + frets_spacing / 2 - 2"
+                                style="font-size: 7px">
+                            {{ number_frets_default - i + decY }}
+                        </text>
+
+
+                        <text
+                                v-for="(i, pos) in number_string" :key="'stringsID' + i"
+                                :x="(pos + decX) * string_spacing + string_spacing + 2"
+                                :y="decY * frets_spacing + string_size"
+                                style="font-size: 7px">
+                            {{ pos + decX}}
+                        </text>
+                    </g>
+
 
                     <!--<g v-for="(j, posY) in number_frets" :key="j+decY">
                         <g v-for="(i, posX) in number_string" :key="i+decX+';'+j+decY">
@@ -85,7 +104,8 @@
                 svgHeight: 800,
                 svgWidth: 800,
                 xOffset: 0,
-                yOffset: 0
+                yOffset: 0,
+                showNumbers: false
             }
         },
         methods: {
@@ -160,27 +180,9 @@
             },
             loadData(data) {
                 Versionning.loadData(data, this);
-                /*this.editingZone = false;
-                this.$store.dispatch('changeTitle', data.t);
-                this.$store.dispatch('changeZone', {
-                        'x1': data.x1,
-                        'y1': data.y1,
-                        'x2': data.x2,
-                        'y2': data.y2,
-                    }
-                );
-                setTimeout(() => {
-
-                    for (let [i, key] of this.$refs.keys.entries()) {
-                        if (data.k[i] !== 0) {
-                            key.isVisible = true;
-                            key.$refs.finger.value = data.k[i].v;
-                            key.$refs.finger.color = data.k[i].c;
-                            key.$refs.finger.editing = false;
-                        }
-                    }
-                }, 0);*/
-
+            },
+            changeShowNumbers(value) {
+                this.showNumbers = value;
             }
         },
         computed: {
@@ -247,6 +249,7 @@
             this.$root.$on('save', this.save);
             this.$root.$on('loadData', this.loadData);
             this.$root.$on('needResize', this.calculateSize);
+            this.$root.$on('changeShowNumbers', this.changeShowNumbers);
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
