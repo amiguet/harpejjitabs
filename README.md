@@ -1,3 +1,5 @@
+Try the prototype on https://amiguet.github.io/harpejjitabs/!
+
 # HarpejjiTabs
 
 Ce projet porte sur la réalisation d'une application web (SPA/PWA?) permettant d'éditer des tablatures pour un nouvel instrument de musique dérivé de la guitare et du clavier: *l'harpejji*.
