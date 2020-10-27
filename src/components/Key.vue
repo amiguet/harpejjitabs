@@ -14,7 +14,7 @@
                 transform="translate(-5, 7)"
                 style="fill:transparent;stroke:black;">
         </rect>
-        <text font-size="3px" text-anchor="start" x="-7" y="4" :fill="textColor">{{note}}{{octave}}</text>
+        <text font-size="7px" text-anchor="middle" x="0" y="7" :fill="textColor">{{note}}{{octave}}</text>
         <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>
     </g>
 </template>
