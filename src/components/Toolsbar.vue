@@ -2,11 +2,11 @@
     <div>
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
-                <md-list-item @click="toggleMenu">
+                <md-list-item @click="toggleMenu" title="Menu">
                     <font-awesome-icon icon="bars"/>
                     <span class="md-list-item-text">Harpejji Tabs</span>
                 </md-list-item>
-                <md-list-item @click="editZone">
+                <md-list-item @click="editZone" title="Reframe">
                     <font-awesome-icon icon="expand"/>
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
@@ -15,12 +15,12 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="downloadPNG">
+                <md-list-item @click="downloadPNG" title="Download png">
                     <font-awesome-icon icon="file-image" size="lg"/>
                     <span class="md-list-item-text">Download png</span>
                 </md-list-item>
 
-                <md-list-item @click="downloadSVG">
+                <md-list-item @click="downloadSVG" title="Download SVG">
                     <font-awesome-icon icon="file-code" size="lg"/>
                     <span class="md-list-item-text">Download SVG</span>
                 </md-list-item>
@@ -29,12 +29,12 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="save">
+                <md-list-item @click="save" title="Export">
                     <font-awesome-icon icon="file-download" size="lg"/>
                     <span class="md-list-item-text">Export</span>
                 </md-list-item>
 
-                <md-list-item @click="load">
+                <md-list-item @click="load" title="Import">
                     <font-awesome-icon icon="file-upload" size="lg"/>
                     <span class="md-list-item-text">Import</span>
                 </md-list-item>
@@ -43,7 +43,16 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
+                <md-list-item @click="playChord" title="Play the chord">
+                    <font-awesome-icon icon="play" size="lg"/>
+                    <span class="md-list-item-text">Play the chord</span>
+                </md-list-item>
+
                 <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <md-list-item title="Show frets numbers">
                     <md-switch v-model="showNumbers" class="md-primary"></md-switch>
                     <span class="md-list-item-text">Show frets numbers</span>
                 </md-list-item>
@@ -102,6 +111,9 @@
             },
             changeIsTooSmall(isTooSmall) {
                 this.isSmaller = isTooSmall
+            },
+            playChord() {
+                this.$root.$emit('playChord');
             }
         },
         watch: {

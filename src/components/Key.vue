@@ -14,6 +14,7 @@
                 transform="translate(-5, 7)"
                 style="fill:transparent;stroke:black;">
         </rect>
+        <text font-size="3px" text-anchor="start" x="-7" y="4" :fill="textColor">{{note}}{{octave}}</text>
         <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>
     </g>
 </template>
@@ -40,10 +41,19 @@
         },
         methods: {
             toggleVisible() {
+                this.playNote();
                 if (this.$parent.editingZone) return;
                 this.isVisible = !this.isVisible;
                 if (this.isVisible)
                     this.$refs.finger.startEdit();
+            },
+            playChord() {
+                if (this.isVisible && this.$el.style.display !== "none") {
+                    this.playNote();
+                }
+            },
+            playNote() {
+                this.$root.$emit('playNote', this.note, this.octave);
             }
         },
         computed: {
@@ -63,7 +73,35 @@
             },
             isDo() {
                 return this.y % 2 && mod(this.x - 1 - (this.y - 1) / 2, 6) === 0;
+            },
+            note() {
+                let notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+                let index = 0;
+                if (this.y % 2) {
+                    index = this.x * 2 - 1 - this.y;
+                } else {
+                    index = this.x * 2 - this.y - 1;
+                }
+                return notes[mod(index, notes.length)];
+            },
+            octave() {
+                //return 3 - Math.floor((this.y + 9) / 12) + Math.floor((this.x + 1) / 6);
+                if (this.y % 2) {
+                    return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
+                } else {
+                    return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
+                }
+            },
+            textColor() {
+                if (this.isBlack) {
+                    return "#EEE";
+                } else {
+                    return "#555";
+                }
             }
+        },
+        mounted() {
+            this.$root.$on('playChord', this.playChord);
         }
     }
 

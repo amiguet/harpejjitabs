@@ -6,6 +6,7 @@
         </div>
         <Contextual></Contextual>
         <div id="hidden">
+            <SoundPlayer></SoundPlayer>
             <input type="file" name="loadFile" id="loadFile">
         </div>
     </div>
@@ -16,10 +17,12 @@
     import Toolsbar from './components/Toolsbar.vue'
     import Contextual from "./components/Contextual.vue";
     import Testing from './components/Testing.vue'
+    import SoundPlayer from "@/components/SoundPlayer";
 
     export default {
         name: 'App',
         components: {
+            SoundPlayer,
             Contextual,
             Tablature,
             Toolsbar,

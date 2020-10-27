@@ -74,8 +74,6 @@
                 <Resizer
                         v-if="editingZone">
                 </Resizer>
-
-
             </g>
         </svg>
     </div>
@@ -117,7 +115,7 @@
 
                 let app = document.getElementById('main');
                 let maxWidth = app.clientWidth;
-                let maxHeight = Math.min(window.innerHeight - 0, 650);
+                let maxHeight = Math.min(window.innerHeight - 0, 6500); // todo
                 let maxRatio = maxHeight / maxWidth;
 
 
