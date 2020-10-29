@@ -17,12 +17,12 @@
 
                 <md-list-item @click="downloadPNG" title="Download png">
                     <font-awesome-icon icon="file-image" size="lg"/>
-                    <span class="md-list-item-text">Download png</span>
+                    <span class="md-list-item-text">Export to png</span>
                 </md-list-item>
 
                 <md-list-item @click="downloadSVG" title="Download SVG">
                     <font-awesome-icon icon="file-code" size="lg"/>
-                    <span class="md-list-item-text">Download SVG</span>
+                    <span class="md-list-item-text">Export to svg</span>
                 </md-list-item>
 
                 <md-list-item>
@@ -31,12 +31,12 @@
 
                 <md-list-item @click="save" title="Export">
                     <font-awesome-icon icon="file-download" size="lg"/>
-                    <span class="md-list-item-text">Export</span>
+                    <span class="md-list-item-text">Save</span>
                 </md-list-item>
 
                 <md-list-item @click="load" title="Import">
                     <font-awesome-icon icon="file-upload" size="lg"/>
-                    <span class="md-list-item-text">Import</span>
+                    <span class="md-list-item-text">Load</span>
                 </md-list-item>
 
                 <md-list-item>
@@ -46,6 +46,11 @@
                 <md-list-item @click="playChord" title="Play the chord">
                     <font-awesome-icon icon="play" size="lg"/>
                     <span class="md-list-item-text">Play the chord</span>
+                </md-list-item>
+
+                <md-list-item @click="playChordArpeggiate" title="Play the chord">
+                    <font-awesome-icon icon="play" size="lg"/>
+                    <span class="md-list-item-text">Play the chord Arpeggiate</span>
                 </md-list-item>
 
                 <md-list-item>
@@ -85,9 +90,6 @@
             save() {
                 this.$root.$emit('save');
             },
-            load() {
-                document.getElementById('loadFile').click();
-            },
             readFile(e) {
                 let fileReader = new FileReader();
                 fileReader.onload = () => {
@@ -97,7 +99,9 @@
                 };
 
                 fileReader.readAsText(e.target.files[0]);
-
+            },
+            load() {
+                document.getElementById('loadFile').click();
             },
             downloadSVG() {
                 setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
@@ -113,7 +117,10 @@
                 this.isSmaller = isTooSmall
             },
             playChord() {
-                this.$root.$emit('playChord');
+                this.$root.$emit('setupChord', 0);
+            },
+            playChordArpeggiate() {
+                this.$root.$emit('setupChord', 0.1);
             }
         },
         watch: {
@@ -123,6 +130,7 @@
         },
         mounted() {
             this.$root.$on('isTooSmall', this.changeIsTooSmall);
+            document.getElementById('loadFile').addEventListener('change', this.readFile);
         }
     }
 </script>

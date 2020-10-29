@@ -23,6 +23,7 @@
 
     import Finger from './Finger.vue'
 
+    let notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
     export default {
         name: "Key",
         components: {
@@ -49,11 +50,14 @@
             },
             playChord() {
                 if (this.isVisible && this.$el.style.display !== "none") {
-                    this.playNote();
+                    this.$root.$emit('addKey', {note: this.noteOctave, x: this.x, y: this.y});
                 }
             },
             playNote() {
-                this.$root.$emit('playNote', this.note, this.octave);
+                this.$root.$emit('playNote', this.noteOctave);
+            },
+            resetKey() {
+                this.isVisible = false;
             }
         },
         computed: {
@@ -75,7 +79,6 @@
                 return this.y % 2 && mod(this.x - 1 - (this.y - 1) / 2, 6) === 0;
             },
             note() {
-                let notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
                 let index = 0;
                 if (this.y % 2) {
                     index = this.x * 2 - 1 - this.y;
@@ -85,12 +88,14 @@
                 return notes[mod(index, notes.length)];
             },
             octave() {
-                //return 3 - Math.floor((this.y + 9) / 12) + Math.floor((this.x + 1) / 6);
                 if (this.y % 2) {
                     return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
                 } else {
                     return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
                 }
+            },
+            noteOctave() {
+                return this.note + this.octave;
             },
             textColor() {
                 if (this.isBlack) {
@@ -101,7 +106,7 @@
             }
         },
         mounted() {
-            this.$root.$on('playChord', this.playChord);
+            this.$root.$on('resetTablature', this.resetKey);
         }
     }
 

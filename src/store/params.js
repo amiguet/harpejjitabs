@@ -15,13 +15,13 @@ export default new Vuex.Store({
         number_frets_default: 15, //15 //6
 
         zone: {
-            x1: 4,
-            y1: 1,
-            x2: 10,
-            y2: 4
+            x1: 15,
+            y1: 3,
+            x2: 22,
+            y2: 6
         },
 
-        title: 'Am7b5'
+        title: 'Untitled'
     },
     getters: {},
     mutations: {

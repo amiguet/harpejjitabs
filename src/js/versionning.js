@@ -37,6 +37,7 @@ let loadVersion = {
             }
         );
         setTimeout(() => {
+            that.$root.$emit('resetTablature');
             for (let [i, key] of that.$refs.keys.entries()) {
                 if (data.k[i] !== 0) {
                     key.isVisible = true;

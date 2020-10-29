@@ -30,7 +30,7 @@
                                 :x="decX * string_spacing + 5"
                                 :y="(pos + decY) * frets_spacing + frets_spacing / 2 - 2"
                                 style="font-size: 7px">
-                            {{ number_frets_default - i + decY }}
+                            {{ number_frets_default - i - decY + 1 }}
                         </text>
 
 
@@ -39,7 +39,7 @@
                                 :x="(pos + decX) * string_spacing + string_spacing + 2"
                                 :y="decY * frets_spacing + string_size"
                                 style="font-size: 7px">
-                            {{ pos + decX}}
+                            {{ pos + decX + 1}}
                         </text>
                     </g>
 
@@ -181,6 +181,12 @@
             },
             changeShowNumbers(value) {
                 this.showNumbers = value;
+            },
+            setupChord(freq) {
+                for (let key of this.$refs.keys) {
+                    key.playChord(); //Add all the visible key in the play list
+                }
+                this.$root.$emit('playChord', freq);
             }
         },
         computed: {
@@ -248,6 +254,7 @@
             this.$root.$on('loadData', this.loadData);
             this.$root.$on('needResize', this.calculateSize);
             this.$root.$on('changeShowNumbers', this.changeShowNumbers);
+            this.$root.$on('setupChord', this.setupChord);
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
