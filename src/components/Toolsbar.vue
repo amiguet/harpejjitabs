@@ -15,14 +15,14 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="downloadPNG" title="Download png">
+                <md-list-item @click="downloadPNG" title="Export to PNG">
                     <font-awesome-icon icon="file-image" size="lg"/>
-                    <span class="md-list-item-text">Export to png</span>
+                    <span class="md-list-item-text">Export to PNG</span>
                 </md-list-item>
 
-                <md-list-item @click="downloadSVG" title="Download SVG">
+                <md-list-item @click="downloadSVG" title="Export to SVG">
                     <font-awesome-icon icon="file-code" size="lg"/>
-                    <span class="md-list-item-text">Export to svg</span>
+                    <span class="md-list-item-text">Export to SVG</span>
                 </md-list-item>
 
                 <md-list-item>
