@@ -21,7 +21,7 @@ export default new Vuex.Store({
             y2: 6
         },
 
-        title: 'Untitled'
+        title: ''
     },
     getters: {},
     mutations: {

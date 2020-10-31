@@ -90,32 +90,33 @@ function downloadFromLink(url, name) {
 }
 
 function prepareCanvas(callback, that) {
-    that.$root.$emit('stopEditing');
-    let w = document.getElementById('workzone');
-    let t = document.getElementById('tablature');
-    let tr = "scale(1) translate(" + -that.x1 * that.string_spacing + "px, " + -that.y1 * that.frets_spacing + "px)";
-    let oldStyle = w.style.transform;
-    w.style.transform = tr;
+    that.$root.$emit('prepareForExportation'); //TODO
+    setTimeout(() => {
+        let w = document.getElementById('workzone');
+        let t = document.getElementById('tablature');
+        let tr = "scale(1) translate(" + -that.x1 * that.string_spacing + "px, " + -that.y1 * that.frets_spacing + "px)";
+        let oldStyle = w.style.transform;
+        w.style.transform = tr;
 
-    let size = {
-        width: w.getBoundingClientRect().width,
-        height: w.getBoundingClientRect().height,
-    };
+        let size = {
+            width: w.getBoundingClientRect().width,
+            height: w.getBoundingClientRect().height,
+        };
 
-    let previousSize = {
-        width: t.getAttribute('width'),
-        height: t.getAttribute('height')
-    };
+        let previousSize = {
+            width: t.getAttribute('width'),
+            height: t.getAttribute('height')
+        };
 
-    t.setAttribute("width", size.width);
-    t.setAttribute("height", size.height);
+        t.setAttribute("width", size.width);
+        t.setAttribute("height", size.height);
 
-    callback(t, size);
+        callback(t, size);
 
-    w.style.transform = oldStyle;
-    t.setAttribute("width", previousSize.width);
-    t.setAttribute("height", previousSize.height);
-    console.log("yo2");
+        w.style.transform = oldStyle;
+        t.setAttribute("width", previousSize.width);
+        t.setAttribute("height", previousSize.height);
+    }, 1);
 
     // Fix for Safari
     //w.setAttribute("transform", w.getAttribute("transform"));

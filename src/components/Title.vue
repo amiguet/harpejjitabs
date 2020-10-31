@@ -3,11 +3,11 @@
         <rect :width="this.$parent.frets_size" height="30" @click.stop="editTitle" style="fill: transparent"></rect>
         <transition name="fade">
             <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle"
-                style="font-family: Helvetica, Arial, sans-serif" :fill="color">{{ titleT }}</text>
+                style="font-family: Helvetica, Arial, sans-serif" :fill="titleT === '' ? '#CCC' : color">{{ displayTitle }}</text>
         </transition>
         <transition name="fade">
-            <foreignObject height="30" :width="this.$parent.frets_size" v-if="editing" @click.stop>
-                <input type="text" id="title" v-model="titleT" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" ref="textEdit" :width="this.$parent.frets_size" />
+            <foreignObject height="24" :width="this.$parent.frets_size" v-if="editing" @click.stop y="4">
+                <input type="text" id="title" v-model="titleT" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" ref="textEdit" />
             </foreignObject>
         </transition>
     </g>
@@ -37,7 +37,7 @@
                 let input = document.createElement("input");
                 input.type = "text";
                 input.style.opacity = "0";
-                document.body.appendChild(input);
+                document.getElementById('hidden').appendChild(input);
                 input.focus();
 
                 setTimeout(() => {
@@ -50,7 +50,7 @@
                 this.$root.$emit('summonContextual', this);
             },
 
-            doneEdit() {
+           doneEdit() {
                 this.editing = false;
                 this.$store.dispatch('changeTitle', this.titleT);
                 this.$root.$emit('unSummonContextual');
@@ -61,9 +61,21 @@
             },
             delete() {
                 this.titleT = "";
+            },
+            prepareForExportation() {
+                console.log("prepare");
+                if (this.titleT === "") {
+                    this.titleT = " ";
+                    setTimeout(() => {
+                        this.titleT = ""
+                    }, 1000);
+                }
             }
         },
         computed: {
+            displayTitle() {
+                return this.titleT || "<Click here to add a title>"
+            },
             ...mapState(['string_spacing', 'frets_spacing', 'title'])
         },
         watch: {
@@ -73,6 +85,7 @@
         },
         mounted() {
             this.titleT = this.$store.state.title;
+            this.$root.$on('prepareForExportation', this.prepareForExportation);
         }
     }
 </script>
@@ -84,7 +97,8 @@
         display: block;
         height: 24px;
         margin: auto;
-        font-size: initial;
+        width: 100%;
+        font-size: 14px;
     }
 
     .fade-enter-active {
