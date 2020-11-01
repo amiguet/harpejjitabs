@@ -13,6 +13,8 @@
 </template>
 
 <script>
+
+
     export default {
         name: "Finger",
         props: [
@@ -68,6 +70,7 @@
             }
         },
         computed: {
+
             animationName() {
                 return this.animate ? "fade" : "disable";
             }

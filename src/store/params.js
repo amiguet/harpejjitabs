@@ -21,7 +21,10 @@ export default new Vuex.Store({
             y2: 6
         },
 
-        title: ''
+        title: '',
+        showNumbers: false,
+        showNotes: false,
+        playNotes: true
     },
     getters: {},
     mutations: {
@@ -33,6 +36,15 @@ export default new Vuex.Store({
         },
         changeTitle(state, newTitle) {
             state.title = newTitle;
+        },
+        updateShowNumbers(state, showNumbers) {
+            state.showNumbers = showNumbers;
+        },
+        updateShowNotes(state, showNotes) {
+            state.showNotes = showNotes;
+        },
+        updatePlayNotes(state, playNotes) {
+            state.playNotes = playNotes;
         }
     },
     actions: {

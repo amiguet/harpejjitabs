@@ -14,7 +14,9 @@
                 transform="translate(-5, 7)"
                 style="fill:transparent;stroke:black;">
         </rect>
-        <text font-size="7px" text-anchor="middle" x="0" y="7" :fill="textColor">{{note}}{{octave}}</text>
+        <text v-if="showNotes" style="font-size: 7px; font-family: Helvetica, Arial, sans-serif;" text-anchor="middle"
+              x="0" y="7" :fill="textColor">{{note}}{{octave}}
+        </text>
         <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>
     </g>
 </template>
@@ -22,8 +24,9 @@
 <script>
 
     import Finger from './Finger.vue'
+    import {mapState} from 'vuex'
 
-    let notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     export default {
         name: "Key",
         components: {
@@ -35,14 +38,16 @@
             'x',
             'y'
         ],
-        data: function() {
+        data: function () {
             return {
                 isVisible: false
             }
         },
         methods: {
             toggleVisible() {
-                this.playNote();
+                if (this.playNotes) {
+                    this.playNote();
+                }
                 if (this.$parent.editingZone) return;
                 this.isVisible = !this.isVisible;
                 if (this.isVisible)
@@ -61,6 +66,7 @@
             }
         },
         computed: {
+            ...mapState(['showNotes', 'playNotes']),
             isBlack() {
                 if (this.y % 2) {
                     return mod(Math.floor((this.x - 1 - (this.y - 1) / 2) / 3), 2);

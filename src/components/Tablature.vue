@@ -103,7 +103,6 @@
                 svgWidth: 800,
                 xOffset: 0,
                 yOffset: 0,
-                showNumbers: false
             }
         },
         methods: {
@@ -179,9 +178,6 @@
             loadData(data) {
                 Versionning.loadData(data, this);
             },
-            changeShowNumbers(value) {
-                this.showNumbers = value;
-            },
             setupChord(freq) {
                 for (let key of this.$refs.keys) {
                     key.playChord(); //Add all the visible key in the play list
@@ -243,7 +239,10 @@
             },
 
 
-            ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string_default', 'number_frets_default'])
+            ...mapState(['frets_spacing', 'string_spacing', 'padding',
+                'marker_width', 'marker_height', 'text_height',
+                'number_string_default', 'number_frets_default',
+                'showNumbers'])
 
         },
         mounted() {

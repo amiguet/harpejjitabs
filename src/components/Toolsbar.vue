@@ -49,7 +49,7 @@
                 </md-list-item>
 
                 <md-list-item @click="playChordArpeggiate" title="Play the chord">
-                    <font-awesome-icon icon="play" size="lg"/>
+                    <font-awesome-icon icon="music" size="lg"/>
                     <span class="md-list-item-text">Play the chord Arpeggiate</span>
                 </md-list-item>
 
@@ -60,6 +60,16 @@
                 <md-list-item title="Show frets numbers">
                     <md-switch v-model="showNumbers" class="md-primary"></md-switch>
                     <span class="md-list-item-text">Show frets numbers</span>
+                </md-list-item>
+
+                <md-list-item title="Show notes name">
+                    <md-switch v-model="showNotes" class="md-primary"></md-switch>
+                    <span class="md-list-item-text">Show notes name</span>
+                </md-list-item>
+
+                <md-list-item @click="playNotes = !playNotes" title="Play notes on click">
+                    <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
+                    <span class="md-list-item-text">Play note on click</span>
                 </md-list-item>
             </md-list>
         </md-drawer>
@@ -75,8 +85,7 @@
         data: function () {
             return {
                 menuVisible: false,
-                isSmaller: false,
-                showNumbers: false
+                isSmaller: false
             }
         },
         methods: {
@@ -123,9 +132,30 @@
                 this.$root.$emit('setupChord', 0.1);
             }
         },
-        watch: {
-            showNumbers(value) {
-                this.$root.$emit('changeShowNumbers', value);
+        computed: {
+            showNumbers: {
+                get() {
+                    return this.$store.state.showNumbers;
+                },
+                set(value) {
+                    return this.$store.commit('updateShowNumbers', value);
+                }
+            },
+            showNotes: {
+                get() {
+                    return this.$store.state.showNotes;
+                },
+                set(value) {
+                    return this.$store.commit('updateShowNotes', value);
+                }
+            },
+            playNotes: {
+                get() {
+                    return this.$store.state.playNotes;
+                },
+                set(value) {
+                    return this.$store.commit('updatePlayNotes', value);
+                }
             }
         },
         mounted() {
@@ -142,7 +172,7 @@
         max-width: calc(100vw - 125px);
     }
 
-    .md-list-item-content>*:first-child:not(.md-divider) {
+    .md-list-item-content > *:first-child:not(.md-divider) {
         margin-right: 20px;
         width: 24px;
     }
