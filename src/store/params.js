@@ -24,7 +24,9 @@ export default new Vuex.Store({
         title: '',
         showNumbers: false,
         showNotes: false,
-        playNotes: true
+        playNotes: true,
+
+        selected: [],
     },
     getters: {},
     mutations: {
@@ -45,6 +47,12 @@ export default new Vuex.Store({
         },
         updatePlayNotes(state, playNotes) {
             state.playNotes = playNotes;
+        },
+        addToSelection(state, key) {
+            state.selected.push(key);
+        },
+        resetSelection(state) {
+            state.selected = [];
         }
     },
     actions: {

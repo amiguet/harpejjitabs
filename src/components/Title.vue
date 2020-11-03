@@ -45,7 +45,7 @@
                     el.focus();
                     el.select();
                     el.setSelectionRange(0, 9999); //iOS
-                    document.body.removeChild(input)
+                    document.getElementById('hidden').removeChild(input)
                 }, 0);
                 this.$root.$emit('summonContextual', this);
             },

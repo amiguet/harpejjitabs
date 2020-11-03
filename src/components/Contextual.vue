@@ -5,10 +5,12 @@
                 <div class="bubble">
                     <div class="colors bubble-component">
                         <div>
-                            <div v-for="col in colors" :style="{backgroundColor: col}" :key="col" @click="changeColor(col)"></div>
+                            <div v-for="col in colors" :style="{backgroundColor: col}" :key="col"
+                                 @click="changeColor(col)"></div>
                         </div>
                         <div>
-                            <div v-for="col in colors2" :style="{backgroundColor: col}" :key="col" @click="changeColor(col)"></div>
+                            <div v-for="col in colors2" :style="{backgroundColor: col}" :key="col"
+                                 @click="changeColor(col)"></div>
                         </div>
                     </div>
                     <div class="options bubble-component" @click="deleteCurrent">
@@ -34,7 +36,8 @@
                 isVisible: false,
                 x: 0,
                 y: 0,
-                forceRecompute: 0,
+
+                forceRecompute: 0, // ?
                 current: null,
                 colors: [
                     '#000000',
@@ -50,26 +53,65 @@
         },
         methods: {
             summonContextual(current) {
-                let rect = current.$el.getBoundingClientRect();
-                this.x = rect.left + rect.width / 2;
-                this.y = rect.top;
-                this.isVisible = true;
-                this.current = current;
+                console.log(current);
+                if (current) {
+                    let rect = current.$el.getBoundingClientRect();
+                    this.x = rect.left + rect.width / 2;
+                    this.y = rect.top;
+                    this.current = current;
+                    this.isVisible = true;
+                } else { // apply for selection
+                    this.current = this.$store.state.selected;
+                    if (this.current.length > 1) {
+                        let minX = 99999999;
+                        let maxX = -99999999;
+                        let minY = 99999999;
+                        for (let key of this.current) {
+                            let b = key.$el.getBoundingClientRect();
+                            let x = b.left + b.width / 2;
+                            if (x > maxX) {
+                                maxX = x;
+                            }
+                            if (x < minX) {
+                                minX = x;
+                            }
+                            if (b.top < minY) {
+                                minY = b.y;
+                            }
+                        }
+                        this.x = (minX + maxX) / 2;
+                        this.y = minY;
+                        this.isVisible = true;
+                    }
+                }
             },
             unSummonContextual() {
                 this.isVisible = false;
             },
             deleteCurrent() {
-                this.current.delete();
+                if (Array.isArray(this.current)) {
+                    for (let c of this.current) {
+                        c.$refs.finger.delete();
+                    }
+                } else {
+                    this.current.delete();
+                }
+                this.unSummonContextual();
+                this.$root.$emit('unselectAll');
             },
             changeColor(col) {
-                this.current.changeColor(col);
+                if (Array.isArray(this.current)) {
+                    for (let c of this.current) {
+                        c.$refs.finger.changeColor(col);
+                    }
+                } else {
+                    this.current.changeColor(col);
+                }
             }
         },
         computed: {
             left() {
                 //manually computed bubble width because it won't update correctly when not visible
-                console.log(this.x - 80, 0, window.innerWidth - 160);
                 return clamp(this.x - 80, 0, window.innerWidth - 160);
             },
             top() {
@@ -81,6 +123,7 @@
             this.$root.$on('unSummonContextual', this.unSummonContextual);
         }
     }
+
     function clamp(v, min, max) {
         return Math.max(Math.min(v, max), min);
     }
@@ -153,6 +196,7 @@
     .fade-enter-active {
         animation: fade-animation 0.5s;
     }
+
     .fade-leave-active {
         animation: fade-animation 0.3s reverse;
     }

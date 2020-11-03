@@ -1,7 +1,7 @@
 <template>
     <div>
         <svg :width="svgWidth" :height="svgHeight" id="tablature">
-            <rect width="100%" height="100%" style="fill:white"/>
+            <rect width="100%" height="100%" style="fill:white" id="background"/>
             <g :style="{transform: 'translate('+xOffset+'px, '+yOffset+'px) scale('+scale+')'}" id="workzone">
                 <g id="workzoneContainer">
                     <!-- frets -->
@@ -74,6 +74,7 @@
                 <Resizer
                         v-if="editingZone">
                 </Resizer>
+                <Selector ></Selector>
             </g>
         </svg>
     </div>
@@ -86,11 +87,13 @@
     import Title from './Title.vue'
     import {mapState} from 'vuex'
     import * as Versionning from '../js/versionning.js'
+    import Selector from "@/components/Selector";
 
 
     export default {
         name: "Tablature",
         components: {
+            Selector,
             Key,
             Resizer,
             Title

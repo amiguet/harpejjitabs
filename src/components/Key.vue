@@ -63,6 +63,17 @@
             },
             resetKey() {
                 this.isVisible = false;
+            },
+            unselectAll() {
+                this.$refs.finger.isSelected = false;
+            },
+            selectKey(rect) {
+                if (this.isVisible
+                    && this.posX > rect.x1 && this.posX < rect.x2
+                    && this.posY + 20 > rect.y1 && this.posY + 20 < rect.y2) {
+                    this.$refs.finger.isSelected = true;
+                    this.$store.commit('addToSelection', this);
+                }
             }
         },
         computed: {
@@ -113,6 +124,8 @@
         },
         mounted() {
             this.$root.$on('resetTablature', this.resetKey);
+            this.$root.$on('unselectAll', this.unselectAll);
+            this.$root.$on('selectKey', this.selectKey);
         }
     }
 

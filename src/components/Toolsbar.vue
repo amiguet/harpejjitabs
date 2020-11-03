@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--yooooooooooooooooooooooooooooooooooooooooooooo--->
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
                 <md-list-item @click="toggleMenu" title="Menu">
@@ -43,33 +44,39 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="playChord" title="Play the chord">
+                <md-list-item @click="playChord" title="Play simultaneously">
                     <font-awesome-icon icon="play" size="lg"/>
-                    <span class="md-list-item-text">Play the chord</span>
+                    <span class="md-list-item-text">Play simultaneously</span>
                 </md-list-item>
 
-                <md-list-item @click="playChordArpeggiate" title="Play the chord">
+                <md-list-item @click="playChordArpeggiate" title="Play sequentially">
                     <font-awesome-icon icon="music" size="lg"/>
-                    <span class="md-list-item-text">Play the chord Arpeggiate</span>
+                    <span class="md-list-item-text">Play sequentially</span>
                 </md-list-item>
 
                 <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item title="Show frets numbers">
-                    <md-switch v-model="showNumbers" class="md-primary"></md-switch>
+                <md-list-item @click="showNumbers = !showNumbers" title="Show frets numbers">
+                    <span class="stack">
+                        <font-awesome-icon icon="list-ol" size="lg"/>
+                        <font-awesome-icon v-if="!showNumbers" icon="slash" size="lg"/>
+                    </span>
                     <span class="md-list-item-text">Show frets numbers</span>
                 </md-list-item>
 
-                <md-list-item title="Show notes name">
-                    <md-switch v-model="showNotes" class="md-primary"></md-switch>
+                <md-list-item @click="showNotes = !showNotes" title="Show notes name">
+                    <span class="stack">
+                        <span class="text-icon">C4</span>
+                        <font-awesome-icon v-if="!showNotes" icon="slash" size="lg"/>
+                    </span>
                     <span class="md-list-item-text">Show notes name</span>
                 </md-list-item>
 
                 <md-list-item @click="playNotes = !playNotes" title="Play notes on click">
                     <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
-                    <span class="md-list-item-text">Play note on click</span>
+                    <span class="md-list-item-text">Play notes on click</span>
                 </md-list-item>
             </md-list>
         </md-drawer>
@@ -129,7 +136,7 @@
                 this.$root.$emit('setupChord', 0);
             },
             playChordArpeggiate() {
-                this.$root.$emit('setupChord', 0.1);
+                this.$root.$emit('setupChord', 0.2);
             }
         },
         computed: {
@@ -175,6 +182,22 @@
     .md-list-item-content > *:first-child:not(.md-divider) {
         margin-right: 20px;
         width: 24px;
+    }
+
+    .stack {
+        position: relative;
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-right: 0;
+    }
+
+    .text-icon {
+        font-size: 17px;
+    }
+
+    .stack > * {
+        position: absolute;
     }
 
     .md-drawer {
