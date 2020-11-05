@@ -17,7 +17,7 @@
         <text v-if="showNotes" style="font-size: 7px; font-family: Helvetica, Arial, sans-serif;" text-anchor="middle"
               x="0" y="7" :fill="textColor">{{note}}{{octave}}
         </text>
-        <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" ref="finger"></Finger>
+        <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" :note="noteOctave" ref="finger"></Finger>
     </g>
 </template>
 

@@ -109,9 +109,13 @@
             readFile(e) {
                 let fileReader = new FileReader();
                 fileReader.onload = () => {
-                    let data = JSON.parse(fileReader.result);
-                    this.$root.$emit('loadData', data);
-                    e.target.value = "";
+                    try {
+                        let data = JSON.parse(fileReader.result);
+                        this.$root.$emit('loadData', data);
+                        e.target.value = "";
+                    } catch(e) {
+                        alert("Error parsing the file");
+                    }
                 };
 
                 fileReader.readAsText(e.target.files[0]);

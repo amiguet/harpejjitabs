@@ -64,7 +64,7 @@
                         </g>
                     </g>
                     <Title
-                            v-if="!editingZone"
+                            v-show="!editingZone"
                             :x="decX * string_spacing"
                             :y="decY * frets_spacing + string_size"
                             ref="title">

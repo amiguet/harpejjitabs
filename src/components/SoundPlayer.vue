@@ -61,12 +61,15 @@
                 const now = Tone.now();
                 for (let i = 0; i < notes.length; i++) {
                     this.synth.triggerAttack(notes[i], now + i * freq);
+                    setTimeout(() => {
+                         document.getElementById('anim' + notes[i]).beginElement();
+                    }, i * freq * 1000);
+
                 }
                 this.synth.triggerRelease(notes, now + Math.max(notes.length * freq, 1.5));
                 //this.synth.triggerAttackRelease(notes, "8n");
 
                 this.playlist = [];
-
             }
         },
         mounted() {

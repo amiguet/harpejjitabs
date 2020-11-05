@@ -1,10 +1,14 @@
 export function loadData(data, that) {
     let version = data.v;
-    loadVersion[version](data, that)
+    try {
+        loadVersion[version](data, that)
+    } catch (e) {
+        alert("Error parsing the file");
+    }
 }
 
 let loadVersion = {
-    "1.0": function(data, that) {
+    "1.0": function (data, that) {
         that.editingZone = false;
         that.$store.dispatch('changeTitle', data.t);
         that.$store.dispatch('changeZone', {
@@ -23,9 +27,10 @@ let loadVersion = {
                     key.$refs.finger.editing = false;
                 }
             }
+            that.calculateSize();
         }, 0);
     },
-    "1.1": function(data, that) {
+    "1.1": function (data, that) {
         that.editingZone = false;
         that.$store.dispatch('changeTitle', data.t.v);
         that.$refs.title.color = data.t.c;
@@ -46,6 +51,7 @@ let loadVersion = {
                     key.$refs.finger.editing = false;
                 }
             }
+            that.calculateSize();
         }, 0);
     }
 }
