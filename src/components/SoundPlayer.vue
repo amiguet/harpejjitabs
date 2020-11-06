@@ -55,9 +55,14 @@
                 this.playlist.push(key);
             },
             playChord(freq = 0) {
-                let notes = this.playlist.sort((a, b) => (a.y > b.y) ? 1 : -1)
+                /*let notes = this.playlist.sort((a, b) => (a.y > b.y) ? 1 : -1)
                     .sort((a, b) => (a.x > b.x) ? 1 : -1)
+                    .map(a => a.note);*/
+
+                let notes = this.playlist.sort((a, b) => { return b.y - a.y })
+                    .sort((a, b) => { return a.x - b.x })
                     .map(a => a.note);
+
                 const now = Tone.now();
                 for (let i = 0; i < notes.length; i++) {
                     this.synth.triggerAttack(notes[i], now + i * freq);

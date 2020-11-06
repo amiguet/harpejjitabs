@@ -55,6 +55,10 @@
                 </md-list-item>
 
                 <md-list-item>
+                    <input type="text" v-model="tempDelay" style="font-size: 10px" />
+                </md-list-item>
+
+                <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
 
@@ -92,7 +96,8 @@
         data: function () {
             return {
                 menuVisible: false,
-                isSmaller: false
+                isSmaller: false,
+                tempDelay: 0.3 //TODO
             }
         },
         methods: {
@@ -140,7 +145,7 @@
                 this.$root.$emit('setupChord', 0);
             },
             playChordArpeggiate() {
-                this.$root.$emit('setupChord', 0.2);
+                this.$root.$emit('setupChord', this.tempDelay);
             }
         },
         computed: {
