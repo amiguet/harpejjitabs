@@ -30,12 +30,12 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="save" title="Export">
+                <md-list-item @click="save" title="Save">
                     <font-awesome-icon icon="file-download" size="lg"/>
                     <span class="md-list-item-text">Save</span>
                 </md-list-item>
 
-                <md-list-item @click="load" title="Import">
+                <md-list-item @click="load" title="Load">
                     <font-awesome-icon icon="file-upload" size="lg"/>
                     <span class="md-list-item-text">Load</span>
                 </md-list-item>

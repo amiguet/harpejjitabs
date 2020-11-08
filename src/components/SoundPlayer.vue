@@ -40,14 +40,6 @@
             }
         },
         methods: {
-            getSynth() {
-                if (this.synth == null) {
-                    /*const vol = new Tone.Volume(-30).toDestination();
-                    this.synth = new Tone.PolySynth().connect(vol).toDestination();
-                    console.log(vol);*/
-                }
-                return this.synth;
-            },
             playNote(note) {
                 this.synth.triggerAttackRelease(note, 1);
             },
@@ -55,9 +47,6 @@
                 this.playlist.push(key);
             },
             playChord(freq = 0) {
-                /*let notes = this.playlist.sort((a, b) => (a.y > b.y) ? 1 : -1)
-                    .sort((a, b) => (a.x > b.x) ? 1 : -1)
-                    .map(a => a.note);*/
 
                 let notes = this.playlist.sort((a, b) => { return b.y - a.y })
                     .sort((a, b) => { return a.x - b.x })
@@ -71,8 +60,7 @@
                     }, i * freq * 1000);
 
                 }
-                this.synth.triggerRelease(notes, now + Math.max(notes.length * freq, 1.5));
-                //this.synth.triggerAttackRelease(notes, "8n");
+                this.synth.triggerRelease(notes, now + notes.length * freq + 1.5,);
 
                 this.playlist = [];
             }

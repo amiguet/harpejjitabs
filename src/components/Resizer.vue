@@ -102,7 +102,6 @@
         },
         methods: {
             startDrag(e) {
-                console.log("startDrag");
                 this.dragged = e.target;
                 window.addEventListener('mousemove', this.onMove, false);
                 window.addEventListener('mouseup', this.stopDrag, false);
@@ -150,7 +149,6 @@
                 return this.pt.matrixTransform(this.workzone.getScreenCTM().inverse());
             },
             startDragRect(e) {
-                console.log("startDrag");
                 document.body.style.cursor = "grabbing";
                 this.$refs.grabZone.style.cursor = "grabbing";
                 let pos = this.cursorPoint(e);
@@ -177,7 +175,6 @@
                     e.preventDefault();
             },
             stopDragRect() {
-                console.log("stopDrag");
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
                 window.removeEventListener('mousemove', this.onMoveRect, false);
@@ -190,9 +187,6 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
-            },
-            startTouch(e) {
-                console.log("yo");
             },
             savePosition() {
                 this.saved.x1 = this.x1;
@@ -208,13 +202,9 @@
             },
             notValidPosition() {
                 if (this.x1 > this.x2 - 2 || this.y1 > this.y2 - 1 || this.x1 < 0 || this.x2 > this.number_string_default + 1 || this.y1 < 0 || this.y2 > this.number_frets_default) {
-                    console.log("invalid");
                     return true;
                 }
                 return false;
-            },
-            test() {
-                console.log("test");
             }
         },
         mounted() {

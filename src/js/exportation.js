@@ -22,7 +22,6 @@ function svgToUrl(svgEl) {
     let preface = '<?xml version="1.0" standalone="no"?>\r\n';
     let svgBlob = new Blob([preface, svgData], {type: "image/svg+xml"});
     let url = URL.createObjectURL(svgBlob);
-    console.log(url);
     return url;
 }
 
@@ -56,7 +55,6 @@ function svgUrlToPng(svgUrl, size, callback) {
         canvas.height = size.height * pixelRatio;
         canvas.style.width = size.width + "px";
         canvas.style.height = size.height + "px";
-        console.log(size);
         const canvasCtx = canvas.getContext('2d');
         canvasCtx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
         canvasCtx.imageSmoothingEnabled = false;

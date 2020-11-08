@@ -53,7 +53,6 @@
         },
         methods: {
             summonContextual(current) {
-                console.log(current);
                 if (current) {
                     let rect = current.$el.getBoundingClientRect();
                     this.x = rect.left + rect.width / 2;
@@ -62,7 +61,7 @@
                     this.isVisible = true;
                 } else { // apply for selection
                     this.current = this.$store.state.selected;
-                    if (this.current.length > 1) {
+                    if (this.current.length >= 1) {
                         let minX = 99999999;
                         let maxX = -99999999;
                         let minY = 99999999;

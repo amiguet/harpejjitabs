@@ -63,7 +63,6 @@
                 this.titleT = "";
             },
             prepareForExportation() {
-                console.log("prepare");
                 if (this.titleT === "") {
                     this.titleT = " ";
                     setTimeout(() => {
