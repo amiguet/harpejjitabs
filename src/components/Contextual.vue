@@ -90,7 +90,7 @@
                 }
             },
             unSummonContextual() {
-                this.current = null;
+                //this.current = null;
                 this.isVisible = false;
             },
             deleteCurrent() {
