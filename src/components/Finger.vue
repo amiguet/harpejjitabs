@@ -5,8 +5,11 @@
                 <animate attributeName="r" values="12;20" dur="1s" begin="indefinite" :id="'anim' + note"></animate>
                 <animate attributeName="opacity" values="1;0" dur="1s" :begin="'anim' + note + '.begin'"></animate>
             </circle>
-            <circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>
-            <circle v-if="isSelected" r="12" cy="20" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></circle>
+            <!--<circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>-->
+            <!--<circle v-if="isSelected" r="12" cy="20" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></circle>-->
+            <path :d="path" :fill="color" @click.stop="startEdit"></path>
+            <path :d="path" v-if="isSelected" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></path>
+            <ellipse rx="22" ry="1" opacity="0"></ellipse>
             <text y="21" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
                   text-anchor="middle" dominant-baseline="middle" @click.stop="startEdit">{{ value }}
             </text>
@@ -35,7 +38,8 @@
                 color: '#000000',
                 editing: false,
                 animate: true,
-                isSelected: false
+                isSelected: false,
+                hand: 0,
             }
         },
         methods: {
@@ -77,12 +81,26 @@
             },
             changeColor(color) {
                 this.color = color;
+            },
+            changeHand(hand) {
+                this.hand = hand;
             }
         },
         computed: {
 
             animationName() {
                 return this.animate ? "fade" : "disable";
+            },
+            path() {
+                if (this.hand === 0) {
+                    //circle   x  y              2r               -2r
+                    return "m -12 20 a 1 1 0 0 1 24 0 a 1 1 0 0 1 -24 0";
+                } else if (this.hand === -1) {
+                    return "m -11 15 a 1 1 1 0 1 22 10 q -4 8 -32 10 q 4 -7 10 -20 z";
+                } else if (this.hand === 1) {
+                    return "m 11 15 a 1 1 1 0 0 -22 10 q 4 8 32 10 q -4 -7 -10 -20 z";
+                }
+                return 0;
             }
         },
         watch: {

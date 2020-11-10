@@ -3,6 +3,11 @@
         <div class="contextual-container" v-show="isVisible" :style="{ left: left + 'px', top: top + 'px'}">
             <div class="contextual">
                 <div class="bubble">
+                    <div v-if="!isTitle" class="hands">
+                        <div class="hand" @click="changeHand(-1)">Left</div>
+                        <div class="hand neutral" @click="changeHand(0)">Neutral</div>
+                        <div class="hand" @click="changeHand(1)">Right</div>
+                    </div>
                     <div class="colors bubble-component">
                         <div>
                             <div v-for="col in colors" :style="{backgroundColor: col}" :key="col"
@@ -85,6 +90,7 @@
                 }
             },
             unSummonContextual() {
+                this.current = null;
                 this.isVisible = false;
             },
             deleteCurrent() {
@@ -106,6 +112,15 @@
                 } else {
                     this.current.changeColor(col);
                 }
+            },
+            changeHand(hand) {
+                if (Array.isArray(this.current)) {
+                    for (let c of this.current) {
+                        c.$refs.finger.changeHand(hand);
+                    }
+                } else {
+                    this.current.changeHand(hand);
+                }
             }
         },
         computed: {
@@ -114,7 +129,12 @@
                 return clamp(this.x - 80, 0, window.innerWidth - 160);
             },
             top() {
-                return this.y - 55 - 10;
+                return this.y - 60;
+            },
+            isTitle() {
+                return !Array.isArray(this.current)
+                    && this.current !== null
+                    && this.current.$options._componentTag === "Title";
             }
         },
         mounted() {
@@ -189,6 +209,23 @@
 
     .bubble-component {
         padding: 0 10px;
+    }
+
+    .hands {
+        border-bottom: 1px solid #76777B;
+    }
+
+    .hand {
+        width: 30%;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .hand.neutral {
+        border-right: 1px solid #76777B;
+        border-left: 1px solid #76777B;
+        width: 40%;
     }
 
 

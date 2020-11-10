@@ -77,8 +77,7 @@
                 <Selector></Selector>
             </g>
         </svg>
-        <br>
-        <svg width="500" height="500">
+        <svg width="500" height="500" v-if="false">
             <rect width="100%" height="100%" style="fill:white"/>
             <text x="10" y="30">design tests</text>
 

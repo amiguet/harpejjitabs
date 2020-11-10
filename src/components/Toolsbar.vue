@@ -54,9 +54,9 @@
                     <span class="md-list-item-text">Play sequentially</span>
                 </md-list-item>
 
-                <md-list-item>
+                <!--<md-list-item>
                     <input type="text" v-model="tempDelay" style="font-size: 10px" />
-                </md-list-item>
+                </md-list-item> TODO eventually-->
 
                 <md-list-item>
                     <md-divider></md-divider>
