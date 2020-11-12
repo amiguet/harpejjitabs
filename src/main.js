@@ -13,10 +13,10 @@ Vue.use(MdSwitch);
 Vue.use(MdDivider);
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash);
+library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

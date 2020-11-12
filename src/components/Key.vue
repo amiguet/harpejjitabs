@@ -1,6 +1,6 @@
 <template>
     <g :transform="'translate(' + posX + ', ' + posY + ')'"
-       @click="toggleVisible">
+       @click="clickKey">
         <rect
                 width="15"
                 height="25"
@@ -44,19 +44,28 @@
             }
         },
         methods: {
-            toggleVisible() {
+            clickKey() {
                 if (this.playNotes) {
                     this.playNote();
                 }
+                this.toggleVisible();
+            },
+            toggleVisible(newValue = null) {
+
                 if (this.$parent.editingZone) return;
-                this.isVisible = !this.isVisible;
-                if (this.isVisible)
-                    this.$refs.finger.startEdit();
-                else {
-                    this.$refs.finger.color = '#000000';
-                    this.$refs.finger.hand = 0;
-                    this.$refs.finger.value = '1';
-                    this.$refs.finger.editing = false;
+
+                if (this.isVisible !== newValue) {
+                    this.isVisible = !this.isVisible;
+
+
+                    if (this.isVisible)
+                        this.$refs.finger.startEdit();
+                    else {
+                        this.$refs.finger.color = '#000000';
+                        this.$refs.finger.hand = 0;
+                        this.$refs.finger.value = '1';
+                        this.$refs.finger.editing = false;
+                    }
                 }
             },
             playChord() {
@@ -68,7 +77,7 @@
                 this.$root.$emit('playNote', this.noteOctave);
             },
             resetKey() {
-                this.isVisible = false;
+                this.toggleVisible(false);
             },
             unselectAll() {
                 this.$refs.finger.isSelected = false;

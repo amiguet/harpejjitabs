@@ -75,7 +75,6 @@
                 }
             },
             delete() {
-
                 this.$emit('deleteFinger');
             },
             changeColor(color) {

@@ -209,7 +209,7 @@
             save() {
                 if (this.editingZone) return;
                 let saveData = {
-                    "v": "1.1", //version
+                    "v": "1.2", //version
                     "x1": this.x1,
                     "y1": this.y1,
                     "x2": this.x2,
@@ -225,12 +225,13 @@
                         saveData.k.push({
                             "v": key.$refs.finger.value,
                             "c": key.$refs.finger.color,
+                            "h": key.$refs.finger.hand
                         });
                     } else {
                         saveData.k.push(0);
                     }
                 }
-                download(JSON.stringify(saveData), 'tablature_' + this.$store.state.title + '.htab');
+                download(JSON.stringify(saveData), 'tablature_' + (this.$store.state.title || 'untitled') + '.htab');
             },
             loadData(data) {
                 Versionning.loadData(data, this);

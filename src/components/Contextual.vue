@@ -3,12 +3,17 @@
         <div class="contextual-container" v-show="isVisible" :style="{ left: left + 'px', top: top + 'px'}">
             <div class="contextual">
                 <div class="bubble">
-                    <div v-if="!isTitle" class="hands">
+                    <!--<div v-if="!isTitle" class="hands">
                         <div class="hand" @click="changeHand(-1)">Left</div>
                         <div class="hand neutral" @click="changeHand(0)">Neutral</div>
                         <div class="hand" @click="changeHand(1)">Right</div>
-                    </div>
+                    </div>-->
                     <div class="colors bubble-component">
+                        <div v-if="!isTitle" class="first-line">
+                            <font-awesome-icon icon="chevron-circle-left" @click="changeHand(-1)"/>
+                            <font-awesome-icon icon="circle" @click="changeHand(0)"/>
+                            <font-awesome-icon icon="chevron-circle-right" @click="changeHand(1)"/>
+                        </div>
                         <div>
                             <div v-for="col in colors" :style="{backgroundColor: col}" :key="col"
                                  @click="changeColor(col)"></div>
@@ -39,8 +44,8 @@
         data() {
             return {
                 isVisible: false,
-                x: 0,
-                y: 0,
+                x: 200,
+                y: 200,
 
                 forceRecompute: 0, // ?
                 current: null,
@@ -189,7 +194,7 @@
         margin: 5px 0;
     }
 
-    .colors div div {
+    .colors div * {
         width: 15px;
         height: 15px;
         border-radius: 100%;
@@ -204,7 +209,11 @@
         vertical-align: middle;
         height: 32px;
         cursor: pointer;
+    }
 
+    .first-line {
+        padding-bottom: 22px;
+        border-bottom: 1px solid #76777B;
     }
 
     .bubble-component {
