@@ -165,13 +165,13 @@
         methods: {
             calculateSize() {
                 let workzoneC = document.getElementById('workzoneContainer');
-                let wWidth = workzoneC.getBoundingClientRect().width / this.scale; //todo
+                let wWidth = workzoneC.getBoundingClientRect().width / this.scale;
                 let wHeight = workzoneC.getBoundingClientRect().height / this.scale;
                 let wRatio = wHeight / wWidth;
 
                 let app = document.getElementById('main');
                 let maxWidth = app.clientWidth;
-                let maxHeight = Math.min(window.innerHeight - 0, 6500); // todo
+                let maxHeight = Math.min(window.innerHeight - 0, 6500);
                 let maxRatio = maxHeight / maxWidth;
 
 

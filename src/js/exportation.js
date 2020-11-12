@@ -161,7 +161,7 @@ function prepareCanvas() {
 }
 
 /*function prepareCanvas(callback, that) {
-    that.$root.$emit('prepareForExportation'); //TODO
+    that.$root.$emit('prepareForExportation');
     setTimeout(() => {
         let w = document.getElementById('workzone');
         let t = document.getElementById('tablature');

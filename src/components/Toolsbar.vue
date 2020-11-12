@@ -96,7 +96,7 @@
             return {
                 menuVisible: false,
                 isSmaller: false,
-                tempDelay: 0.3 //TODO
+                tempDelay: 0.3
             }
         },
         methods: {

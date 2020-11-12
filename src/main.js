@@ -14,7 +14,7 @@ Vue.use(MdDivider);
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome' //TODO change
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash);
 

@@ -59,15 +59,6 @@
         opacity: 0;
     }
 
-    /*TODO delete*/
-    #hidden2 {
-        margin-left: 100px;
-    }
 
-    /*TODO delete*/
-    iframe {
-        width: 100%;
-        height: 900px !important;
-    }
 
 </style>
