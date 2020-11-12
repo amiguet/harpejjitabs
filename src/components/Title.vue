@@ -1,9 +1,9 @@
 <template>
-    <g :transform="'translate(' + x +', ' + y +')'">
+    <g :transform="'translate(' + x +', ' + y +')'" id="titleContainer">
         <rect :width="this.$parent.frets_size" height="30" @click.stop="editTitle" style="fill: transparent"></rect>
         <transition name="fade">
             <text :x="this.$parent.frets_size / 2" y="17" alignment-baseline="middle" text-anchor="middle" v-if="!editing" @click.stop="editTitle"
-                style="font-family: Helvetica, Arial, sans-serif" :fill="titleT === '' ? '#CCC' : color">{{ displayTitle }}</text>
+                style="font-family: Helvetica, Arial, sans-serif" :fill="titleT === '' ? '#CCC' : color" :empty="titleT === ''">{{ displayTitle }}</text>
         </transition>
         <transition name="fade">
             <foreignObject height="24" :width="this.$parent.frets_size" v-if="editing" @click.stop y="4">

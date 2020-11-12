@@ -73,6 +73,7 @@
 <script>
 
     import {mapState} from 'vuex'
+    import {getCursorPos} from '../js/cursorPoint'
 
     export default {
         name: "Resizer",
@@ -90,7 +91,6 @@
 
 
                 dragged: null,
-                pt: null,
 
                 saved: {
                     x1: 0,
@@ -112,7 +112,7 @@
                 this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
             },
             onMove(e) {
-                let pos = this.cursorPoint(e);
+                let pos = getCursorPos(e);
                 this.savePosition();
                 this[this.dragged.getAttribute('x')] = Math.floor(pos.x / this.string_spacing);
                 this[this.dragged.getAttribute('y')] = Math.floor((pos.y - this.frets_spacing / 2) / this.frets_spacing);
@@ -138,20 +138,10 @@
                 document.getElementById('app').style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
             },
-            cursorPoint(e) {
-                if (e.touches !== undefined) {
-                    this.pt.x = e.touches[0].clientX;
-                    this.pt.y = e.touches[0].clientY;
-                } else {
-                    this.pt.x = e.clientX;
-                    this.pt.y = e.clientY;
-                }
-                return this.pt.matrixTransform(this.workzone.getScreenCTM().inverse());
-            },
             startDragRect(e) {
                 document.body.style.cursor = "grabbing";
                 this.$refs.grabZone.style.cursor = "grabbing";
-                let pos = this.cursorPoint(e);
+                let pos = getCursorPos(e);
                 this.xGrab = pos.x - this.x1 * this.string_spacing;
                 this.yGrab = pos.y - this.y1 * this.frets_spacing;
                 this.widthGrab = this.x2 - this.x1;
@@ -163,7 +153,7 @@
             },
             onMoveRect(e) {
                 this.savePosition();
-                let pos = this.cursorPoint(e);
+                let pos = getCursorPos(e);
                 this.x1 = Math.floor((pos.x - this.xGrab) / this.string_spacing);
                 this.y1 = Math.floor((pos.y - this.yGrab) / this.frets_spacing);
                 this.x2 = this.x1 + this.widthGrab;
@@ -208,7 +198,6 @@
             }
         },
         mounted() {
-            this.pt = document.getElementById('tablature').createSVGPoint();
             this.x1 = this.$store.state.zone.x1;
             this.y1 = this.$store.state.zone.y1;
             this.x2 = this.$store.state.zone.x2;

@@ -143,6 +143,7 @@
     import Selector from "@/components/Selector";
 
 
+
     export default {
         name: "Tablature",
         components: {
@@ -239,7 +240,7 @@
                     key.playChord(); //Add all the visible key in the play list
                 }
                 this.$root.$emit('playChord', freq);
-            }
+            },
         },
         computed: {
             number_frets() {

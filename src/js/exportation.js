@@ -1,18 +1,24 @@
-export function downloadSVG(title, that) {
+export function downloadSVG(title) {
 
-    prepareCanvas(() => {
+    /*prepareCanvas(() => {
         saveSvg(document.getElementById('tablature'), 'tablature_' + title + '.svg');
-    }, that);
+    });*/
+    let svg = prepareCanvas();
+    saveSvg(svg, 'tablature_' + title + '.svg');
 }
 
-export function downloadPNG(title, that) {
+export function downloadPNG(title) {
 
 
-    prepareCanvas((t, size) => {
+    let svg = prepareCanvas();
+    svgToPng(svg, (imgData) => {
+        downloadFromLink(imgData, 'tablature_' + title + '.png');
+    });
+    /*prepareCanvas((t, size) => {
         svgToPng(t, size, (imgData) => {
             downloadFromLink(imgData, 'tablature_' + title + '.png');
         });
-    }, that);
+    });*/
 }
 
 // Create a blob from a svg element
@@ -32,7 +38,12 @@ function saveSvg(svgEl, name) {
 }
 
 // Convert a svg element to a png image
-function svgToPng(svgEl, size, callback) {
+function svgToPng(svgEl, callback) {
+    let size = {
+        width: svgEl.getAttribute('width'),
+        height: svgEl.getAttribute('height')
+    };
+    console.log(size);
     const url = svgToUrl(svgEl);
     svgUrlToPng(url, size, (imgData) => {
         callback(imgData);
@@ -87,7 +98,69 @@ function downloadFromLink(url, name) {
     document.getElementById('hidden').removeChild(downloadLink);
 }
 
-function prepareCanvas(callback, that) {
+function prepareCanvas() {
+    let svgHTML = document.getElementById('tablature').outerHTML;
+    let frm = document.createElement('iframe');
+    document.getElementById('hidden').appendChild(frm);
+    let doc2 = frm.contentWindow.document;
+    doc2.body.innerHTML = svgHTML;
+    let tablature = doc2.getElementById('tablature');
+
+    // Remove all foreignObjects (text field specially)
+    let foreignObjects = doc2.getElementsByTagName("foreignObject");
+    for (let f of foreignObjects) {
+        f.remove();
+    }
+
+    // Remove the title and resize the tablature if not needed
+    let titleContainer = doc2.getElementById('titleContainer');
+    let titles = titleContainer.getElementsByTagName('text');
+    if (titles !== undefined) {
+        let title = titles[0];
+        if (title.getAttribute('empty') === 'true') {
+            let titleHeight = titleContainer.getBoundingClientRect().height;
+            window.titleContainer = titleContainer;
+            titleContainer.remove();
+            let previousHeight = tablature.getAttribute('height');
+            tablature.setAttribute('height', previousHeight - titleHeight);
+        }
+    }
+
+    let wTransform = doc2.getElementById('workzone').style.transform.match(/-?\d+\.?\d*/g);
+    let translateX = +wTransform[0]; //+ to convert it into a number
+    let translateY = +wTransform[1];
+    let scale = +wTransform[2];
+
+
+    doc2.getElementById('workzone').style.transform = "translate(" + Math.round(translateX / scale) + "px, " + Math.round(translateY / scale) + "px)";
+    let workzoneC = doc2.getElementById('workzoneContainer');
+    let wWidth = workzoneC.getBoundingClientRect().width;
+    let wHeight = workzoneC.getBoundingClientRect().height;
+    tablature.setAttribute('width', wWidth);
+    tablature.setAttribute('height', wHeight);
+
+
+    let remainUselessTag = true;
+    while (remainUselessTag) {
+        remainUselessTag = false;
+        for (let g of doc2.getElementsByTagName('*')) {
+            if (g.getBoundingClientRect().width === 0 && g.getBoundingClientRect().height === 0) {
+                g.remove();
+                remainUselessTag = true;
+            }
+        }
+    }
+
+    tablature.outerHTML = tablature.outerHTML
+        .replace(/<!--.*?-->/g, "") // Remove all comments from the svg
+        .replace(/ data-v-[a-z0-9]*=""/gm, ""); //Remove all vue data
+    //console.log(tablature.innerHTML);
+
+    document.getElementById('hidden').removeChild(frm);
+    return tablature;
+}
+
+/*function prepareCanvas(callback, that) {
     that.$root.$emit('prepareForExportation'); //TODO
     setTimeout(() => {
         let w = document.getElementById('workzone');
@@ -118,4 +191,4 @@ function prepareCanvas(callback, that) {
 
     // Fix for Safari
     //w.setAttribute("transform", w.getAttribute("transform"));
-}
+}*/

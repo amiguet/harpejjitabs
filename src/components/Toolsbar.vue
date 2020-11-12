@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!--yooooooooooooooooooooooooooooooooooooooooooooo--->
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
                 <md-list-item @click="toggleMenu" title="Menu">
@@ -129,14 +128,16 @@
                 document.getElementById('loadFile').click();
             },
             downloadSVG() {
-                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
+                Exportation.downloadSVG(this.$store.state.title || "untitled", this);
+                /*setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
                     Exportation.downloadSVG(this.$store.state.title || "untitled", this);
-                }, 200);
+                }, 200);*/
             },
             downloadPNG() {
-                setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
+                Exportation.downloadPNG(this.$store.state.title || "untitled", this);
+                /*setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
                     Exportation.downloadPNG(this.$store.state.title || "untitled", this);
-                }, 200);
+                }, 200);*/
             },
             changeIsTooSmall(isTooSmall) {
                 this.isSmaller = isTooSmall

@@ -1,14 +1,15 @@
 <template>
     <div id="app">
         <Toolsbar></Toolsbar>
-        <div id="main">
-            <Tablature class="tablature"></Tablature>
-        </div>
-        <Contextual></Contextual>
         <div id="hidden">
             <SoundPlayer></SoundPlayer>
             <input type="file" name="loadFile" id="loadFile">
         </div>
+        <div id="main">
+            <Tablature class="tablature"></Tablature>
+        </div>
+        <Contextual></Contextual>
+        <div id="hidden2">y</div>
     </div>
 </template>
 
@@ -16,7 +17,6 @@
     import Tablature from './components/Tablature.vue'
     import Toolsbar from './components/Toolsbar.vue'
     import Contextual from "./components/Contextual.vue";
-    import Testing from './components/Testing.vue'
     import SoundPlayer from "@/components/SoundPlayer";
 
     export default {
@@ -46,7 +46,6 @@
     }
 
 
-
     body, html {
         background-color: #eee !important;
         margin: 0;
@@ -58,6 +57,17 @@
         height: 0;
         overflow: hidden;
         opacity: 0;
+    }
+
+    /*TODO delete*/
+    #hidden2 {
+        margin-left: 100px;
+    }
+
+    /*TODO delete*/
+    iframe {
+        width: 100%;
+        height: 900px !important;
     }
 
 </style>

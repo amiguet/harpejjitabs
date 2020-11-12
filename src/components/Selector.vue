@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    import {getCursorPos} from '../js/cursorPoint.js'
     export default {
         name: "Selector",
         data() {
@@ -14,7 +15,6 @@
                 x2: 0,
                 y2: 0,
                 isVisible: true,
-                pt: null
             }
         },
         methods: {
@@ -22,14 +22,14 @@
                 this.$root.$emit('unselectAll')
                 document.addEventListener('mousemove', this.onMouseMove);
                 document.addEventListener('mouseup', this.onMouseUp);
-                let pos = this.cursorPoint(e);
+                let pos = getCursorPos(e);
                 this.x1 = pos.x;
                 this.y1 = pos.y;
                 this.x2 = pos.x;
                 this.y2 = pos.y;
                 this.isVisible = true;
             },
-            onMouseUp(e) {
+            onMouseUp() {
                 document.removeEventListener('mousemove', this.onMouseMove);
                 document.removeEventListener('mouseup', this.onMouseUp);
 
@@ -38,20 +38,9 @@
                 this.isVisible = false;
             },
             onMouseMove(e) {
-                let pos = this.cursorPoint(e);
+                let pos = getCursorPos(e);
                 this.x2 = pos.x;
                 this.y2 = pos.y;
-            },
-            cursorPoint(e) {
-                let workzone = document.getElementById('workzone');
-                if (e.touches !== undefined) {
-                    this.pt.x = e.touches[0].clientX;
-                    this.pt.y = e.touches[0].clientY;
-                } else {
-                    this.pt.x = e.clientX;
-                    this.pt.y = e.clientY;
-                }
-                return this.pt.matrixTransform(workzone.getScreenCTM().inverse());
             },
         },
         computed: {
@@ -69,7 +58,6 @@
             },
         },
         mounted() {
-            this.pt = document.getElementById('tablature').createSVGPoint();
             document.getElementById('background').addEventListener('mousedown', this.onMouseDown);
             this.$root.$on('unselectAll', () => {
                 this.$store.commit('resetSelection');
