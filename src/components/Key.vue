@@ -17,7 +17,7 @@
         <text v-if="showNotes" style="font-size: 7px; font-family: Helvetica, Arial, sans-serif;" text-anchor="middle"
               x="0" y="7" :fill="textColor">{{note}}{{octave}}
         </text>
-        <Finger :isVisible="isVisible" @deleteFinger="isVisible=false" :note="noteOctave" ref="finger"></Finger>
+        <Finger :isVisible="isVisible" @deleteFinger="toggleVisible" :note="noteOctave" ref="finger"></Finger>
     </g>
 </template>
 
@@ -52,6 +52,12 @@
                 this.isVisible = !this.isVisible;
                 if (this.isVisible)
                     this.$refs.finger.startEdit();
+                else {
+                    this.$refs.finger.color = '#000000';
+                    this.$refs.finger.hand = 0;
+                    this.$refs.finger.value = '1';
+                    this.$refs.finger.editing = false;
+                }
             },
             playChord() {
                 if (this.isVisible && this.$el.style.display !== "none") {

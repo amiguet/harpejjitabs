@@ -71,12 +71,11 @@
             /* When the delete key is down, might want to delete the finger if the value is already empty */
             deleteDown() {
                 if (this.value === "") {
-                    this.editing = false;
-                    this.$emit('deleteFinger');
+                    this.delete()
                 }
             },
             delete() {
-                this.editing = false;
+
                 this.$emit('deleteFinger');
             },
             changeColor(color) {
