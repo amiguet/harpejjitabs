@@ -16,7 +16,7 @@
             <transition name="fade">
                 <foreignObject height="24" width="24" x="-12" :y="-12 + 20" v-if="editing" @click.stop="" ref="fo">
                     <input type="text" v-model="value" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit"
-                           @keydown.delete="deleteDown" ref="textEdit"/>
+                           @keydown.delete="deleteDown" @keydown.stop ref="textEdit"/>
                 </foreignObject>
             </transition>
         </g>
@@ -94,9 +94,11 @@
                     //circle   x  y              2r               -2r
                     return "m -12 20 a 1 1 0 0 1 24 0 a 1 1 0 0 1 -24 0";
                 } else if (this.hand === -1) {
-                    return "m -11 15 a 1 1 1 0 1 22 10 q -4 8 -32 10 q 4 -7 10 -20 z";
+                    //return "m -11 15 a 1 1 1 0 1 22 10 q -4 8 -32 10 q 4 -7 10 -20 z";
+                    return "m -11 15 a 1 1 1 0 1 22 10 q -4 8 -27 10 q 2 -7 5 -20 z "
                 } else if (this.hand === 1) {
-                    return "m 11 15 a 1 1 1 0 0 -22 10 q 4 8 32 10 q -4 -7 -10 -20 z";
+                    //return "m 11 15 a 1 1 1 0 0 -22 10 q 4 8 32 10 q -4 -7 -10 -20 z";
+                    return "m 11 15 a 1 1 1 0 0 -22 10 q 4 8 27 10 q -2 -7 -5 -20 z"
                 }
                 return 0;
             }

@@ -89,6 +89,7 @@
 
 <script>
     import * as Exportation from '../js/exportation.js'
+    import * as Shortcut from '../js/shortcuts.js'
 
     export default {
         name: "Toolsbar",
@@ -178,6 +179,9 @@
         mounted() {
             this.$root.$on('isTooSmall', this.changeIsTooSmall);
             document.getElementById('loadFile').addEventListener('change', this.readFile);
+            Shortcut.on("R", this.editZone);
+            Shortcut.on("P", this.playChord);
+            Shortcut.on("M", () => this.playNotes = !this.playNotes);
         }
     }
 </script>
