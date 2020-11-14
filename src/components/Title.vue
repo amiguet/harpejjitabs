@@ -7,7 +7,7 @@
         </transition>
         <transition name="fade">
             <foreignObject height="24" :width="this.$parent.frets_size" v-if="editing" @click.stop y="4">
-                <input type="text" id="title" v-model="titleT" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" ref="textEdit" />
+                <input type="text" id="title" v-model="titleT" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit" @keydown.stop ref="textEdit" />
             </foreignObject>
         </transition>
     </g>
