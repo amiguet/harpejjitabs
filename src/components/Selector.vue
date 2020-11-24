@@ -6,6 +6,8 @@
 
 <script>
     import {getCursorPos} from '../js/cursorPoint.js'
+    import * as Shortcut from '../js/shortcuts.js'
+
     export default {
         name: "Selector",
         data() {
@@ -19,7 +21,7 @@
         },
         methods: {
             onMouseDown(e) {
-                this.$root.$emit('unselectAll')
+                this.$root.$emit('unselectAll');
                 document.addEventListener('mousemove', this.onMouseMove);
                 document.addEventListener('mouseup', this.onMouseUp);
                 let pos = getCursorPos(e);
@@ -33,7 +35,12 @@
                 document.removeEventListener('mousemove', this.onMouseMove);
                 document.removeEventListener('mouseup', this.onMouseUp);
 
-                this.$root.$emit('selectKey', {x1: this.x, y1: this.y, x2: this.x + this.width, y2: this.y + this.height})
+                this.$root.$emit('selectKey', {
+                    x1: this.x,
+                    y1: this.y,
+                    x2: this.x + this.width,
+                    y2: this.y + this.height
+                });
                 this.$root.$emit('summonContextual');
                 this.isVisible = false;
             },
@@ -42,6 +49,10 @@
                 this.x2 = pos.x;
                 this.y2 = pos.y;
             },
+            deleteSelected() {
+                this.$root.$emit('deleteKeys', true);
+                this.$root.$emit('unselectAll');
+            }
         },
         computed: {
             x() {
@@ -63,6 +74,8 @@
                 this.$store.commit('resetSelection');
                 this.$root.$emit('unSummonContextual')
             });
+            Shortcut.on("backspace", this.deleteSelected);
+
         }
     }
 </script>

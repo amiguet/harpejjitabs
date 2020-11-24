@@ -11,8 +11,34 @@ export default new Vuex.Store({
         marker_width: 15,
         marker_height: 25,
         text_height: 20,
-        number_string_default: 24, //24 //18
-        number_frets_default: 15, //15 //6
+        //number_string_default: 16, //12, //24 //18
+        //number_frets_default: 19, //15, //15 //6
+
+        currentHarpejji: "K24",
+
+        harpejjis: {
+            U12: {
+                number_string: 12,
+                number_frets: 15,
+                c1: 2,
+                c2: 1,
+                c3: 3
+            },
+            G16: {
+                number_string: 16,
+                number_frets: 19,
+                c1: 2,
+                c2: 1,
+                c3: 3
+            },
+            K24: {
+                number_string: 24,
+                number_frets: 15,
+                c1: -1,
+                c2: 5,
+                c3: 1
+            }
+        },
 
         zone: {
             x1: 15,
@@ -28,7 +54,11 @@ export default new Vuex.Store({
 
         selected: [],
     },
-    getters: {},
+    getters: {
+        getCurrentHarpejji: state => {
+            return state.harpejjis[state.currentHarpejji];
+        }
+    },
     mutations: {
         changeZone(state, newZone) {
             state.zone.x1 = newZone.x1;
@@ -53,6 +83,9 @@ export default new Vuex.Store({
         },
         resetSelection(state) {
             state.selected = [];
+        },
+        changeHarpejji(state, h) {
+            state.currentHarpejji = h;
         }
     },
     actions: {

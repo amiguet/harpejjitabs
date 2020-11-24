@@ -24,7 +24,7 @@
 <script>
 
     import Finger from './Finger.vue'
-    import {mapState} from 'vuex'
+    import {mapState, mapGetters} from 'vuex'
 
     let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     export default {
@@ -76,11 +76,13 @@
             playNote() {
                 this.$root.$emit('playNote', this.noteOctave);
             },
-            resetKey() {
-                this.toggleVisible(false);
+            resetKey(onlySelected = false) {
+                if (!onlySelected || this.$refs.finger && this.$refs.finger.isSelected)
+                    this.toggleVisible(false);
             },
             unselectAll() {
-                this.$refs.finger.isSelected = false;
+                if (this.$refs.finger)
+                    this.$refs.finger.isSelected = false;
             },
             selectKey(rect) {
                 if (this.isVisible
@@ -93,12 +95,14 @@
         },
         computed: {
             ...mapState(['showNotes', 'playNotes']),
+            ...mapGetters(['getCurrentHarpejji']),
             isBlack() {
-                if (this.y % 2) {
+                /*if (this.y % 2) {
                     return mod(Math.floor((this.x - 1 - (this.y - 1) / 2) / 3), 2);
                 } else {
                     return mod(this.x - 1 - this.y / 2, 6) <= 1;
-                }
+                }*/
+                return this.note.length === 2
             },
             keyColor() {
                 if (this.isBlack) {
@@ -108,23 +112,46 @@
                 }
             },
             isDo() {
-                return this.y % 2 && mod(this.x - 1 - (this.y - 1) / 2, 6) === 0;
+                //return this.y % 2 && mod(this.x - 1 - (this.y - 1) / 2, 6) === 0;
+                return this.note === "C";
             },
             note() {
-                let index = 0;
-                if (this.y % 2) {
-                    index = this.x * 2 - 1 - this.y;
-                } else {
-                    index = this.x * 2 - this.y - 1;
-                }
-                return notes[mod(index, notes.length)];
+                /*//return notes[mod(this.x * 2 - 1 - this.y, notes.length)];
+                //24
+                let c1 = -1;
+
+                //12
+                c1 = 2;
+
+                //16
+                c1 = 6;*/
+                let c1 = this.getCurrentHarpejji.c1;
+
+                return notes[mod(this.x * 2 + c1 - this.y, notes.length)];
             },
             octave() {
-                if (this.y % 2) {
+                /*if (this.y % 2) {
                     return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
                 } else {
                     return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
                 }
+                //24
+                let c2 = 5;
+                let c3 = 1;
+
+                //12
+                c2 = 1;
+                c3 = 3;
+
+                //16
+                c2 = 3;
+                c3 = 3;*/
+
+                let c2 = this.getCurrentHarpejji.c2;
+                let c3 = this.getCurrentHarpejji.c3;
+
+
+                return Math.floor((this.x + c2 - Math.floor(this.y / 2)) / 6) + c3;
             },
             noteOctave() {
                 return this.note + this.octave;
@@ -138,7 +165,7 @@
             }
         },
         mounted() {
-            this.$root.$on('resetTablature', this.resetKey);
+            this.$root.$on('deleteKeys', this.resetKey);
             this.$root.$on('unselectAll', this.unselectAll);
             this.$root.$on('selectKey', this.selectKey);
         }

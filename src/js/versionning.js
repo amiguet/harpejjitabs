@@ -42,7 +42,7 @@ let loadVersion = {
             }
         );
         setTimeout(() => {
-            that.$root.$emit('resetTablature');
+            that.$root.$emit('deleteKeys');
             for (let [i, key] of that.$refs.keys.entries()) {
                 if (data.k[i] !== 0) {
                     key.isVisible = true;
@@ -66,7 +66,7 @@ let loadVersion = {
             }
         );
         setTimeout(() => {
-            that.$root.$emit('resetTablature');
+            that.$root.$emit('deleteKeys');
             for (let [i, key] of that.$refs.keys.entries()) {
                 if (data.k[i] !== 0) {
                     key.isVisible = true;
@@ -79,4 +79,4 @@ let loadVersion = {
             that.calculateSize();
         }, 0);
     }
-}
+};

@@ -30,7 +30,7 @@
                                 :x="decX * string_spacing + 5"
                                 :y="(pos + decY) * frets_spacing + frets_spacing / 2 - 2"
                                 style="font-size: 7px">
-                            {{ number_frets_default - i - decY + 1 }}
+                            {{ getCurrentHarpejji.number_frets - i - decY + 1 }}
                         </text>
 
 
@@ -52,8 +52,8 @@
                         </g>
                     </g>-->
 
-                    <g v-for="(j, posY) in number_frets_default" :key="j">
-                        <g v-for="(i, posX) in number_string_default" :key="i+';'+j">
+                    <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
+                        <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
                             <Key
                                     v-show="isVisible(posX, posY)"
                                     :pos-x="(posX) * string_spacing + string_spacing"
@@ -72,7 +72,7 @@
                 </g>
 
                 <Resizer
-                        v-if="editingZone">
+                        v-show="editingZone">
                 </Resizer>
                 <Selector></Selector>
             </g>
@@ -138,10 +138,9 @@
     import Key from './Key.vue'
     import Resizer from './Resizer.vue'
     import Title from './Title.vue'
-    import {mapState} from 'vuex'
+    import {mapState, mapGetters} from 'vuex'
     import * as Versionning from '../js/versionning.js'
     import Selector from "@/components/Selector";
-
 
 
     export default {
@@ -200,6 +199,7 @@
                 return posX > this.x1 && posX < this.x2 && posY >= this.y1 && posY < this.y2 || this.editingZone;
             },
             editZone() {
+                this.$root.$emit('unselectAll');
                 document.getElementById('workzone').classList.add("animate-workzone");
                 this.editingZone = !this.editingZone;
                 setTimeout(() => {
@@ -245,18 +245,20 @@
         },
         computed: {
             number_frets() {
+                let n = this.y2 - this.y1;
                 if (this.editingZone) {
-                    return this.number_frets_default;
+                    return this.getCurrentHarpejji.number_frets;
                 } else {
-                    return this.y2 - this.y1
+                    return n;
                 }
             },
 
             number_string() {
+                let n = this.x2 - this.x1 - 1; //Need to do that for vue to watch x1 and x2
                 if (this.editingZone) {
-                    return this.number_string_default;
+                    return this.getCurrentHarpejji.number_string;
                 } else {
-                    return this.x2 - this.x1 - 1;
+                    return n;
                 }
             },
 
@@ -300,7 +302,9 @@
             ...mapState(['frets_spacing', 'string_spacing', 'padding',
                 'marker_width', 'marker_height', 'text_height',
                 'number_string_default', 'number_frets_default',
-                'showNumbers'])
+                'showNumbers', 'currentHarpejji', 'zone.x1']),
+            ...mapGetters(['getCurrentHarpejji']),
+
 
         },
         mounted() {
@@ -331,6 +335,12 @@
             },
             y2() {
                 this.calculateSize();
+            },
+            currentHarpejji() {
+                this.$root.$emit('fixFrame');
+                setTimeout(() => {
+                    this.calculateSize();
+                }, 1);
             }
         }
     }

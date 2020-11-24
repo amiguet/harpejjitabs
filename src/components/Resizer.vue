@@ -72,7 +72,7 @@
 
 <script>
 
-    import {mapState} from 'vuex'
+    import {mapState, mapGetters} from 'vuex'
     import {getCursorPos} from '../js/cursorPoint'
 
     export default {
@@ -191,20 +191,47 @@
                 this.y2 = this.saved.y2;
             },
             notValidPosition() {
-                if (this.x1 > this.x2 - 2 || this.y1 > this.y2 - 1 || this.x1 < 0 || this.x2 > this.number_string_default + 1 || this.y1 < 0 || this.y2 > this.number_frets_default) {
+                if (this.x1 > this.x2 - 2 || this.y1 > this.y2 - 1 || this.x1 < 0 || this.x2 > this.getCurrentHarpejji.number_string + 1 || this.y1 < 0 || this.y2 > this.getCurrentHarpejji.number_frets) {
                     return true;
                 }
                 return false;
+            },
+            fixPosition() {
+                let c = this.$store.state.harpejjis[this.currentHarpejji];
+                //console.log(this.getCurrentHarpejji.number_string); //Doesn't work every time, but why ?
+                while (this.x2 > c.number_string + 1) {
+                    this.x2--;
+                    if (this.x1 > 0) {
+                        this.x1--;
+                    }
+                }
+                while (this.y2 > c.number_frets) {
+                    this.y2--;
+                    if (this.y1 > 0) {
+                        this.y1--;
+                    }
+                }
+                this.$store.dispatch('changeZone', {
+                    'x1': this.x1,
+                    'x2': this.x2,
+                    'y1': this.y1,
+                    'y2': this.y2,
+                });
+
             }
+
         },
         mounted() {
+            console.log("yo ?");
             this.x1 = this.$store.state.zone.x1;
             this.y1 = this.$store.state.zone.y1;
             this.x2 = this.$store.state.zone.x2;
             this.y2 = this.$store.state.zone.y2;
+            this.$root.$on('fixFrame', this.fixPosition);
         },
         computed: {
-            ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string', 'number_frets', 'number_string_default', 'number_frets_default']),
+            ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string', 'number_frets', 'number_string_default', 'number_frets_default', 'currentHarpejji']),
+            ...mapGetters(['getCurrentHarpejji']),
             workzone() {
                 return document.getElementById('workzone');
             }

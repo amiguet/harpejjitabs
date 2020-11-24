@@ -6,10 +6,21 @@
                     <font-awesome-icon icon="bars"/>
                     <span class="md-list-item-text">Harpejji Tabs</span>
                 </md-list-item>
-                <md-list-item @click="editZone" title="Reframe">
+                <md-list-item @click="editZone" title="Reframe (R)">
                     <font-awesome-icon icon="expand"/>
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
+                <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true">
+                    <md-list-item @click="newTablature" title="New (Ctrl+N)" md-menu-trigger>
+                        <font-awesome-icon icon="file"/>
+                        <span class="md-list-item-text">New</span>
+                    </md-list-item>
+                    <md-menu-content>
+                        <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
+                        <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
+                        <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
+                    </md-menu-content>
+                </md-menu>
 
                 <md-list-item>
                     <md-divider></md-divider>
@@ -29,12 +40,12 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="save" title="Save">
+                <md-list-item @click="save" title="Save (Ctrl+S)">
                     <font-awesome-icon icon="file-download" size="lg"/>
                     <span class="md-list-item-text">Save</span>
                 </md-list-item>
 
-                <md-list-item @click="load" title="Load">
+                <md-list-item @click="load" title="Load (Ctrl+O)">
                     <font-awesome-icon icon="file-upload" size="lg"/>
                     <span class="md-list-item-text">Load</span>
                 </md-list-item>
@@ -43,25 +54,22 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="playChord" title="Play simultaneously">
+                <md-list-item @click="playChord" title="Play simultaneously (P)">
                     <font-awesome-icon icon="play" size="lg"/>
                     <span class="md-list-item-text">Play simultaneously</span>
                 </md-list-item>
 
-                <md-list-item @click="playChordArpeggiate" title="Play sequentially">
+                <md-list-item @click="playChordArpeggiate" title="Play sequentially (S)">
                     <font-awesome-icon icon="music" size="lg"/>
-                    <span class="md-list-item-text">Play sequentially</span>
+                    <span class="md-list-item-text" style="display: initial">
+                        Play sequentially
+                        <input type="text" v-model="tempDelay" style="width: 35px; font-size: 10px; margin-left: 5px"/></span>
                 </md-list-item>
-
-                <!--<md-list-item>
-                    <input type="text" v-model="tempDelay" style="font-size: 10px" />
-                </md-list-item> TODO eventually-->
-
                 <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="showNumbers = !showNumbers" title="Show frets numbers">
+                <md-list-item @click="showNumbers = !showNumbers" title="Show frets numbers (F)">
                     <span class="stack">
                         <font-awesome-icon icon="list-ol" size="lg"/>
                         <font-awesome-icon v-if="!showNumbers" icon="slash" size="lg"/>
@@ -69,7 +77,7 @@
                     <span class="md-list-item-text">Show frets numbers</span>
                 </md-list-item>
 
-                <md-list-item @click="showNotes = !showNotes" title="Show notes name">
+                <md-list-item @click="showNotes = !showNotes" title="Show notes name (N)">
                     <span class="stack">
                         <span class="text-icon">C4</span>
                         <font-awesome-icon v-if="!showNotes" icon="slash" size="lg"/>
@@ -77,7 +85,7 @@
                     <span class="md-list-item-text">Show notes name</span>
                 </md-list-item>
 
-                <md-list-item @click="playNotes = !playNotes" title="Play notes on click">
+                <md-list-item @click="playNotes = !playNotes" title="Play notes on click (M)">
                     <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
                     <span class="md-list-item-text">Play notes on click</span>
                 </md-list-item>
@@ -118,7 +126,7 @@
                         let data = JSON.parse(fileReader.result);
                         this.$root.$emit('loadData', data);
                         e.target.value = "";
-                    } catch(e) {
+                    } catch (e) {
                         alert("Error parsing the file");
                     }
                 };
@@ -148,6 +156,12 @@
             },
             playChordArpeggiate() {
                 this.$root.$emit('setupChord', this.tempDelay);
+            },
+            newTablature() {
+                this.$root.$emit('deleteKeys');
+            },
+            changeHarpejji(h) {
+                this.$store.commit('changeHarpejji', h);
             }
         },
         computed: {
@@ -181,7 +195,13 @@
             document.getElementById('loadFile').addEventListener('change', this.readFile);
             Shortcut.on("R", this.editZone);
             Shortcut.on("P", this.playChord);
+            Shortcut.on("S", this.playChordArpeggiate);
             Shortcut.on("M", () => this.playNotes = !this.playNotes);
+            Shortcut.on("N", () => this.showNotes = !this.showNotes);
+            Shortcut.on("F", () => this.showNumbers = !this.showNumbers);
+            Shortcut.on("S", this.save, true);
+            Shortcut.on("O", this.load, true);
+
         }
     }
 </script>
@@ -227,6 +247,9 @@
     }
 
     .smaller:not(.md-active) ul li:not(:first-child) {
+        display: none;
+    }
+    .smaller:not(.md-active) ul div:not(:first-child) {
         display: none;
     }
 
