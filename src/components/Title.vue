@@ -62,12 +62,18 @@
             delete() {
                 this.titleT = "";
             },
-            prepareForExportation() {
+            /*prepareForExportation() {
                 if (this.titleT === "") {
                     this.titleT = " ";
                     setTimeout(() => {
                         this.titleT = ""
                     }, 1000);
+                }
+            },*/
+            resetTitle(onlySelected = false) {
+                if (!onlySelected) {
+                    this.titleT = "";
+                    this.$store.dispatch('changeTitle', this.titleT);
                 }
             }
         },
@@ -85,6 +91,7 @@
         mounted() {
             this.titleT = this.$store.state.title;
             this.$root.$on('prepareForExportation', this.prepareForExportation);
+            this.$root.$on('deleteKeys', this.resetTitle);
         }
     }
 </script>
