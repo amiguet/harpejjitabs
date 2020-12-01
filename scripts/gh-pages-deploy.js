@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const execa = require("execa");
 const fs = require("fs");
+const delay = ms => new Promise(res => setTimeout(res, ms));
 (async () => {
   try {
     const folderName = fs.existsSync("dist") ? "dist" : "build";
@@ -16,6 +17,8 @@ const fs = require("fs");
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
     await execa("rm", ["-r", folderName]);
     await execa("git", ["checkout", "-f", "master"]);
+    await delay(1000);
+    console.log("deleting gh-pages");
     await execa("git", ["branch", "-D", "gh-pages"]);
     console.log("Successfully deployed, check your settings");
   } catch (e) {

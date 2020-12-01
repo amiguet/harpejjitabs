@@ -201,6 +201,7 @@
             Shortcut.on("F", () => this.showNumbers = !this.showNumbers);
             Shortcut.on("S", this.save, true);
             Shortcut.on("O", this.load, true);
+            Shortcut.on("N", this.newTablature, true);
 
         }
     }
