@@ -10,8 +10,8 @@
                     <font-awesome-icon icon="expand"/>
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
-                <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true">
-                    <md-list-item @click="newTablature" title="New (Ctrl+N)" md-menu-trigger>
+                <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
+                    <md-list-item @click="newTablature" title="New (Ctrl+N)">
                         <font-awesome-icon icon="file"/>
                         <span class="md-list-item-text">New</span>
                     </md-list-item>
@@ -105,7 +105,8 @@
             return {
                 menuVisible: false,
                 isSmaller: false,
-                playDelay: 0.3
+                playDelay: 0.3,
+                showHarpejjiMenu: false
             }
         },
         methods: {
@@ -157,8 +158,14 @@
             playChordArpeggiate() {
                 this.$root.$emit('setupChord', this.playDelay);
             },
-            newTablature() {
+            newTablature(e) {
+                if (this.$store.state.hasBeenModified) {
+                    if (!confirm("Some change has not been saved, are you sure you want to start a new document ?"))
+                        return;
+                }
                 this.$root.$emit('deleteKeys');
+                this.showHarpejjiMenu = true;
+                this.$store.commit('hasBeenSaved');
             },
             changeHarpejji(h) {
                 this.$store.commit('changeHarpejji', h);

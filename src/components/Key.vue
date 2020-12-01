@@ -66,6 +66,7 @@
                         this.$refs.finger.value = '1';
                         this.$refs.finger.editing = false;
                     }
+                    this.$store.commit('hasBeenModified');
                 }
             },
             playChord() {

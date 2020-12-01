@@ -79,9 +79,11 @@
             },
             changeColor(color) {
                 this.color = color;
+                this.$store.commit('hasBeenModified');
             },
             changeHand(hand) {
                 this.hand = hand;
+                this.$store.commit('hasBeenModified');
             }
         },
         computed: {
@@ -101,6 +103,9 @@
                     return "m 11 15 a 1 1 1 0 0 -22 10 q 4 8 27 10 q -2 -7 -5 -20 z"
                 }
                 return 0;
+            },
+            allProperty() {
+                return `${this.hand}|${this.color}|${this.value}`;
             }
         },
         watch: {
@@ -108,8 +113,11 @@
                 if (!newValue) {
                     this.$root.$emit('unSummonContextual');
                 }
+            },
+            allProperty() {
+                this.$store.commit('hasBeenModified');
             }
-        }
+        },
     }
 </script>
 

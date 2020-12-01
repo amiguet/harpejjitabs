@@ -53,6 +53,7 @@ export default new Vuex.Store({
         playNotes: true,
 
         selected: [],
+        hasBeenModified: false
     },
     getters: {
         getCurrentHarpejji: state => {
@@ -86,6 +87,12 @@ export default new Vuex.Store({
         },
         changeHarpejji(state, h) {
             state.currentHarpejji = h;
+        },
+        hasBeenModified(state, h) {
+            state.hasBeenModified = true;
+        },
+        hasBeenSaved(state) {
+            state.hasBeenModified = false;
         }
     },
     actions: {

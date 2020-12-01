@@ -233,6 +233,7 @@
                     }
                 }
                 download(JSON.stringify(saveData), 'tablature_' + (this.$store.state.title || 'untitled') + '.htab');
+                this.$store.commit('hasBeenSaved');
             },
             loadData(data) {
                 Versionning.loadData(data, this);

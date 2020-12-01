@@ -86,6 +86,7 @@
         watch: {
             title(newTitle) {
                 this.titleT = newTitle;
+                this.$store.commit('hasBeenModified');
             }
         },
         mounted() {

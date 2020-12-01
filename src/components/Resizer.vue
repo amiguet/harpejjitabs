@@ -222,7 +222,6 @@
 
         },
         mounted() {
-            console.log("yo ?");
             this.x1 = this.$store.state.zone.x1;
             this.y1 = this.$store.state.zone.y1;
             this.x2 = this.$store.state.zone.x2;
