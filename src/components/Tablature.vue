@@ -209,7 +209,7 @@
             save() {
                 if (this.editingZone) return;
                 let saveData = {
-                    "v": "1.2", //version
+                    "v": "1.3", //version
                     "x1": this.x1,
                     "y1": this.y1,
                     "x2": this.x2,
@@ -218,6 +218,7 @@
                         "v": this.$refs.title.title,
                         "c": this.$refs.title.color
                     },
+                    "s": this.$store.state.currentHarpejji,
                     "k": []
                 };
                 for (let key of this.$refs.keys) {
