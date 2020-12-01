@@ -61,9 +61,9 @@
 
                 <md-list-item @click="playChordArpeggiate" title="Play sequentially (S)">
                     <font-awesome-icon icon="music" size="lg"/>
-                    <span class="md-list-item-text" style="display: initial">
-                        Play sequentially
-                        <input type="text" v-model="tempDelay" style="width: 35px; font-size: 10px; margin-left: 5px"/></span>
+                    <span class="md-list-item-text">
+                        Play sequentially ({{ playDelay }})
+                        <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"/></span>
                 </md-list-item>
                 <md-list-item>
                     <md-divider></md-divider>
@@ -105,7 +105,7 @@
             return {
                 menuVisible: false,
                 isSmaller: false,
-                tempDelay: 0.3
+                playDelay: 0.3
             }
         },
         methods: {
@@ -155,7 +155,7 @@
                 this.$root.$emit('setupChord', 0);
             },
             playChordArpeggiate() {
-                this.$root.$emit('setupChord', this.tempDelay);
+                this.$root.$emit('setupChord', this.playDelay);
             },
             newTablature() {
                 this.$root.$emit('deleteKeys');
