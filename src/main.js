@@ -16,6 +16,7 @@ Vue.use(MdMenu);
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight, faFile} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import './registerServiceWorker'
 
 library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight, faFile);
 

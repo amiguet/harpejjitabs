@@ -3,13 +3,13 @@
         <Toolsbar></Toolsbar>
         <div id="hidden">
             <SoundPlayer></SoundPlayer>
+            <label for="loadFile">Load a file</label>
             <input type="file" name="loadFile" id="loadFile">
         </div>
         <div id="main">
             <Tablature class="tablature"></Tablature>
         </div>
         <Contextual></Contextual>
-        <div id="hidden2">y</div>
     </div>
 </template>
 

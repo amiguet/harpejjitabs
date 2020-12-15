@@ -1,6 +1,5 @@
 <template>
     <div>
-        <img src="@/assets/icons/download.png" alt="">
     </div>
 </template>
 

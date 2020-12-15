@@ -147,16 +147,19 @@ function prepareCanvas() {
                 g.remove();
                 remainUselessTag = true;
             }
+            if (g.style.display === "none") {
+                g.remove();
+                remainUselessTag = true;
+            }
         }
     }
+    //Kinda weird but it only work like this
+    let newOuterHTMLTemp = (tablature.outerHTML + "")
+        .replaceAll(/<!--.*?-->/g, "") // Remove all comments from the svg
+        .replaceAll(/ data-v-[a-z0-9]*=""/gm, ""); //Remove all vue data
+    doc2.body.innerHTML = newOuterHTMLTemp;
 
-    tablature.outerHTML = tablature.outerHTML
-        .replace(/<!--.*?-->/g, "") // Remove all comments from the svg
-        .replace(/ data-v-[a-z0-9]*=""/gm, ""); //Remove all vue data
-    //console.log(tablature.innerHTML);
-
-    document.getElementById('hidden').removeChild(frm);
-    return tablature;
+    return doc2.body.children[0];
 }
 
 /*function prepareCanvas(callback, that) {

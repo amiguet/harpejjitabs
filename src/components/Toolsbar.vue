@@ -10,17 +10,31 @@
                     <font-awesome-icon icon="expand"/>
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
-                <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
-                    <md-list-item @click="newTablature" title="New (Ctrl+N)">
-                        <font-awesome-icon icon="file"/>
-                        <span class="md-list-item-text">New</span>
-                    </md-list-item>
-                    <md-menu-content>
-                        <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
-                        <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
-                        <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
-                    </md-menu-content>
-                </md-menu>
+
+                <md-list-item @click="newTablature" title="New (Ctrl+N)">
+                    <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
+                            <font-awesome-icon icon="file"/>
+                            <span class="md-list-item-text">New</span>
+                        <md-menu-content>
+                            <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-list-item>
+
+                <!--                    <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
+                        <md-list-item @click="newTablature" title="New (Ctrl+N)">
+                            <font-awesome-icon icon="file"/>
+                            <span class="md-list-item-text">New</span>
+                        </md-list-item>
+                        <md-menu-content>
+                            <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
+                        </md-menu-content>
+                    </md-menu>-->
+
 
                 <md-list-item>
                     <md-divider></md-divider>
@@ -62,8 +76,8 @@
                 <md-list-item @click="playChordArpeggiate" title="Play sequentially (S)">
                     <font-awesome-icon icon="music" size="lg"/>
                     <span class="md-list-item-text">
-                        Play sequentially ({{ playDelay }})
-                        <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"/></span>
+                        <label for="playDelay">Play sequentially ({{ playDelay }})</label>
+                        <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;" id="playDelay"/></span>
                 </md-list-item>
                 <md-list-item>
                     <md-divider></md-divider>
@@ -221,7 +235,15 @@
         max-width: calc(100vw - 125px);
     }
 
-    .md-list-item-content > *:first-child:not(.md-divider) {
+    .md-list-item-content > *:first-child:not(.md-divider):not(.md-menu) {
+        margin-right: 20px;
+        width: 24px;
+
+    }
+
+
+
+    .md-menu > *:first-child:not(.md-divider):not(.md-menu) {
         margin-right: 20px;
         width: 24px;
     }
@@ -270,5 +292,19 @@
         width: 100%;
     }
 
+    .md-menu {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        justify-content: space-between;
+        width: 100%;
+        overflow: hidden;
+        height: 48px;
+    }
+</style>
 
+<style>
+    .md-list-item-container:not(.md-list-item-default):not([disabled])>.md-list-item-content {
+        height: 48px;
+    }
 </style>
