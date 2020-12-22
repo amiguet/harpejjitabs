@@ -201,9 +201,11 @@
             editZone() {
                 this.$root.$emit('unselectAll');
                 document.getElementById('workzone').classList.add("animate-workzone");
+                document.getElementById('tablature').classList.add("animate-workzone");
                 this.editingZone = !this.editingZone;
                 setTimeout(() => {
                     document.getElementById('workzone').classList.remove("animate-workzone");
+                    document.getElementById('tablature').classList.remove("animate-workzone");
                 }, 600);
             },
             save() {
@@ -377,7 +379,8 @@
     }*/
 
     .animate-workzone {
-        transition: transform 500ms;
+        /*transition: transform 500ms;*/
+        transition: all 500ms;
     }
 
 
