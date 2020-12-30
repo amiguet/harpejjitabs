@@ -41,6 +41,13 @@
                                 style="font-size: 7px">
                             {{ pos + decX + 1}}
                         </text>
+
+                        <text
+                                :x="(decX + number_string) * string_spacing + 5"
+                                :y="decY * frets_spacing + 15"
+                                style="font-size: 8px">
+                            {{ currentHarpejji }}
+                        </text>
                     </g>
 
 
@@ -75,59 +82,6 @@
                         v-show="editingZone">
                 </Resizer>
                 <Selector></Selector>
-            </g>
-        </svg>
-        <svg width="500" height="500" v-if="false">
-            <rect width="100%" height="100%" style="fill:white"/>
-            <text x="10" y="30">design tests</text>
-
-            <g transform="translate(100 100)">
-                <path d="m -10 -10 a 1 1 1 0 1 20 10 q -4 8 -30 10 q 4 -7 10 -20 z "></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(200 100)">
-                <path d="m 10 -10 a 1 1 1 0 0 -20 10 q 4 8 30 10 q -4 -7 -10 -20 z "></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(150 100)">
-                <circle r="13" cy="-5"></circle>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(100 200)">
-                <path d="m -13 -10 a 13 13 0 1 1 0 8 a 1 1 0 0 0 0 -8"></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(200 200)">
-                <path d="m 13 -10 a 13 13 0 1 0 0 8 a 1 1 0 0 1 0 -8"></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(150 200)">
-                <circle r="13" cy="-5"></circle>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(100 300)">
-                <path d="m 0 0 a 1 1 1 0 1 20 10 q -4 8 -25 5 q 3 -7 5 -15 z"></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
-            </g>
-            <g transform="translate(100 400)">
-                <path d="m 0 0 a 1 1 1 0 1 20 10 q -4 8 -20 5 q -2 -10 0 -15 z"></path>
-                <text y="-4" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
-                      text-anchor="middle" dominant-baseline="middle">1
-                </text>
             </g>
         </svg>
     </div>

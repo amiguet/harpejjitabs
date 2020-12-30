@@ -27,8 +27,8 @@ export default new Vuex.Store({
             G16: {
                 number_string: 16,
                 number_frets: 19,
-                c1: 2,
-                c2: 1,
+                c1: 6,
+                c2: 3,
                 c3: 3
             },
             K24: {
