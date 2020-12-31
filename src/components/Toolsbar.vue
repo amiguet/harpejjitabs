@@ -76,7 +76,7 @@
                 <md-list-item @click="playChordArpeggiate" title="Play sequentially (S)">
                     <font-awesome-icon icon="music" size="lg"/>
                     <span class="md-list-item-text">
-                        <label for="playDelay">Play sequentially ({{ playDelay }})</label>
+                        <label for="playDelay">Play sequentially ({{ playDelay }}s)</label>
                         <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;" id="playDelay"/></span>
                 </md-list-item>
                 <md-list-item>
