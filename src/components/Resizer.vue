@@ -103,10 +103,10 @@
         methods: {
             startDrag(e) {
                 this.dragged = e.target;
-                window.addEventListener('mousemove', this.onMove, false);
-                window.addEventListener('mouseup', this.stopDrag, false);
-                window.addEventListener('touchmove', this.onMove, false);
-                window.addEventListener('touchend', this.stopDrag, false);
+                document.addEventListener('mousemove', this.onMove, false);
+                document.addEventListener('mouseup', this.stopDrag, false);
+                document.addEventListener('touchmove', this.onMove, false);
+                document.addEventListener('touchend', this.stopDrag, false);
 
                 document.getElementById('app').style.cursor = this.dragged.getAttribute('cursor');
                 this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
@@ -123,10 +123,10 @@
                     e.preventDefault();
             },
             stopDrag() {
-                window.removeEventListener('mousemove', this.onMove, false);
-                window.removeEventListener('mouseup', this.stopDrag, false);
-                window.removeEventListener('touchmove', this.onMove, false);
-                window.removeEventListener('touchend', this.stopDrag, false);
+                document.removeEventListener('mousemove', this.onMove, false);
+                document.removeEventListener('mouseup', this.stopDrag, false);
+                document.removeEventListener('touchmove', this.onMove, false);
+                document.removeEventListener('touchend', this.stopDrag, false);
                 this.dragged = null;
 
                 this.$store.dispatch('changeZone', {
@@ -146,10 +146,10 @@
                 this.yGrab = pos.y - this.y1 * this.frets_spacing;
                 this.widthGrab = this.x2 - this.x1;
                 this.heightGrab = this.y2 - this.y1;
-                window.addEventListener('mousemove', this.onMoveRect, false);
-                window.addEventListener('mouseup', this.stopDragRect, false);
-                window.addEventListener('touchmove', this.onMoveRect, false);
-                window.addEventListener('touchend', this.stopDragRect, false);
+                document.addEventListener('mousemove', this.onMoveRect, false);
+                document.addEventListener('mouseup', this.stopDragRect, false);
+                document.addEventListener('touchmove', this.onMoveRect, false);
+                document.addEventListener('touchend', this.stopDragRect, false);
             },
             onMoveRect(e) {
                 this.savePosition();
@@ -167,10 +167,10 @@
             stopDragRect() {
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
-                window.removeEventListener('mousemove', this.onMoveRect, false);
-                window.removeEventListener('mouseup', this.stopDragRect, false);
-                window.removeEventListener('touchmove', this.onMoveRect, false);
-                window.removeEventListener('touchend', this.stopDragRect, false);
+                document.removeEventListener('mousemove', this.onMoveRect, false);
+                document.removeEventListener('mouseup', this.stopDragRect, false);
+                document.removeEventListener('touchmove', this.onMoveRect, false);
+                document.removeEventListener('touchend', this.stopDragRect, false);
                 this.$store.dispatch('changeZone', {
                     'x1': this.x1,
                     'x2': this.x2,

@@ -8,11 +8,11 @@
             <!--<circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>-->
             <!--<circle v-if="isSelected" r="12" cy="20" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></circle>-->
             <path :d="path" :fill="color" @click.stop="startEdit"></path>
-            <path :d="path" v-if="isSelected" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></path>
             <ellipse rx="22" ry="1" opacity="0"></ellipse>
             <text y="21" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"
                   text-anchor="middle" dominant-baseline="middle" @click.stop="startEdit">{{ value }}
             </text>
+            <path :d="path" v-if="isSelected" fill="rgba(240, 240, 240, 0.5)" @mousedown.stop="startMoving" @touchstart.stop="startMoving" style="cursor: grab"></path>
             <transition name="fade">
                 <foreignObject height="24" width="24" x="-12" :y="-12 + 20" v-if="editing" @click.stop="" ref="fo">
                     <input type="text" v-model="value" @blur.prevent.stop="doneEdit" @keyup.enter="doneEdit"
@@ -84,6 +84,9 @@
             changeHand(hand) {
                 this.hand = hand;
                 this.$store.commit('hasBeenModified');
+            },
+            startMoving(e) {
+                this.$root.$emit('startMoving', e);
             }
         },
         computed: {
