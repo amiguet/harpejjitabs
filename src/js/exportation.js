@@ -27,7 +27,7 @@ function svgToUrl(svgEl) {
     let svgData = svgEl.outerHTML;
     let preface = '<?xml version="1.0" standalone="no"?>\r\n';
     let svgBlob = new Blob([preface, svgData], {type: "image/svg+xml"});
-    return URL.createObjectURL(svgBlob);;
+    return URL.createObjectURL(svgBlob);
 }
 
 // Download an svg

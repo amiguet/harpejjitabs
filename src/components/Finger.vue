@@ -5,8 +5,6 @@
                 <animate attributeName="r" values="12;20" dur="1s" begin="indefinite" :id="'anim' + note"></animate>
                 <animate attributeName="opacity" values="1;0" dur="1s" :begin="'anim' + note + '.begin'"></animate>
             </circle>
-            <!--<circle r="12" cy="20" :fill="color" @click.stop="startEdit"></circle>-->
-            <!--<circle v-if="isSelected" r="12" cy="20" fill="rgba(240, 240, 240, 0.5)" @click.stop="startEdit"></circle>-->
             <path :d="path" :fill="color" @click.stop="startEdit"></path>
             <ellipse rx="22" ry="1" opacity="0"></ellipse>
             <text y="21" style="fill: white; font-size: 16px;font-family: Helvetica, Arial, sans-serif;"

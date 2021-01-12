@@ -62,14 +62,6 @@
             delete() {
                 this.titleT = "";
             },
-            /*prepareForExportation() {
-                if (this.titleT === "") {
-                    this.titleT = " ";
-                    setTimeout(() => {
-                        this.titleT = ""
-                    }, 1000);
-                }
-            },*/
             resetTitle(onlySelected = false) {
                 if (!onlySelected) {
                     this.titleT = "";

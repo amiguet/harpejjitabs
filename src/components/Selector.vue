@@ -99,6 +99,7 @@
                         color: key.$refs.finger.color,
                         hand: key.$refs.finger.hand
                     });
+                    key.isVisible = false;
                 }
 
                 this.$root.$emit('unselectAll');
@@ -117,7 +118,7 @@
                     }
                 }
 
-                // Delete all the previous keys
+                /*// Delete all the previous keys
                 for (let mark of moving) {
                     let hasBeenReplaced = false; // If a key has already been replaced by another key during the copy, must not delete it
                     for (let mark2 of moving) {
@@ -132,7 +133,7 @@
                             }
                         }
                     }
-                }
+                }*/
                 this.$root.$emit('summonContextual');
             },
             startMoving(e) {
@@ -197,8 +198,6 @@
             });
             this.$root.$on('startMoving', this.startMoving);
             Shortcut.on("backspace", this.deleteSelected);
-            Shortcut.on("b", () => this.moveSelected(1, 1));
-
         }
     }
 </script>

@@ -153,15 +153,9 @@
             },
             downloadSVG() {
                 Exportation.downloadSVG(this.$store.state.title || "untitled", this);
-                /*setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
-                    Exportation.downloadSVG(this.$store.state.title || "untitled", this);
-                }, 200);*/
             },
             downloadPNG() {
                 Exportation.downloadPNG(this.$store.state.title || "untitled", this);
-                /*setTimeout(() => {  // To avoid having text field in the SVG (because of the transition animation)
-                    Exportation.downloadPNG(this.$store.state.title || "untitled", this);
-                }, 200);*/
             },
             changeIsTooSmall(isTooSmall) {
                 this.isSmaller = isTooSmall
