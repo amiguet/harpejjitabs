@@ -79,6 +79,7 @@
                 let pos = getCursorPos(e);
                 this.x2 = pos.x;
                 this.y2 = pos.y;
+                e.preventDefault();
             },
             deleteSelected() {
                 this.$root.$emit('deleteKeys', true);
@@ -157,6 +158,7 @@
                 let difY =  pos.y - this.mouseY + 10;
                 this.movingX = this.string_spacing * Math.floor(difX / this.string_spacing);
                 this.movingY = this.frets_spacing * Math.floor(difY / this.frets_spacing);
+                e.preventDefault();
             },
             stopDragSelection() {
                 document.body.style.cursor = "";

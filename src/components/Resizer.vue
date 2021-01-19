@@ -131,8 +131,8 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
-                if (e instanceof MouseEvent)
-                    e.preventDefault();
+                //if (e instanceof MouseEvent)
+                e.preventDefault();
                 this.displayConfirm = false;
             },
             stopDrag() {
@@ -175,8 +175,8 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
-                if (e instanceof MouseEvent)
-                    e.preventDefault();
+                //if (e instanceof MouseEvent)
+                e.preventDefault();
                 this.displayConfirm = false;
             },
             stopDragRect() {

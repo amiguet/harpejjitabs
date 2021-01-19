@@ -117,37 +117,11 @@
                 return this.note === "C";
             },
             note() {
-                /*//return notes[mod(this.x * 2 - 1 - this.y, notes.length)];
-                //24
-                let c1 = -1;
-
-                //12
-                c1 = 2;
-
-                //16
-                c1 = 6;*/
                 let c1 = this.getCurrentHarpejji.c1;
 
                 return notes[mod(this.x * 2 + c1 - this.y, notes.length)];
             },
             octave() {
-                /*if (this.y % 2) {
-                    return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
-                } else {
-                    return Math.floor((this.x + 5 - Math.floor(this.y / 2)) / 6) + 1;
-                }
-                //24
-                let c2 = 5;
-                let c3 = 1;
-
-                //12
-                c2 = 1;
-                c3 = 3;
-
-                //16
-                c2 = 3;
-                c3 = 3;*/
-
                 let c2 = this.getCurrentHarpejji.c2;
                 let c3 = this.getCurrentHarpejji.c3;
 
