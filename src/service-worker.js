@@ -1,7 +1,7 @@
 console.log("yo from service worker");
 
 workbox.setConfig({
-  debug: false,
+  debug: true,
 });
 
 workbox.precaching.precacheAndRoute([]);
@@ -31,6 +31,8 @@ workbox.routing.registerRoute(
     ],
   }),
 );
+
+
 
 workbox.routing.registerRoute(
   new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),

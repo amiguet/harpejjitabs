@@ -122,6 +122,7 @@
 
                 document.getElementById('app').style.cursor = this.dragged.getAttribute('cursor');
                 this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
+                e.preventDefault();
             },
             onMove(e) {
                 let pos = getCursorPos(e);
@@ -135,7 +136,7 @@
                 e.preventDefault();
                 this.displayConfirm = false;
             },
-            stopDrag() {
+            stopDrag(e) {
                 document.removeEventListener('mousemove', this.onMove, false);
                 document.removeEventListener('mouseup', this.stopDrag, false);
                 document.removeEventListener('touchmove', this.onMove, false);
@@ -151,6 +152,7 @@
                 document.getElementById('app').style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
                 this.displayConfirm = true;
+                e.preventDefault();
             },
             startDragRect(e) {
                 document.body.style.cursor = "grabbing";
@@ -164,6 +166,7 @@
                 document.addEventListener('mouseup', this.stopDragRect, false);
                 document.addEventListener('touchmove', this.onMoveRect, false);
                 document.addEventListener('touchend', this.stopDragRect, false);
+                e.preventDefault();
             },
             onMoveRect(e) {
                 this.savePosition();
@@ -179,7 +182,7 @@
                 e.preventDefault();
                 this.displayConfirm = false;
             },
-            stopDragRect() {
+            stopDragRect(e) {
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
                 document.removeEventListener('mousemove', this.onMoveRect, false);
@@ -193,6 +196,7 @@
                     'y2': this.y2,
                 });
                 this.displayConfirm = true;
+                e.preventDefault();
             },
             savePosition() {
                 this.saved.x1 = this.x1;

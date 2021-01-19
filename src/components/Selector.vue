@@ -47,10 +47,12 @@
         methods: {
             onMouseDown(e) {
                 this.$root.$emit('unselectAll');
+
                 document.addEventListener('mousemove', this.onMouseMove);
                 document.addEventListener('mouseup', this.onMouseUp);
                 document.addEventListener('touchmove', this.onMouseMove);
                 document.addEventListener('touchend', this.onMouseUp);
+                console.log("down");
                 let pos = getCursorPos(e);
                 this.x1 = pos.x;
                 this.y1 = pos.y;
@@ -58,7 +60,7 @@
                 this.y2 = pos.y;
                 this.isVisible = true;
             },
-            onMouseUp() {
+            onMouseUp(e) {
                 document.removeEventListener('mousemove', this.onMouseMove);
                 document.removeEventListener('mouseup', this.onMouseUp);
                 document.removeEventListener('touchmove', this.onMouseMove);
@@ -72,8 +74,8 @@
                 });
                 this.$root.$emit('summonContextual');
                 this.isVisible = false;
-
-
+                e.preventDefault();
+                console.log("up");
             },
             onMouseMove(e) {
                 let pos = getCursorPos(e);
@@ -149,7 +151,7 @@
                 document.addEventListener('mouseup', this.stopDragSelection, false);
                 document.addEventListener('touchmove', this.onMoveSelection, false);
                 document.addEventListener('touchend', this.stopDragSelection, false);
-
+                e.preventDefault();
             },
 
             onMoveSelection(e) {
@@ -160,7 +162,7 @@
                 this.movingY = this.frets_spacing * Math.floor(difY / this.frets_spacing);
                 e.preventDefault();
             },
-            stopDragSelection() {
+            stopDragSelection(e) {
                 document.body.style.cursor = "";
                 this.isMoving = false;
 
@@ -173,6 +175,7 @@
                 document.removeEventListener('mouseup', this.stopDragSelection, false);
                 document.removeEventListener('touchmove', this.onMoveSelection, false);
                 document.removeEventListener('touchend', this.stopDragSelection, false);
+                e.preventDefault();
             }
 
         },
@@ -192,8 +195,10 @@
             ...mapState(['frets_spacing', 'string_spacing']),
         },
         mounted() {
-            document.getElementById('background').addEventListener('mousedown', this.onMouseDown);
-            document.getElementById('background').addEventListener('touchstart', this.onMouseDown);
+            //document.getElementById('background').addEventListener('mousedown', this.onMouseDown);
+            document.getElementById('background').addEventListener('mousedown', this.onMouseDown, {passive: true});
+            //document.getElementById('background').addEventListener('touchstart', this.onMouseDown);
+            document.getElementById('background').addEventListener('touchstart', this.onMouseDown, {passive: true});
             this.$root.$on('unselectAll', () => {
                 this.$store.commit('resetSelection');
                 this.$root.$emit('unSummonContextual')
