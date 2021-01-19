@@ -66,6 +66,17 @@
                     @touchstart.capture.stop="startDrag"
                     x="x2" y="y2" cursor="nwse-resize"></circle>
         </g>
+        <transition name="fade">
+            <text
+                    v-show="displayConfirm"
+                    :x="(x1 + x2) / 2 * string_spacing"
+                    :y="y1 * frets_spacing + frets_spacing / 2 - 7"
+                    text-anchor="middle"
+                    fill="#0d6efd"
+                    style="font-size: 23px; cursor: pointer"
+                    @click="exitEditZone"
+                    >Confirm</text>
+        </transition>
 
     </g>
 </template>
@@ -97,7 +108,8 @@
                     y1: 0,
                     x2: 0,
                     y2: 0
-                }
+                },
+                displayConfirm: true
             }
         },
         methods: {
@@ -121,6 +133,7 @@
                 }
                 if (e instanceof MouseEvent)
                     e.preventDefault();
+                this.displayConfirm = false;
             },
             stopDrag() {
                 document.removeEventListener('mousemove', this.onMove, false);
@@ -137,6 +150,7 @@
                 });
                 document.getElementById('app').style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
+                this.displayConfirm = true;
             },
             startDragRect(e) {
                 document.body.style.cursor = "grabbing";
@@ -163,6 +177,7 @@
                 }
                 if (e instanceof MouseEvent)
                     e.preventDefault();
+                this.displayConfirm = false;
             },
             stopDragRect() {
                 document.body.style.cursor = "";
@@ -177,6 +192,7 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
+                this.displayConfirm = true;
             },
             savePosition() {
                 this.saved.x1 = this.x1;
@@ -217,7 +233,9 @@
                     'y1': this.y1,
                     'y2': this.y2,
                 });
-
+            },
+            exitEditZone() {
+                this.$root.$emit('editZone');
             }
 
         },
@@ -245,5 +263,17 @@
 
     .bl, .tr {
         cursor: nesw-resize;
+    }
+
+    .fade-enter-active {
+        animation: fade-animation 0.6s;
+    }
+    @keyframes fade-animation {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 </style>
