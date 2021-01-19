@@ -11,7 +11,7 @@
                     <span class="md-list-item-text">Reframe</span>
                 </md-list-item>
 
-                <md-list-item @click="newTablature" title="New (Ctrl+N)">
+                <md-list-item @click="newTablature" title="New">
                     <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
                             <font-awesome-icon icon="file"/>
                             <span class="md-list-item-text">New</span>
@@ -103,6 +103,17 @@
                     <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
                     <span class="md-list-item-text">Play notes on click</span>
                 </md-list-item>
+
+                <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <md-list-item @click="displayInformations" title="Informations">
+                    <font-awesome-icon icon="info-circle" size="lg"/>
+                    <span class="md-list-item-text">Informations</span>
+                </md-list-item>
+
+
             </md-list>
         </md-drawer>
     </div>
@@ -177,6 +188,9 @@
             },
             changeHarpejji(h) {
                 this.$store.commit('changeHarpejji', h);
+            },
+            displayInformations() {
+                this.$root.$emit('displayInformations');
             }
         },
         computed: {

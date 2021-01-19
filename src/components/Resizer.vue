@@ -72,7 +72,7 @@
                     :x="(x1 + x2) / 2 * string_spacing"
                     :y="y1 * frets_spacing + frets_spacing / 2 - 7"
                     text-anchor="middle"
-                    fill="#0d6efd"
+                    fill="#448aff"
                     style="font-size: 23px; cursor: pointer"
                     @click="exitEditZone"
                     >Confirm</text>

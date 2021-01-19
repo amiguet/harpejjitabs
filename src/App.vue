@@ -10,6 +10,7 @@
             <Tablature class="tablature"></Tablature>
         </div>
         <Contextual></Contextual>
+        <Informations></Informations>
     </div>
 </template>
 
@@ -18,10 +19,12 @@
     import Toolsbar from './components/Toolsbar.vue'
     import Contextual from "./components/Contextual.vue";
     import SoundPlayer from "@/components/SoundPlayer";
+    import Informations from "@/components/Informations";
 
     export default {
         name: 'App',
         components: {
+            Informations,
             SoundPlayer,
             Contextual,
             Tablature,
