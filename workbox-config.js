@@ -4,7 +4,7 @@ module.exports = {
     //"**/*.{css,ico,png,svg,html,js,json,mp3,txt}"
     "**/*.{ico,png,svg,html,json,mp3,txt}"
   ],
-  mode: 'development',
+  //mode: 'development',
   "swDest": "dist/service-worker.js",
   "skipWaiting": true,
   "runtimeCaching": [{
