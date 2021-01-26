@@ -1,11 +1,10 @@
 {
   "name": "harpejji-tabs",
-  "version": "0.1.0",
+  "version": "1.8.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest dist && workbox generateSW workbox-config.js && rm -R ../../harpejjitabs > /dev/null && cp -R dist ../../harpejjitabs",
-    "lint": "vue-cli-service lint",
+    "build": "vue-cli-service build --dest dist && workbox generateSW workbox-config.js",
     "deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {

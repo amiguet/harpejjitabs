@@ -23,19 +23,6 @@
                     </md-menu>
                 </md-list-item>
 
-                <!--                    <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
-                        <md-list-item @click="newTablature" title="New (Ctrl+N)">
-                            <font-awesome-icon icon="file"/>
-                            <span class="md-list-item-text">New</span>
-                        </md-list-item>
-                        <md-menu-content>
-                            <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
-                            <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
-                            <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
-                        </md-menu-content>
-                    </md-menu>-->
-
-
                 <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
@@ -138,6 +125,9 @@
             toggleMenu() {
                 this.menuVisible = !this.menuVisible;
             },
+            /**
+             * When the user click Reframe => Resizer mode
+             */
             editZone() {
                 this.$root.$emit('editZone');
                 this.menuVisible = false;
@@ -145,6 +135,10 @@
             save() {
                 this.$root.$emit('save');
             },
+            /**
+             * Try to read the file when he try to load a tablature
+             * @param e Event
+             */
             readFile(e) {
                 let fileReader = new FileReader();
                 fileReader.onload = () => {

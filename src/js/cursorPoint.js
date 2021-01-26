@@ -1,7 +1,14 @@
 
 let pt = null;
-console.log("imported");
 
+/**
+ * Return the position of the mouse relative to the SVG transformation
+ * Create a SVGPoint, and place it where the mouse position is
+ * Call matrixTransform with the inverse transformation of the workzone
+ * to get the real position
+ * @param e
+ * @returns {DOMPoint}
+ */
 export function getCursorPos(e) {
     if (pt === null) {
         pt = document.getElementById('tablature').createSVGPoint();

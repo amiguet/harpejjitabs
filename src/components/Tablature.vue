@@ -50,15 +50,6 @@
                         </text>
                     </g>
 
-
-                    <!--<g v-for="(j, posY) in number_frets" :key="j+decY">
-                        <g v-for="(i, posX) in number_string" :key="i+decX+';'+j+decY">
-                            <Key :pos-x="(posX + decX) * string_spacing + string_spacing"
-                                 :pos-y="(posY + decY) * frets_spacing + frets_spacing / 2"
-                                 :x="(posX + decX)" :y="(posY + decY)"></Key>
-                        </g>
-                    </g>-->
-
                     <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
                         <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
                             <Key
@@ -116,6 +107,9 @@
             }
         },
         methods: {
+            /**
+             * Calculate the size fo the SVG to be perfect regardless the windows size
+             */
             calculateSize() {
                 let workzoneC = document.getElementById('workzoneContainer');
                 let wWidth = workzoneC.getBoundingClientRect().width / this.scale;
@@ -124,7 +118,8 @@
 
                 let app = document.getElementById('main');
                 let maxWidth = app.clientWidth;
-                let maxHeight = Math.min(window.innerHeight - 0, 6500);
+                //let maxHeight = Math.min(window.innerHeight - 0, 6500);
+                let maxHeight = window.innerHeight;
                 let maxRatio = maxHeight / maxWidth;
 
 
@@ -137,21 +132,27 @@
 
                 this.svgHeight = wHeight * this.scale;
                 this.svgWidth = wWidth * this.scale;
-                //this.xOffset = Math.round((maxWidth - wWidth * this.scale - this.decX * this.string_spacing * this.scale) / 2);
-                //this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing;
-                //this.xOffset = Math.round((maxWidth - (wWidth) * this.scale) / 2) - this.decX * this.string_spacing * this.scale;
                 this.xOffset = -this.decX * this.string_spacing * this.scale;
                 this.yOffset = -this.decY * this.frets_spacing * this.scale;
 
                 this.$root.$emit('isTooSmall', this.svgWidth > window.innerWidth - 70 * 2);
-
-
-                //if (document.getElementById("main").getBoundingClientRect().w)
             },
+            /**
+             * Return if a key is visible from the screen, or out of bounds
+             * @param posX position X of the key
+             * @param posY position Y of the key
+             * @returns {boolean} true if visible, false if not
+             */
             isVisible(posX, posY) {
-                posX++;
+                posX++; // The x need to be 1 more
                 return posX > this.x1 && posX < this.x2 && posY >= this.y1 && posY < this.y2 || this.editingZone;
             },
+            /**
+             * When the user want to go to the resizer mode
+             * add certain class to allow animation
+             * remove them after the animation is done.
+             * Keeping them would cause some troubles, especially if the user resize the windows
+             */
             editZone() {
                 this.$root.$emit('unselectAll');
                 document.getElementById('workzone').classList.add("animate-workzone");
@@ -162,6 +163,9 @@
                     document.getElementById('tablature').classList.remove("animate-workzone");
                 }, 600);
             },
+            /**
+             * Save the current Tablature into JSON and download the file
+             */
             save() {
                 if (this.editingZone) return;
                 let saveData = {
@@ -191,9 +195,17 @@
                 download(JSON.stringify(saveData), 'tablature_' + (this.$store.state.title || 'untitled') + '.htab');
                 this.$store.commit('hasBeenSaved');
             },
+            /**
+             * Load a tablature JSON
+             * @param data JSON
+             */
             loadData(data) {
                 Versionning.loadData(data, this);
             },
+            /**
+             * Prepare the playChord by adding all the playing key into the playlist
+             * @param freq
+             */
             setupChord(freq) {
                 for (let key of this.$refs.keys) {
                     key.playChord(); //Add all the visible key in the play list
@@ -303,6 +315,11 @@
         }
     }
 
+    /**
+     * Download a file with a certain content
+     * @param text Content of the file
+     * @param filename File name
+     */
     function download(text, filename) {
         let element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -318,20 +335,6 @@
 </script>
 
 <style scoped>
-    /*line {
-        fill: #000;
-        stroke-width: 1px;
-        stroke: #000;
-    }
-
-    rect {
-        fill: #000;
-    }
-
-    .string {
-        stroke: #CCC;
-    }*/
-
     .animate-workzone {
         /*transition: transform 500ms;*/
         transition: all 500ms;
@@ -349,6 +352,4 @@
         margin: auto;
         display: block;
     }
-
-
 </style>

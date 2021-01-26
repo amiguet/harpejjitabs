@@ -22,7 +22,7 @@
             'x',
             'y'
         ],
-        data: function() {
+        data() {
             return {
                 titleT: '',
                 editing: false,
@@ -30,6 +30,9 @@
             }
         },
         methods: {
+            /**
+             * When the user click on the title to edit him
+             */
             editTitle() {
                 this.editing = true;
                 // To be able to display the keyboard on IOS, we need to focus the element on the click event.
@@ -40,6 +43,7 @@
                 document.getElementById('hidden').appendChild(input);
                 input.focus();
 
+                // Need to wait for vue.js to update the DOM
                 setTimeout(() => {
                     var el = this.$refs.textEdit;
                     el.focus();
@@ -50,6 +54,9 @@
                 this.$root.$emit('summonContextual', this);
             },
 
+            /**
+             * When the focus of the text field is lost
+             */
            doneEdit() {
                 this.editing = false;
                 this.$store.dispatch('changeTitle', this.titleT);
@@ -62,6 +69,10 @@
             delete() {
                 this.titleT = "";
             },
+            /**
+             * Called by the selector or when the user create a new document
+             * @param onlySelected
+             */
             resetTitle(onlySelected = false) {
                 if (!onlySelected) {
                     this.titleT = "";
@@ -91,7 +102,6 @@
 
 <style scoped>
     input[type="text"] {
-        /*width: 100px;*/
         text-align: center;
         display: block;
         height: 24px;

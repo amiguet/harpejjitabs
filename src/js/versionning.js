@@ -1,4 +1,10 @@
+/**
+ * Load JSON data to the tablature
+ * @param data the json data
+ * @param that the tablature
+ */
 export function loadData(data, that) {
+    //select the correct version
     let version = data.v;
     try {
         loadVersion[version](data, that)
@@ -7,6 +13,9 @@ export function loadData(data, that) {
     }
 }
 
+// Object containing a function for each version
+// Because each version has some differences, it need to be parse differently
+// Assure backward compatibility
 let loadVersion = {
     "1.0": function (data, that) {
         that.editingZone = false;

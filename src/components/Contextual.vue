@@ -3,13 +3,8 @@
         <div class="contextual-container" v-show="isVisible" :style="{ left: left + 'px', top: top + 'px'}">
             <div class="contextual">
                 <div class="bubble">
-                    <!--<div v-if="!isTitle" class="hands">
-                        <div class="hand" @click="changeHand(-1)">Left</div>
-                        <div class="hand neutral" @click="changeHand(0)">Neutral</div>
-                        <div class="hand" @click="changeHand(1)">Right</div>
-                    </div>-->
                     <div class="colors bubble-component">
-                        <div v-if="!isTitle" class="first-line">
+                        <div v-if="!hasntDifferentShape" class="first-line">
                             <font-awesome-icon icon="chevron-circle-left" @click="changeHand(-1)"/>
                             <font-awesome-icon icon="circle" @click="changeHand(0)"/>
                             <font-awesome-icon icon="chevron-circle-right" @click="changeHand(1)"/>
@@ -47,8 +42,10 @@
                 x: 200,
                 y: 200,
 
-                forceRecompute: 0, // ?
+                // Reference to the selected object
                 current: null,
+
+                // Lists of all the colors available
                 colors: [
                     '#000000',
                     '#FF5722',
@@ -62,6 +59,14 @@
             }
         },
         methods: {
+            /**
+             * Summon the contextual menu with the current as the target
+             * The target must have these following function:
+             * delete()
+             * changeColor(color)
+             * Can have changeHand(hand)
+             * @param current The target
+             */
             summonContextual(current) {
                 if (current) {
                     let rect = current.$el.getBoundingClientRect();
@@ -94,10 +99,15 @@
                     }
                 }
             },
+            /**
+             * Remove the contextual menu
+             */
             unSummonContextual() {
-                //this.current = null;
                 this.isVisible = false;
             },
+            /**
+             * When the user click on the trash icon
+             */
             deleteCurrent() {
                 if (Array.isArray(this.current)) {
                     for (let c of this.current) {
@@ -109,6 +119,10 @@
                 this.unSummonContextual();
                 this.$root.$emit('unselectAll');
             },
+            /**
+             * When the user click on a color
+             * @param col
+             */
             changeColor(col) {
                 if (Array.isArray(this.current)) {
                     for (let c of this.current) {
@@ -118,6 +132,10 @@
                     this.current.changeColor(col);
                 }
             },
+            /**
+             * When the user click on a shape
+             * @param hand
+             */
             changeHand(hand) {
                 if (Array.isArray(this.current)) {
                     for (let c of this.current) {
@@ -130,31 +148,42 @@
         },
         computed: {
             left() {
-                //manually computed bubble width because it won't update correctly when not visible
+                //manually computed menu width because it won't update correctly when not visible
                 return clamp(this.x - 80, 0, window.innerWidth - 160);
             },
             top() {
                 return this.y - 60;
             },
-            isTitle() {
+            /**
+             * Use to know if it needs to show the extended version of the contextual menu
+             * @returns {boolean} false if it has different shape, true is not
+             */
+            hasntDifferentShape() {
                 return !Array.isArray(this.current)
                     && this.current !== null
-                    && this.current.$options._componentTag === "Title";
+                    && this.current.changeHand === undefined;
             }
         },
         mounted() {
+            // Add 2 listeners
             this.$root.$on('summonContextual', this.summonContextual);
             this.$root.$on('unSummonContextual', this.unSummonContextual);
         }
     }
 
+    /**
+     * Some public helper function used to clamp a number between a min and a max
+     * @param v The value
+     * @param min Minimum limit
+     * @param max Maximum limit
+     * @returns {number} min if v < min, max if v > max, else v
+     */
     function clamp(v, min, max) {
         return Math.max(Math.min(v, max), min);
     }
 </script>
 
 <style scoped>
-
     .contextual-container {
         display: inline-block;
         position: absolute;
@@ -238,6 +267,7 @@
     }
 
 
+    /* Animation when the contextual appear and disappear */
     .fade-enter-active {
         animation: fade-animation 0.5s;
     }

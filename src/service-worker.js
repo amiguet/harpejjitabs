@@ -1,4 +1,4 @@
-console.log("yo from service worker");
+// Ce fichier n'est plus utilisé dans le projet
 
 workbox.setConfig({
   debug: true,

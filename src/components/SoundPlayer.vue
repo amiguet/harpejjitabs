@@ -4,7 +4,6 @@
 </template>
 
 <script>
-    //import {Synth} from '../js/audiosynth.js'
     import * as Tone from 'tone'
     import A2 from "../assets/samples/harp/A2.mp3";
     import A4 from "../assets/samples/harp/A4.mp3";
@@ -39,14 +38,26 @@
             }
         },
         methods: {
+            /**
+             * Play the sound of the note
+             * @param {String} note in format C2 or D#4
+             */
             playNote(note) {
                 this.synth.triggerAttackRelease(note, 1);
             },
+            /**
+             * Add a note to the playlist, it need to contains x, y, and note
+             * @param key
+             */
             addKey(key) {
                 this.playlist.push(key);
             },
+            /**
+             * Play a chord (playlist) simultaneously or sequentially
+             * @param {Double} freq the time between each note
+             */
             playChord(freq = 0) {
-
+                // Sorts the keys from left to right then top to bottom
                 let notes = this.playlist.sort((a, b) => { return b.y - a.y })
                     .sort((a, b) => { return a.x - b.x })
                     .map(a => a.note);

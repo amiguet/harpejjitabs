@@ -88,7 +88,7 @@
 
     export default {
         name: "Resizer",
-        data: function () {
+        data() {
             return {
                 x1: 0,
                 y1: 0,
@@ -100,7 +100,7 @@
                 widthGrab: 0,
                 heightGrab: 0,
 
-
+                // Reference to the corner currently dragged
                 dragged: null,
 
                 saved: {
@@ -109,10 +109,15 @@
                     x2: 0,
                     y2: 0
                 },
+                // Display the confirm button
                 displayConfirm: true
             }
         },
         methods: {
+            /**
+             * When the user start to drag a corner
+             * @param e Event
+             */
             startDrag(e) {
                 this.dragged = e.target;
                 document.addEventListener('mousemove', this.onMove, false);
@@ -124,8 +129,12 @@
                 this.$refs.grabZone.style.cursor = this.dragged.getAttribute('cursor');
                 e.preventDefault();
             },
+            /**
+             * When the user move the corner
+             * @param e Event
+             */
             onMove(e) {
-                let pos = getCursorPos(e);
+                let pos = getCursorPos(e); // Get the mouse position relative to the svg transformation
                 this.savePosition();
                 this[this.dragged.getAttribute('x')] = Math.floor(pos.x / this.string_spacing);
                 this[this.dragged.getAttribute('y')] = Math.floor((pos.y - this.frets_spacing / 2) / this.frets_spacing);
@@ -136,6 +145,11 @@
                 e.preventDefault();
                 this.displayConfirm = false;
             },
+            /**
+             * When the user release the corner
+             * Save the position and remove the listeners
+             * @param e
+             */
             stopDrag(e) {
                 document.removeEventListener('mousemove', this.onMove, false);
                 document.removeEventListener('mouseup', this.stopDrag, false);
@@ -154,6 +168,11 @@
                 this.displayConfirm = true;
                 e.preventDefault();
             },
+
+            /**
+             * When the user start to drag the rectangle selection
+             * @param e Event
+             */
             startDragRect(e) {
                 document.body.style.cursor = "grabbing";
                 this.$refs.grabZone.style.cursor = "grabbing";
@@ -168,6 +187,10 @@
                 document.addEventListener('touchend', this.stopDragRect, false);
                 e.preventDefault();
             },
+            /**
+             * When the user move the rectangle selection
+             * @param e Event
+             */
             onMoveRect(e) {
                 this.savePosition();
                 let pos = getCursorPos(e);
@@ -178,10 +201,14 @@
                 if (this.notValidPosition()) {
                     this.restorePosition();
                 }
-                //if (e instanceof MouseEvent)
                 e.preventDefault();
                 this.displayConfirm = false;
             },
+            /**
+             * When the user release the rectangle selection
+             * Save the position and remove the listeners
+             * @param e
+             */
             stopDragRect(e) {
                 document.body.style.cursor = "";
                 this.$refs.grabZone.style.cursor = "grab";
@@ -198,24 +225,37 @@
                 this.displayConfirm = true;
                 e.preventDefault();
             },
+            /**
+             * Create a temporary save of the position before each movement
+             */
             savePosition() {
                 this.saved.x1 = this.x1;
                 this.saved.y1 = this.y1;
                 this.saved.x2 = this.x2;
                 this.saved.y2 = this.y2;
             },
+            /**
+             * Restore the position if the new movement is not valid
+             */
             restorePosition() {
                 this.x1 = this.saved.x1;
                 this.y1 = this.saved.y1;
                 this.x2 = this.saved.x2;
                 this.y2 = this.saved.y2;
             },
+            /**
+             * Check if a current position is valid or not
+             * @returns {boolean} false if valid, true if not valid
+             */
             notValidPosition() {
                 if (this.x1 > this.x2 - 2 || this.y1 > this.y2 - 1 || this.x1 < 0 || this.x2 > this.getCurrentHarpejji.number_string + 1 || this.y1 < 0 || this.y2 > this.getCurrentHarpejji.number_frets) {
                     return true;
                 }
                 return false;
             },
+            /**
+             * If the size of the Harpejji change, check if the resizer is not out of bound
+             */
             fixPosition() {
                 let c = this.$store.state.harpejjis[this.currentHarpejji];
                 //console.log(this.getCurrentHarpejji.number_string); //Doesn't work every time, but why ?
@@ -251,6 +291,7 @@
             this.$root.$on('fixFrame', this.fixPosition);
         },
         computed: {
+            // Get some properties and getter from the VueX store
             ...mapState(['frets_spacing', 'string_spacing', 'padding', 'marker_width', 'marker_height', 'text_height', 'number_string', 'number_frets', 'number_string_default', 'number_frets_default', 'currentHarpejji']),
             ...mapGetters(['getCurrentHarpejji']),
             workzone() {

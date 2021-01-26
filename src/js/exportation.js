@@ -1,27 +1,27 @@
+/**
+ * Function that download the SVG of the tablature
+ * @param title
+ */
 export function downloadSVG(title) {
-
-    /*prepareCanvas(() => {
-        saveSvg(document.getElementById('tablature'), 'tablature_' + title + '.svg');
-    });*/
     let svg = prepareCanvas();
     saveSvg(svg, 'tablature_' + title + '.svg');
 }
 
+/**
+ * Function that download the PNG of the tablature
+ * @param title
+ */
 export function downloadPNG(title) {
-
-
     let svg = prepareCanvas();
     svgToPng(svg, (imgData) => {
         downloadFromLink(imgData, 'tablature_' + title + '.png');
     });
-    /*prepareCanvas((t, size) => {
-        svgToPng(t, size, (imgData) => {
-            downloadFromLink(imgData, 'tablature_' + title + '.png');
-        });
-    });*/
 }
 
-// Create a blob from a svg element
+/**
+ * Create a blob from a svg element
+ * @param svgEl SVG element (cleaned)
+ */
 function svgToUrl(svgEl) {
     svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     let svgData = svgEl.outerHTML;
@@ -30,19 +30,26 @@ function svgToUrl(svgEl) {
     return URL.createObjectURL(svgBlob);
 }
 
-// Download an svg
+/**
+ * Download an svg
+ * @param svgEl SVG element (cleaned)
+ * @param name of the file
+ */
 function saveSvg(svgEl, name) {
     let svgUrl = svgToUrl(svgEl);
     downloadFromLink(svgUrl, name);
 }
 
-// Convert a svg element to a png image
+/**
+ * Convert a svg element to a png image
+ * @param svgEl SVG element (cleaned)
+ * @param callback
+ */
 function svgToPng(svgEl, callback) {
     let size = {
         width: svgEl.getAttribute('width'),
         height: svgEl.getAttribute('height')
     };
-    console.log(size);
     const url = svgToUrl(svgEl);
     svgUrlToPng(url, size, (imgData) => {
         callback(imgData);
@@ -50,16 +57,17 @@ function svgToPng(svgEl, callback) {
     });
 }
 
-// Convert from a svg url to a png image
+/**
+ * Convert from a svg url to a png image
+ * @param svgUrl url du SVG
+ * @param size of the SVG
+ * @param callback
+ */
 function svgUrlToPng(svgUrl, size, callback) {
     const svgImage = document.createElement('img');
-    // imgPreview.style.position = 'absolute';
-    // imgPreview.style.top = '-9999px';
     document.getElementById('hidden').appendChild(svgImage);
     svgImage.onload = function () {
         const canvas = document.createElement('canvas');
-        //canvas.width = svgImage.clientWidth;
-        //canvas.height = svgImage.clientHeight;
         let pixelRatio = window.devicePixelRatio || 1;
         canvas.width = size.width * pixelRatio;
         canvas.height = size.height * pixelRatio;
@@ -79,14 +87,11 @@ function svgUrlToPng(svgUrl, size, callback) {
     svgImage.src = svgUrl;
 }
 
-/*// return another svg element with default scale and translate
-function resetSize(svgEl, nodeIdToReset) {
-    let s = svgEl.cloneNode(true);
-    let w = s.getElementById(nodeIdToReset);
-    w.setAttribute("transform", "");
-    return s;
-}*/
-
+/**
+ * Download to the user a file from an url
+ * @param url of the file
+ * @param name of the file
+ */
 function downloadFromLink(url, name) {
     let downloadLink = document.createElement("a");
     downloadLink.href = url;
@@ -97,6 +102,10 @@ function downloadFromLink(url, name) {
     document.getElementById('hidden').removeChild(downloadLink);
 }
 
+/**
+ * return a clean SVG ready for exportation
+ * @returns {SVGElement}
+ */
 function prepareCanvas() {
     let svgHTML = document.getElementById('tablature').outerHTML;
     let frm = document.createElement('iframe');
@@ -138,7 +147,7 @@ function prepareCanvas() {
     tablature.setAttribute('width', wWidth);
     tablature.setAttribute('height', wHeight);
 
-
+    // delete all the useless tags
     let remainUselessTag = true;
     while (remainUselessTag) {
         remainUselessTag = false;
@@ -161,36 +170,3 @@ function prepareCanvas() {
 
     return doc2.body.children[0];
 }
-
-/*function prepareCanvas(callback, that) {
-    that.$root.$emit('prepareForExportation');
-    setTimeout(() => {
-        let w = document.getElementById('workzone');
-        let t = document.getElementById('tablature');
-        let tr = "scale(1) translate(" + -that.x1 * that.string_spacing + "px, " + -that.y1 * that.frets_spacing + "px)";
-        let oldStyle = w.style.transform;
-        w.style.transform = tr;
-
-        let size = {
-            width: w.getBoundingClientRect().width,
-            height: w.getBoundingClientRect().height,
-        };
-
-        let previousSize = {
-            width: t.getAttribute('width'),
-            height: t.getAttribute('height')
-        };
-
-        t.setAttribute("width", size.width);
-        t.setAttribute("height", size.height);
-
-        callback(t, size);
-
-        w.style.transform = oldStyle;
-        t.setAttribute("width", previousSize.width);
-        t.setAttribute("height", previousSize.height);
-    }, 1);
-
-    // Fix for Safari
-    //w.setAttribute("transform", w.getAttribute("transform"));
-}*/

@@ -45,6 +45,10 @@
             }
         },
         methods: {
+            /**
+             * When the user begin to drag the mouse on the white surface
+             * @param e Event
+             */
             onMouseDown(e) {
                 this.$root.$emit('unselectAll');
 
@@ -52,7 +56,6 @@
                 document.addEventListener('mouseup', this.onMouseUp);
                 document.addEventListener('touchmove', this.onMouseMove);
                 document.addEventListener('touchend', this.onMouseUp);
-                console.log("down");
                 let pos = getCursorPos(e);
                 this.x1 = pos.x;
                 this.y1 = pos.y;
@@ -60,6 +63,10 @@
                 this.y2 = pos.y;
                 this.isVisible = true;
             },
+            /**
+             * When the user release the drag
+             * Select all the key in the selection, summon contextual and remove the listeners
+             */
             onMouseUp(e) {
                 document.removeEventListener('mousemove', this.onMouseMove);
                 document.removeEventListener('mouseup', this.onMouseUp);
@@ -75,18 +82,28 @@
                 this.$root.$emit('summonContextual');
                 this.isVisible = false;
                 e.preventDefault();
-                console.log("up");
             },
+            /**
+             * When the user move the selection corner
+             */
             onMouseMove(e) {
                 let pos = getCursorPos(e);
                 this.x2 = pos.x;
                 this.y2 = pos.y;
                 e.preventDefault();
             },
+            /**
+             * If the user press backspace when marks are selected, delete them all
+             */
             deleteSelected() {
                 this.$root.$emit('deleteKeys', true);
                 this.$root.$emit('unselectAll');
             },
+            /**
+             * move the selected key to a new position
+             * @param decX the x decalage relatif to the start position
+             * @param decY the y decalage relatif to the start position
+             */
             moveSelected(decX, decY) {
                 let allKeySelected = this.$store.state.selected;
 
@@ -102,7 +119,8 @@
                         color: key.$refs.finger.color,
                         hand: key.$refs.finger.hand
                     });
-                    key.isVisible = false;
+                    //key.isVisible = false;
+                    key.toggleVisible(false);
                 }
 
                 this.$root.$emit('unselectAll');
@@ -121,24 +139,13 @@
                     }
                 }
 
-                /*// Delete all the previous keys
-                for (let mark of moving) {
-                    let hasBeenReplaced = false; // If a key has already been replaced by another key during the copy, must not delete it
-                    for (let mark2 of moving) {
-                        if (mark.x === mark2.x + decX && mark.y === mark2.y + decY) {
-                            hasBeenReplaced = true;
-                        }
-                    }
-                    if (!hasBeenReplaced) {
-                        for (let key of tablature.$refs.keys) {
-                            if (mark.x === key.x && mark.y === key.y) {
-                                key.isVisible = false;
-                            }
-                        }
-                    }
-                }*/
                 this.$root.$emit('summonContextual');
             },
+            /**
+             * When the user start dragging a selected group of marks
+             * isMoving = true => create the ghosts marks
+             * @param e Event
+             */
             startMoving(e) {
                 document.body.style.cursor = "grabbing";
                 this.isMoving = true;
@@ -153,7 +160,10 @@
                 document.addEventListener('touchend', this.stopDragSelection, false);
                 e.preventDefault();
             },
-
+            /**
+             * Change the position of the ghost marks
+             * @param e Event
+             */
             onMoveSelection(e) {
                 let pos = getCursorPos(e);
                 let difX = pos.x - this.mouseX + 10;
@@ -162,6 +172,11 @@
                 this.movingY = this.frets_spacing * Math.floor(difY / this.frets_spacing);
                 e.preventDefault();
             },
+            /**
+             * When the user release the selected marks
+             * disable the ghosts marks and move the selected key to the new position
+             * @param e Event
+             */
             stopDragSelection(e) {
                 document.body.style.cursor = "";
                 this.isMoving = false;
@@ -195,9 +210,7 @@
             ...mapState(['frets_spacing', 'string_spacing']),
         },
         mounted() {
-            //document.getElementById('background').addEventListener('mousedown', this.onMouseDown);
             document.getElementById('background').addEventListener('mousedown', this.onMouseDown, {passive: true});
-            //document.getElementById('background').addEventListener('touchstart', this.onMouseDown);
             document.getElementById('background').addEventListener('touchstart', this.onMouseDown, {passive: true});
             this.$root.$on('unselectAll', () => {
                 this.$store.commit('resetSelection');

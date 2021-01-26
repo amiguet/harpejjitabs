@@ -54,10 +54,13 @@
 <script>
     export default {
         name: "Informations",
-        data: () => ({
-            showDialog: false
-        }),
+        data() {
+            return {
+                showDialog: false
+            }
+        },
         mounted() {
+            // Listener when the user click to show the menu
             this.$root.$on('displayInformations', () => {
                 this.showDialog = true;
             })
