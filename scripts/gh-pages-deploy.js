@@ -4,6 +4,9 @@ const fs = require("fs");
 const delay = ms => new Promise(res => setTimeout(res, ms));
 (async () => {
   try {
+    try {
+      await execa("git", ["branch", "-D", "gh-pages"]);
+    } catch (e) {}
     const folderName = fs.existsSync("dist") ? "dist" : "build";
     await execa("git", ["checkout", "--orphan", "gh-pages"]);
     // eslint-disable-next-line no-console
