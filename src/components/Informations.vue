@@ -38,12 +38,12 @@
                 <h3>Credit</h3>
                 <div style="text-align: center">
                     <p>Developped by Nicolas Laoun</p>
-                    <p>Supervised by <a href="http://www.matthieuamiguet.ch/">Matthieu Amiguet</a> and David Grunenwald</p>
-                    <a href="https://www.he-arc.ch/">
+                    <p>Supervised by <a href="http://www.matthieuamiguet.ch/" target="_blank">Matthieu Amiguet</a> and David Grunenwald</p>
+                    <a href="https://www.he-arc.ch/" target="_blank" >
                         <img src="img/logo_HE-Arc.png" alt="Logo HE-Arc" width="200px">
                     </a>
                     <span style="width: 30px; display: inline-block;"></span>
-                    <a href="https://www.lescheminsdetraverse.net/">
+                    <a href="https://www.lescheminsdetraverse.net/" target="_blank">
                         <img src="img/logo_lescheminsdetraverse.svg" alt="Logo Les Chemins de Traverse" width="200px">
                     </a>
                 </div>
