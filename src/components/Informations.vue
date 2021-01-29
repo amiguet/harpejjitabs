@@ -42,7 +42,6 @@
                     <a href="https://www.he-arc.ch/" target="_blank" >
                         <img src="img/logo_HE-Arc.png" alt="Logo HE-Arc" width="200px">
                     </a>
-                    <span style="width: 30px; display: inline-block;"></span>
                     <a href="https://www.lescheminsdetraverse.net/" target="_blank">
                         <img src="img/logo_lescheminsdetraverse.svg" alt="Logo Les Chemins de Traverse" width="200px">
                     </a>
@@ -93,6 +92,9 @@
         color: #448aff;
         font-weight: 500;
         cursor: pointer;
+    }
 
+    img {
+        margin: 10px;
     }
 </style>
