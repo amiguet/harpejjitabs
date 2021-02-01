@@ -97,6 +97,8 @@ let loadVersion = {
                 'y2': data.y2,
             }
         );
+        that.$root.$emit('updateResizerPosition');
+
         that.$store.commit('changeHarpejji', data.s);
         setTimeout(() => {
             that.$root.$emit('deleteKeys');

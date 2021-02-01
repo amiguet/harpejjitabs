@@ -280,15 +280,19 @@
             },
             exitEditZone() {
                 this.$root.$emit('editZone');
+            },
+            updatedPosition() {
+                this.x1 = this.$store.state.zone.x1;
+                this.y1 = this.$store.state.zone.y1;
+                this.x2 = this.$store.state.zone.x2;
+                this.y2 = this.$store.state.zone.y2;
             }
-
         },
+
         mounted() {
-            this.x1 = this.$store.state.zone.x1;
-            this.y1 = this.$store.state.zone.y1;
-            this.x2 = this.$store.state.zone.x2;
-            this.y2 = this.$store.state.zone.y2;
+            this.updatedPosition();
             this.$root.$on('fixFrame', this.fixPosition);
+            this.$root.$on('updateResizerPosition', this.updatedPosition);
         },
         computed: {
             // Get some properties and getter from the VueX store
