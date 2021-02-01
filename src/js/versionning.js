@@ -90,8 +90,6 @@ let loadVersion = {
     },
     "1.3": function (data, that) {
         that.editingZone = false;
-        that.$store.dispatch('changeTitle', data.t.v);
-        that.$refs.title.color = data.t.c;
         that.$store.dispatch('changeZone', {
                 'x1': data.x1,
                 'y1': data.y1,
@@ -111,6 +109,8 @@ let loadVersion = {
                     key.$refs.finger.editing = false;
                 }
             }
+            that.$store.dispatch('changeTitle', data.t.v);
+            that.$refs.title.color = data.t.c;
             that.calculateSize();
         }, 0);
     }
