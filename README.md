@@ -8,15 +8,15 @@ Try it [there](https://amiguet.github.io/harpejjitabs/)!
 
 - make tablatures with finger numbers and title:
 
-    ![example: C minor chord](pics/tablature_C minor.png)
+    ![example: C minor chord](pics/tablature_C_minor.png)
 
 - Add colors, include fret and string numbers, note names and harpejji model:
 
-    ![example: C minor chord](pics/tablature_C minor_fancy.png)
+    ![example: C minor chord](pics/tablature_C_minor_fancy.png)
 
 - Left hand/Right hand notation:
 
-    ![example: C minor chord](pics/tablature_C minor_2hands.png)
+    ![example: C minor chord](pics/tablature_C_minor_2hands.png)
 
 - Save/load files, export to svg/png.
 
