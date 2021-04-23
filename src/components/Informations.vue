@@ -38,8 +38,13 @@
                 <h3>Credit</h3>
                 <div style="text-align: center">
                     <p>Developped by Nicolas Laoun</p>
-                    <p>Supervised by <a href="http://www.matthieuamiguet.ch/" target="_blank">Matthieu Amiguet</a> and David Grunenwald</p>
-                    <a href="https://www.he-arc.ch/" target="_blank" >
+                    <p>Supervised by <a href="http://www.matthieuamiguet.ch/" target="_blank">Matthieu Amiguet</a> and
+                        David Grunenwald</p>
+
+                    <a href="https://www.marcodi.com/" target="_blank">
+                        <img src="img/logo_Marcodi.webp" alt="Logo Marcodi" width="300px">
+                    </a>
+                    <a href="https://www.he-arc.ch/" target="_blank">
                         <img src="img/logo_HE-Arc.png" alt="Logo HE-Arc" width="200px">
                     </a>
                     <a href="https://www.lescheminsdetraverse.net/" target="_blank">
@@ -80,6 +85,7 @@
     ul {
         list-style-type: none;
     }
+
     @media screen and (min-width: 600px) {
         .dialog-content {
             width: 500px;

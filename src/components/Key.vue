@@ -162,10 +162,11 @@
             octave() {
                 // Constant 2 and 3 of the current Harpejji Size
                 let c2 = this.getCurrentHarpejji.c2;
+                let c2_2 = this.getCurrentHarpejji.c2_2;
                 let c3 = this.getCurrentHarpejji.c3;
 
 
-                return Math.floor((this.x + c2 - Math.floor(this.y / 2)) / 6) + c3;
+                return Math.floor((this.x + c2 - Math.floor((this.y + c2_2) / 2)) / 6) + c3;
             },
             /**
              * Return the note name with octave like C2 or D#4

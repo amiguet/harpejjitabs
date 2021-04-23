@@ -20,23 +20,26 @@ export default new Vuex.Store({
             U12: {
                 number_string: 12,
                 number_frets: 15,
-                c1: 2,
-                c2: 1,
-                c3: 3
+                c1: 2, //note
+                c2: 1, //octave over note
+                c3: 3, //octave
+                c2_2: 1 //demi_decalage
             },
             G16: {
                 number_string: 16,
                 number_frets: 19,
                 c1: 6,
                 c2: 3,
-                c3: 3
+                c3: 3,
+                c2_2: 1
             },
             K24: {
                 number_string: 24,
                 number_frets: 15,
                 c1: -1,
                 c2: 5,
-                c3: 1
+                c3: 1,
+                c2_2: 1
             }
         },
 
@@ -50,6 +53,7 @@ export default new Vuex.Store({
         title: '',
         showNumbers: false,
         showNotes: false,
+        showBorder: false,
         playNotes: true,
 
         selected: [],
@@ -75,6 +79,9 @@ export default new Vuex.Store({
         },
         updateShowNotes(state, showNotes) {
             state.showNotes = showNotes;
+        },
+        updateShowBorder(state, showBorder) {
+            state.showBorder = showBorder;
         },
         updatePlayNotes(state, playNotes) {
             state.playNotes = playNotes;

@@ -86,6 +86,14 @@
                     <span class="md-list-item-text">Show notes name</span>
                 </md-list-item>
 
+                <md-list-item @click="showBorder = !showBorder" title="Show frame border">
+                    <span class="stack">
+                        <font-awesome-icon :icon="['far', 'square']" size="lg" class="far-square"/>
+                        <font-awesome-icon v-if="!showBorder" icon="slash" size="lg"/>
+                    </span>
+                    <span class="md-list-item-text">Show frame border</span>
+                </md-list-item>
+
                 <md-list-item @click="playNotes = !playNotes" title="Play notes on click (M)">
                     <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
                     <span class="md-list-item-text">Play notes on click</span>
@@ -204,6 +212,14 @@
                     return this.$store.commit('updateShowNotes', value);
                 }
             },
+            showBorder: {
+                get() {
+                    return this.$store.state.showBorder;
+                },
+                set(value) {
+                    return this.$store.commit('updateShowBorder', value);
+                }
+            },
             playNotes: {
                 get() {
                     return this.$store.state.playNotes;
@@ -302,6 +318,10 @@
         width: 100%;
         overflow: hidden;
         height: 48px;
+    }
+
+    .far-square {
+        margin-left: 3px;
     }
 </style>
 
