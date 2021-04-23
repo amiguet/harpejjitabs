@@ -53,6 +53,7 @@ export default new Vuex.Store({
         title: '',
         showNumbers: false,
         showNotes: false,
+        showBorder: false,
         playNotes: true,
 
         selected: [],
@@ -78,6 +79,9 @@ export default new Vuex.Store({
         },
         updateShowNotes(state, showNotes) {
             state.showNotes = showNotes;
+        },
+        updateShowBorder(state, showBorder) {
+            state.showBorder = showBorder;
         },
         updatePlayNotes(state, playNotes) {
             state.playNotes = playNotes;

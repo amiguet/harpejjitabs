@@ -212,6 +212,8 @@
         mounted() {
             document.getElementById('background').addEventListener('mousedown', this.onMouseDown, {passive: true});
             document.getElementById('background').addEventListener('touchstart', this.onMouseDown, {passive: true});
+            document.getElementById('background2').addEventListener('mousedown', this.onMouseDown, {passive: true});
+            document.getElementById('background2').addEventListener('touchstart', this.onMouseDown, {passive: true});
             this.$root.$on('unselectAll', () => {
                 this.$store.commit('resetSelection');
                 this.$root.$emit('unSummonContextual')
