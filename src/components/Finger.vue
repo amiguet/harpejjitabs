@@ -44,6 +44,10 @@
              * When the user click on a mark, a textfield appears to allow modification
              */
             startEdit() {
+                if (this.$store.state.isFreeMode) {
+                    this.$parent.playNote();
+                    return;
+                }
                 this.editing = true;
                 // To be able to display the keyboard on IOS, we need to focus the element on the click event.
                 // We need to create a temporary input, to be able to focus it with the event

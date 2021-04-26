@@ -58,7 +58,7 @@
              * @param newValue
              */
             toggleVisible(newValue = null) {
-                if (this.$parent.editingZone) return;
+                if (this.$parent.editingZone || this.isFreeMode) return;
 
                 if (this.isVisible !== newValue) {
                     this.isVisible = !this.isVisible;
@@ -117,7 +117,7 @@
             }
         },
         computed: {
-            ...mapState(['showNotes', 'playNotes']),
+            ...mapState(['showNotes', 'playNotes', 'isFreeMode']),
             ...mapGetters(['getCurrentHarpejji']),
             isBlack() {
                 /*

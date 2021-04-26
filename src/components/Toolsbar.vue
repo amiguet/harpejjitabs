@@ -82,6 +82,13 @@
                         <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"
                                id="playDelay"/></span>
                 </md-list-item>
+                <md-list-item @click="isFreeMode = !isFreeMode" title="Free mode">
+                    <span class="stack" :class="{'danger': isFreeMode}">
+                        <font-awesome-icon :icon="['far', 'play-circle']" size="lg"  class="far-circle"/>
+                        <font-awesome-icon v-if="!isFreeMode" icon="slash" size="lg"/>
+                    </span>
+                    <span class="md-list-item-text">Free mode</span>
+                </md-list-item>
                 <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
@@ -254,6 +261,14 @@
                     return this.$store.commit('updatePlayNotes', value);
                 }
             },
+            isFreeMode: {
+                get() {
+                    return this.$store.state.isFreeMode;
+                },
+                set(value) {
+                    return this.$store.commit('changeFreeMode', value);
+                }
+            },
             ...mapState(['currentHarpejji'])
         },
         mounted() {
@@ -350,9 +365,15 @@
     .far-square {
         margin-left: 3px;
     }
+    .far-circle {
+        margin-left: 2px;
+    }
 
     .text-icon-small {
         font-size: 12px;
+    }
+    .danger {
+        color: #D32F2F;
     }
 </style>
 
