@@ -12,9 +12,24 @@
                 </md-list-item>
 
                 <md-list-item @click="newTablature" title="New">
-                    <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
+                    <font-awesome-icon icon="file"/>
+                    <span class="md-list-item-text">New</span>
+                    <!--<md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
                             <font-awesome-icon icon="file"/>
                             <span class="md-list-item-text">New</span>
+                        <md-menu-content>
+                            <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
+                            <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
+                        </md-menu-content>
+                    </md-menu>-->
+                </md-list-item>
+
+                <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji size">
+                    <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true"
+                             :md-active.sync="showHarpejjiMenu">
+                        <span class="text-icon text-icon-small">{{ currentHarpejji }}</span>
+                        <span class="md-list-item-text">Change Harpejji size</span>
                         <md-menu-content>
                             <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
                             <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
@@ -64,7 +79,15 @@
                     <font-awesome-icon icon="music" size="lg"/>
                     <span class="md-list-item-text">
                         <label for="playDelay">Play sequentially ({{ playDelay }}s)</label>
-                        <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;" id="playDelay"/></span>
+                        <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"
+                               id="playDelay"/></span>
+                </md-list-item>
+                <md-list-item @click="isFreeMode = !isFreeMode" title="Free mode">
+                    <span class="stack" :class="{'danger': isFreeMode}">
+                        <font-awesome-icon :icon="['far', 'play-circle']" size="lg"  class="far-circle"/>
+                        <font-awesome-icon v-if="!isFreeMode" icon="slash" size="lg"/>
+                    </span>
+                    <span class="md-list-item-text">Free mode</span>
                 </md-list-item>
                 <md-list-item>
                     <md-divider></md-divider>
@@ -118,6 +141,8 @@
 <script>
     import * as Exportation from '../js/exportation.js'
     import * as Shortcut from '../js/shortcuts.js'
+    import { mapState } from 'vuex'
+
 
     export default {
         name: "Toolsbar",
@@ -188,8 +213,16 @@
                 this.showHarpejjiMenu = true;
                 this.$store.commit('hasBeenSaved');
             },
+
             changeHarpejji(h) {
+                let firstKeyName = window.tablature.getFirstVisibleKey();
+                let cloned = window.selector.cloneSelected(window.tablature.getAllKeys());
+
                 this.$store.commit('changeHarpejji', h);
+                setTimeout(() => {
+                    window.resizer.reframeToNote(...firstKeyName, cloned);
+                }, 1)
+
             },
             displayInformations() {
                 this.$root.$emit('displayInformations');
@@ -227,7 +260,16 @@
                 set(value) {
                     return this.$store.commit('updatePlayNotes', value);
                 }
-            }
+            },
+            isFreeMode: {
+                get() {
+                    return this.$store.state.isFreeMode;
+                },
+                set(value) {
+                    return this.$store.commit('changeFreeMode', value);
+                }
+            },
+            ...mapState(['currentHarpejji'])
         },
         mounted() {
             this.$root.$on('isTooSmall', this.changeIsTooSmall);
@@ -258,7 +300,6 @@
         width: 24px;
 
     }
-
 
 
     .md-menu > *:first-child:not(.md-divider):not(.md-menu) {
@@ -297,6 +338,7 @@
     .smaller:not(.md-active) ul li:not(:first-child) {
         display: none;
     }
+
     .smaller:not(.md-active) ul div:not(:first-child) {
         display: none;
     }
@@ -323,10 +365,20 @@
     .far-square {
         margin-left: 3px;
     }
+    .far-circle {
+        margin-left: 2px;
+    }
+
+    .text-icon-small {
+        font-size: 12px;
+    }
+    .danger {
+        color: #D32F2F;
+    }
 </style>
 
 <style>
-    .md-list-item-container:not(.md-list-item-default):not([disabled])>.md-list-item-content {
+    .md-list-item-container:not(.md-list-item-default):not([disabled]) > .md-list-item-content {
         height: 48px;
     }
 </style>

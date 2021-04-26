@@ -75,7 +75,8 @@
                     fill="#448aff"
                     style="font-size: 23px; cursor: pointer"
                     @click="exitEditZone"
-                    >Confirm</text>
+            >Confirm
+            </text>
         </transition>
 
     </g>
@@ -278,6 +279,61 @@
                     'y2': this.y2,
                 });
             },
+
+            reframeToNote(note, octave, cloned) {
+                let x1 = this.x1;
+                let y1 = this.y1;
+                let difX = this.x2 - this.x1;
+                let difY = this.y2 - this.y1;
+
+                let c = this.$store.state.harpejjis[this.currentHarpejji];
+
+                function getCoordinate() {
+                    for (let j = 0; j < c.number_frets - difY; j++)
+                    {
+                        for (let i = 0; i < c.number_string - difX; i++) {
+                            if (window.tablature.getNoteNameAt(i, j) === note && window.tablature.getNoteOctaveAt(i, j) === octave) {
+                                return {i, j};
+                            }
+                        }
+                    }
+
+                    for (let j = y1; j >= 0; j--)
+                    {
+                        for (let i = x1; i >= 0; i--) {
+                            if (window.tablature.getNoteNameAt(i, j) === note) {
+                                return {i, j};
+                            }
+                        }
+                    }
+
+                    for (let j = 0; j < c.number_frets - difY; j++)
+                    {
+                        for (let i = 0; i < c.number_string - difX; i++) {
+                            if (window.tablature.getNoteNameAt(i, j) === note) {
+                                return {i, j};
+                            }
+                        }
+                    }
+                    return {x1, y1};
+                }
+                let coordinate = getCoordinate();
+
+
+                let decX = coordinate.i - this.x1;
+                let decY = coordinate.j - this.y1;
+
+                if (decX !== 0 || decY !== 0) {
+
+                    this.x2 = coordinate.i + difX;
+                    this.y2 = coordinate.j + difY;
+                    this.x1 = coordinate.i;
+                    this.y1 = coordinate.j;
+                    this.fixPosition();
+                    window.selector.moveSelected(decX, decY, cloned, false);
+                }
+            },
+
             exitEditZone() {
                 this.$root.$emit('editZone');
             },
@@ -290,6 +346,7 @@
         },
 
         mounted() {
+            window.resizer = this;
             this.updatedPosition();
             this.$root.$on('fixFrame', this.fixPosition);
             this.$root.$on('updateResizerPosition', this.updatedPosition);
@@ -317,6 +374,7 @@
     .fade-enter-active {
         animation: fade-animation 0.6s;
     }
+
     @keyframes fade-animation {
         from {
             opacity: 0;

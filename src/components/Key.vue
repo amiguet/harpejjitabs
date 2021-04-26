@@ -58,7 +58,7 @@
              * @param newValue
              */
             toggleVisible(newValue = null) {
-                if (this.$parent.editingZone) return;
+                if (this.$parent.editingZone || this.isFreeMode) return;
 
                 if (this.isVisible !== newValue) {
                     this.isVisible = !this.isVisible;
@@ -117,7 +117,7 @@
             }
         },
         computed: {
-            ...mapState(['showNotes', 'playNotes']),
+            ...mapState(['showNotes', 'playNotes', 'isFreeMode']),
             ...mapGetters(['getCurrentHarpejji']),
             isBlack() {
                 /*
@@ -189,16 +189,6 @@
             this.$root.$on('unselectAll', this.unselectAll);
             this.$root.$on('selectKey', this.selectKey);
         }
-    }
-
-    /**
-     * Some public helper function used to modulo correctly with negative number
-     * @param n
-     * @param m
-     * @returns {number}
-     */
-    function mod(n, m) {
-        return ((n % m) + m) % m;
     }
 </script>
 

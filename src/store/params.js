@@ -55,6 +55,7 @@ export default new Vuex.Store({
         showNotes: false,
         showBorder: false,
         playNotes: true,
+        isFreeMode: false,
 
         selected: [],
         hasBeenModified: false
@@ -100,6 +101,9 @@ export default new Vuex.Store({
         },
         hasBeenSaved(state) {
             state.hasBeenModified = false;
+        },
+        changeFreeMode(state, mode) {
+            state.isFreeMode = mode;
         }
     },
     actions: {

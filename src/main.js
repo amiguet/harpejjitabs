@@ -15,11 +15,11 @@ Vue.use(MdDialog);
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight, faFile, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
-import { faSquare as farSquare } from '@fortawesome/free-regular-svg-icons'
+import { faSquare as farSquare, faPlayCircle as farPlayCircle } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import './registerServiceWorker'
 
-library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight, faFile, faInfoCircle, farSquare);
+library.add(faBars, faExpand, faFileImage, faFileCode, faFileDownload, faFileUpload, faPlay, faMusic, faPhoneVolume, faVolumeUp, faVolumeMute, faListOl, faSlash, faChevronCircleLeft, faCircle, faChevronCircleRight, faFile, faInfoCircle, farSquare, farPlayCircle);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

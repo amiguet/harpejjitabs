@@ -99,14 +99,13 @@
                 this.$root.$emit('deleteKeys', true);
                 this.$root.$emit('unselectAll');
             },
-            /**
-             * move the selected key to a new position
-             * @param decX the x decalage relatif to the start position
-             * @param decY the y decalage relatif to the start position
-             */
-            moveSelected(decX, decY) {
-                let allKeySelected = this.$store.state.selected;
 
+            /**
+             * Clone the arrays of key
+             * @param allKeySelected array of key
+             * @return [] an clone
+             */
+            cloneSelected(allKeySelected) {
                 let tablature = this.$parent; //Get the tablature component
 
                 // Retrieve all mark that need to move
@@ -122,6 +121,21 @@
                     //key.isVisible = false;
                     key.toggleVisible(false);
                 }
+                return moving;
+            },
+            /**
+             * move the selected key to a new position
+             * @param decX the x decalage relatif to the start position
+             * @param decY the y decalage relatif to the start position
+             * @param moving an optional array of cloned keys
+             */
+            moveSelected(decX, decY, moving = null, wantToSelection = true) {
+                let tablature = this.$parent; //Get the tablature component
+                if (moving === null) {
+                    let allKeySelected = this.$store.state.selected;
+                    moving = this.cloneSelected(allKeySelected);
+                }
+                console.log(moving);
 
                 this.$root.$emit('unselectAll');
 
@@ -129,17 +143,23 @@
                 for (let mark of moving) {
                     for (let key of tablature.$refs.keys) {
                         if (mark.x + decX === key.x && mark.y + decY === key.y) {
+                            console.log("added key at " + key.x + " " + key.y);
+                            console.log("from " + mark.x + " " + mark.y);
+                            console.log("dec: " + decX + " " + decY);
                             key.isVisible = true;
                             key.$refs.finger.value = mark.value;
                             key.$refs.finger.color = mark.color;
                             key.$refs.finger.hand = mark.hand;
-                            key.$refs.finger.isSelected = true;
-                            this.$store.commit('addToSelection', key);
+
+                            if (wantToSelection) {
+                                key.$refs.finger.isSelected = true;
+                                this.$store.commit('addToSelection', key);
+                            }
                         }
                     }
                 }
-
-                this.$root.$emit('summonContextual');
+                if (wantToSelection)
+                    this.$root.$emit('summonContextual');
             },
             /**
              * When the user start dragging a selected group of marks
@@ -220,6 +240,7 @@
             });
             this.$root.$on('startMoving', this.startMoving);
             Shortcut.on("backspace", this.deleteSelected);
+            window.selector = this;
         }
     }
 </script>

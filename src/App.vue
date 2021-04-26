@@ -13,10 +13,10 @@
         <Informations></Informations>
     </div>
 </template>
-
 <script>
-    import Tablature from './components/Tablature.vue'
-    import Toolsbar from './components/Toolsbar.vue'
+    import './js/util.js';
+    import Tablature from './components/Tablature.vue';
+    import Toolsbar from './components/Toolsbar.vue';
     import Contextual from "./components/Contextual.vue";
     import SoundPlayer from "@/components/SoundPlayer";
     import Informations from "@/components/Informations";
