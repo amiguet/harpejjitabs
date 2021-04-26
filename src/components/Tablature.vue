@@ -24,7 +24,7 @@
                             style="fill:black;stroke-width:1px;stroke:#CCC">
                     </line>
 
-                    <rect v-if="showBorder"
+                    <rect v-show="showBorder"
                           :x="decX * string_spacing+0.5"
                           :y="decY * frets_spacing+0.5"
                           :width="frets_size-1" :height="string_size + 30 - 1"
@@ -218,6 +218,39 @@
                 }
                 this.$root.$emit('playChord', freq);
             },
+
+            /**
+             * @return [] the first visible notes
+             */
+            getFirstVisibleKey() {
+                return [this.getNoteNameAt(this.x1, this.y1), this.getNoteOctaveAt(this.x1, this.y1)];
+            },
+
+            getAllKeys() {
+                let keys = [];
+                for (let key of this.$refs.keys) {
+                    if (key.isVisible) {
+                        keys.push(key);
+                        console.log("is visible !!!");
+                    }
+                }
+                console.log(keys);
+                return keys;
+            },
+
+            getNoteNameAt(x, y) {
+                let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+                // Constant 1 of the current Harpejji size
+                let c1 = this.getCurrentHarpejji.c1;
+                return notes[mod(x * 2 + c1 - y, notes.length)];
+            },
+            getNoteOctaveAt(x, y) {
+                // Constant 2 and 3 of the current Harpejji Size
+                let c2 = this.getCurrentHarpejji.c2;
+                let c2_2 = this.getCurrentHarpejji.c2_2;
+                let c3 = this.getCurrentHarpejji.c3;
+                return Math.floor((x + c2 - Math.floor((y + c2_2) / 2)) / 6) + c3;
+            }
         },
         computed: {
             number_frets() {
@@ -292,6 +325,7 @@
             this.$root.$on('needResize', this.calculateSize);
             this.$root.$on('changeShowNumbers', this.changeShowNumbers);
             this.$root.$on('setupChord', this.setupChord);
+            window.tablature = this;
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
@@ -313,7 +347,7 @@
                 this.calculateSize();
             },
             currentHarpejji() {
-                this.$root.$emit('fixFrame');
+                //this.$root.$emit('fixFrame');
                 setTimeout(() => {
                     this.calculateSize();
                 }, 1);

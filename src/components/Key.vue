@@ -190,16 +190,6 @@
             this.$root.$on('selectKey', this.selectKey);
         }
     }
-
-    /**
-     * Some public helper function used to modulo correctly with negative number
-     * @param n
-     * @param m
-     * @returns {number}
-     */
-    function mod(n, m) {
-        return ((n % m) + m) % m;
-    }
 </script>
 
 <style scoped>
