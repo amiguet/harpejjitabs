@@ -39,7 +39,7 @@ export default new Vuex.Store({
                 c1: -1,
                 c2: 5,
                 c3: 1,
-                c2_2: 1
+                c2_2: 0
             }
         },
 
