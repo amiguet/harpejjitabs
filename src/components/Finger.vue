@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <g v-if="isVisible">
+        <g v-if="isVisible && !isFreeMode">
             <circle r="10" cy="20" fill="transparent" stroke="#00B0FF" opacity="1">
                 <animate attributeName="r" values="12;20" dur="1s" begin="indefinite" :id="'anim' + note"></animate>
                 <animate attributeName="opacity" values="1;0" dur="1s" :begin="'anim' + note + '.begin'"></animate>
@@ -125,6 +125,10 @@
              */
             allProperty() {
                 return `${this.hand}|${this.color}|${this.value}`;
+            },
+
+            isFreeMode() {
+                return this.$store.state.isFreeMode;
             }
         },
         watch: {

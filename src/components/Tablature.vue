@@ -35,7 +35,7 @@
                                 v-for="(i, pos) in number_frets" :key="'fretsID' + i"
                                 :x="decX * string_spacing + 5"
                                 :y="(pos + decY) * frets_spacing + frets_spacing / 2 - 2"
-                                style="font-size: 8px; font-family: Helvetica, Arial, sans-serif; font-weight: 600;">
+                                style="font-size: 10px; font-family: Helvetica, Arial, sans-serif; font-weight: 600;">
                             {{ getCurrentHarpejji.number_frets - i - decY + 1 }}
                         </text>
 
@@ -44,7 +44,7 @@
                                 v-for="(i, pos) in number_string" :key="'stringsID' + i"
                                 :x="(pos + decX) * string_spacing + string_spacing + 2"
                                 :y="decY * frets_spacing + string_size"
-                                style="font-size: 8px; font-family: Helvetica, Arial, sans-serif; font-weight: 600;">
+                                style="font-size: 10px; font-family: Helvetica, Arial, sans-serif; font-weight: 600;">
                             {{ pos + decX + 1}}
                         </text>
 

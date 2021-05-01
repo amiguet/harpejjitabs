@@ -6,9 +6,9 @@
                     <font-awesome-icon icon="bars"/>
                     <span class="md-list-item-text">Harpejji Tabs</span>
                 </md-list-item>
-                <md-list-item @click="editZone" title="Reframe (R)">
+                <md-list-item @click="editZone" title="Set note range (R)">
                     <font-awesome-icon icon="expand"/>
-                    <span class="md-list-item-text">Reframe</span>
+                    <span class="md-list-item-text">Set note range</span>
                 </md-list-item>
 
                 <md-list-item @click="newTablature" title="New">
@@ -25,11 +25,11 @@
                     </md-menu>-->
                 </md-list-item>
 
-                <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji size">
+                <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji model">
                     <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true"
                              :md-active.sync="showHarpejjiMenu">
                         <span class="text-icon text-icon-small">{{ currentHarpejji }}</span>
-                        <span class="md-list-item-text">Change Harpejji size</span>
+                        <span class="md-list-item-text">Change Harpejji model</span>
                         <md-menu-content>
                             <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
                             <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
@@ -82,31 +82,31 @@
                         <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"
                                id="playDelay"/></span>
                 </md-list-item>
-                <md-list-item @click="isFreeMode = !isFreeMode" title="Free mode">
+                <md-list-item @click="isFreeMode = !isFreeMode" title="Free play mode">
                     <span class="stack" :class="{'danger': isFreeMode}">
                         <font-awesome-icon :icon="['far', 'play-circle']" size="lg"  class="far-circle"/>
                         <font-awesome-icon v-if="!isFreeMode" icon="slash" size="lg"/>
                     </span>
-                    <span class="md-list-item-text">Free mode</span>
+                    <span class="md-list-item-text">Free play mode</span>
                 </md-list-item>
                 <md-list-item>
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="showNumbers = !showNumbers" title="Show frets numbers (F)">
+                <md-list-item @click="showNumbers = !showNumbers" title="Show fret/string numbers (F)">
                     <span class="stack">
                         <font-awesome-icon icon="list-ol" size="lg"/>
                         <font-awesome-icon v-if="!showNumbers" icon="slash" size="lg"/>
                     </span>
-                    <span class="md-list-item-text">Show frets numbers</span>
+                    <span class="md-list-item-text">Show fret/string numbers</span>
                 </md-list-item>
 
-                <md-list-item @click="showNotes = !showNotes" title="Show notes name (N)">
+                <md-list-item @click="showNotes = !showNotes" title="Show note name (N)">
                     <span class="stack">
                         <span class="text-icon">C4</span>
                         <font-awesome-icon v-if="!showNotes" icon="slash" size="lg"/>
                     </span>
-                    <span class="md-list-item-text">Show notes name</span>
+                    <span class="md-list-item-text">Show note names</span>
                 </md-list-item>
 
                 <md-list-item @click="showBorder = !showBorder" title="Show frame border">
@@ -126,9 +126,9 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="displayInformations" title="Informations">
+                <md-list-item @click="displayInformations" title="Information">
                     <font-awesome-icon icon="info-circle" size="lg"/>
-                    <span class="md-list-item-text">Informations</span>
+                    <span class="md-list-item-text">Information</span>
                 </md-list-item>
 
 
@@ -291,7 +291,7 @@
 
 <style scoped>
     .md-drawer {
-        width: 230px;
+        width: 240px;
         max-width: calc(100vw - 125px);
     }
 

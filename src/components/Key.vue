@@ -51,6 +51,7 @@
                 if (this.playNotes) {
                     this.playNote();
                 }
+                if (this.$parent.editingZone || this.isFreeMode) return;
                 this.toggleVisible();
             },
             /**
@@ -58,7 +59,7 @@
              * @param newValue
              */
             toggleVisible(newValue = null) {
-                if (this.$parent.editingZone || this.isFreeMode) return;
+
 
                 if (this.isVisible !== newValue) {
                     this.isVisible = !this.isVisible;

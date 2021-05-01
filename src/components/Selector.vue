@@ -135,7 +135,6 @@
                     let allKeySelected = this.$store.state.selected;
                     moving = this.cloneSelected(allKeySelected);
                 }
-                console.log(moving);
 
                 this.$root.$emit('unselectAll');
 
