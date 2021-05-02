@@ -14,6 +14,8 @@
                 transform="translate(-5, 7)"
                 style="fill:transparent;stroke:black;">
         </rect>
+
+        <Arrow ref="arrow" v-if="arrowActive"></Arrow>
         <text v-if="showNotes" style="font-size: 7px; font-family: Helvetica, Arial, sans-serif;" text-anchor="middle"
               x="0" y="7" :fill="textColor">{{note}}{{octave}}
         </text>
@@ -25,11 +27,13 @@
 
     import Finger from './Finger.vue'
     import {mapState, mapGetters} from 'vuex'
+    import Arrow from "@/components/Arrow";
 
     let notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     export default {
         name: "Key",
         components: {
+            Arrow,
             Finger
         },
         props: [
@@ -40,7 +44,8 @@
         ],
         data() {
             return {
-                isVisible: false // If the finger is visible
+                isVisible: false, // If the finger is visible
+                arrowActive: false
             }
         },
         methods: {
@@ -59,14 +64,27 @@
              * @param newValue
              */
             toggleVisible(newValue = null) {
-
-
                 if (this.isVisible !== newValue) {
                     this.isVisible = !this.isVisible;
 
-                    if (this.isVisible)
+                    let belowKey = window.tablature.getKeyAt(this.x, this.y + 1);
+                    this.arrowActive = false;
+                    if (belowKey)
+                        belowKey.arrowActive = false;
+
+                    if (this.isVisible) {
                         this.$refs.finger.startEdit();
-                    else {
+
+                        let aboveKey = window.tablature.getKeyAt(this.x, this.y - 1);
+                        console.log(aboveKey);
+                        if (aboveKey && aboveKey.isVisible) {
+                            this.arrowActive = true;
+                        }
+
+                        if (belowKey && belowKey.isVisible) {
+                            belowKey.arrowActive = true;
+                        }
+                    } else {
                         this.$refs.finger.color = '#000000';
                         this.$refs.finger.hand = 0;
                         this.$refs.finger.value = '1';
@@ -115,6 +133,15 @@
                     this.$refs.finger.isSelected = true;
                     this.$store.commit('addToSelection', this);
                 }
+            },
+            isArrowVisible() {
+                return this.$refs.arrow && this.$refs.arrow.isVisible;
+            },
+            showArrow() {
+                this.arrowActive = true;
+                setTimeout(() => {
+                    this.$refs.arrow.isVisible = true;
+                }, 1);
             }
         },
         computed: {
@@ -182,7 +209,7 @@
                 } else {
                     return "#555";
                 }
-            }
+            },
         },
         mounted() {
             // Add EventListeners
