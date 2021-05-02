@@ -55,16 +55,17 @@
                             {{ currentHarpejji }}
                         </text>
                     </g>
-
-                    <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
-                        <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
-                            <Key
-                                    v-show="isVisible(posX, posY)"
-                                    :pos-x="(posX) * string_spacing + string_spacing"
-                                    :pos-y="(posY) * frets_spacing + frets_spacing / 2"
-                                    :x="(posX)" :y="(posY)"
-                                    ref="keys">
-                            </Key>
+                    <g v-if="!resetTablature">
+                        <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
+                            <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
+                                <Key
+                                        v-show="isVisible(posX, posY)"
+                                        :pos-x="(posX) * string_spacing + string_spacing"
+                                        :pos-y="(posY) * frets_spacing + frets_spacing / 2"
+                                        :x="(posX)" :y="(posY)"
+                                        ref="keys">
+                                </Key>
+                            </g>
                         </g>
                     </g>
                     <Title
@@ -110,7 +111,8 @@
                 svgWidth: 800,
                 xOffset: 0,
                 yOffset: 0,
-                allKeys: {}
+                allKeys: {},
+                resetTablature: false
             }
         },
         methods: {
@@ -252,7 +254,7 @@
                 let c3 = this.getCurrentHarpejji.c3;
                 return Math.floor((x + c2 - Math.floor((y + c2_2) / 2)) / 6) + c3;
             },
-            getKeyAt(x,y) {
+            getKeyAt(x, y) {
                 return this.allKeys[x + '_' + y];
             }
         },
@@ -356,13 +358,19 @@
             },
             currentHarpejji() {
                 //this.$root.$emit('fixFrame');
+                this.resetTablature = true;
+
                 setTimeout(() => {
+                    this.resetTablature = false;
+                }, 0);
+                setTimeout(() => {
+
                     this.calculateSize();
                     this.allKeys = {};
                     for (let key of this.$refs.keys) {
                         this.allKeys[key.x + '_' + key.y] = key;
                     }
-                }, 2);
+                }, 4);
             }
         }
     }

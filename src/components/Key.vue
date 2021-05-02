@@ -76,7 +76,6 @@
                         this.$refs.finger.startEdit();
 
                         let aboveKey = window.tablature.getKeyAt(this.x, this.y - 1);
-                        console.log(aboveKey);
                         if (aboveKey && aboveKey.isVisible) {
                             this.arrowActive = true;
                         }

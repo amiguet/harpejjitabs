@@ -143,9 +143,6 @@
                 for (let mark of moving) {
                     for (let key of tablature.$refs.keys) {
                         if (mark.x + decX === key.x && mark.y + decY === key.y) {
-                            console.log("added key at " + key.x + " " + key.y);
-                            console.log("from " + mark.x + " " + mark.y);
-                            console.log("dec: " + decX + " " + decY);
                             key.isVisible = true;
                             key.$refs.finger.value = mark.value;
                             key.$refs.finger.color = mark.color;

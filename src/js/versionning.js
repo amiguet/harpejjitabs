@@ -118,32 +118,38 @@ let loadVersion = {
     },
     "1.4": function (data, that) {
         that.editingZone = false;
-        that.$store.dispatch('changeZone', {
-                'x1': data.x1,
-                'y1': data.y1,
-                'x2': data.x2,
-                'y2': data.y2,
-            }
-        );
-        that.$root.$emit('updateResizerPosition');
-
         that.$store.commit('changeHarpejji', data.s);
+
         setTimeout(() => {
-            that.$root.$emit('deleteKeys');
-            for (let [i, key] of that.$refs.keys.entries()) {
-                if (data.k[i] !== 0) {
-                    key.isVisible = true;
-                    key.$refs.finger.value = data.k[i].v;
-                    key.$refs.finger.color = data.k[i].c;
-                    key.$refs.finger.hand = data.k[i].h;
-                    key.$refs.finger.editing = false;
-                    if (data.k[i].a)
-                        key.showArrow();
+            that.$store.dispatch('changeZone', {
+                    'x1': data.x1,
+                    'y1': data.y1,
+                    'x2': data.x2,
+                    'y2': data.y2,
                 }
-            }
-            that.$store.dispatch('changeTitle', data.t.v);
-            that.$refs.title.color = data.t.c;
-            that.calculateSize();
-        }, 0);
+            );
+            that.$root.$emit('updateResizerPosition');
+
+
+            setTimeout(() => {
+                that.$root.$emit('deleteKeys');
+                for (let [i, key] of that.$refs.keys.entries()) {
+                    if (data.k[i] !== 0) {
+                        key.isVisible = true;
+                        key.$refs.finger.value = data.k[i].v;
+                        key.$refs.finger.color = data.k[i].c;
+                        key.$refs.finger.hand = data.k[i].h;
+                        key.$refs.finger.editing = false;
+                        if (data.k[i].a)
+                            key.showArrow();
+                    }
+                }
+                that.$store.dispatch('changeTitle', data.t.v);
+                that.$refs.title.color = data.t.c;
+                that.calculateSize();
+            }, 2);
+
+        }, 2);
     }
+
 };
