@@ -3,7 +3,9 @@
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
                 <md-list-item @click="toggleMenu" title="Menu">
-                    <font-awesome-icon icon="bars"/>
+                    <span class="menu-button">
+                        <font-awesome-icon icon="bars"/>
+                    </span>
                     <span class="md-list-item-text">Harpejji Tabs</span>
                 </md-list-item>
                 <md-list-item @click="editZone" title="Set note range (R)">
@@ -84,7 +86,7 @@
                 </md-list-item>
                 <md-list-item @click="isFreeMode = !isFreeMode" title="Free play mode">
                     <span class="stack" :class="{'danger': isFreeMode}">
-                        <font-awesome-icon :icon="['far', 'play-circle']" size="lg"  class="far-circle"/>
+                        <font-awesome-icon :icon="['far', 'play-circle']" size="lg" class="far-circle"/>
                         <font-awesome-icon v-if="!isFreeMode" icon="slash" size="lg"/>
                     </span>
                     <span class="md-list-item-text">Free play mode</span>
@@ -141,7 +143,7 @@
 <script>
     import * as Exportation from '../js/exportation.js'
     import * as Shortcut from '../js/shortcuts.js'
-    import { mapState } from 'vuex'
+    import {mapState} from 'vuex'
 
 
     export default {
@@ -365,6 +367,7 @@
     .far-square {
         margin-left: 3px;
     }
+
     .far-circle {
         margin-left: 2px;
     }
@@ -372,8 +375,16 @@
     .text-icon-small {
         font-size: 12px;
     }
+
     .danger {
         color: #D32F2F;
+    }
+
+    .smaller:not(.md-active) .menu-button {
+        background-color: rgba(0,0,0,.1);;
+        padding: 3px 5px;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: .25rem;
     }
 </style>
 
