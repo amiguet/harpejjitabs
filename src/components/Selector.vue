@@ -116,7 +116,8 @@
                         y: key.y,
                         value: key.$refs.finger.value,
                         color: key.$refs.finger.color,
-                        hand: key.$refs.finger.hand
+                        hand: key.$refs.finger.hand,
+                        arrow: key.isArrowVisible()
                     });
                     //key.isVisible = false;
                     key.toggleVisible(false);
@@ -142,13 +143,12 @@
                 for (let mark of moving) {
                     for (let key of tablature.$refs.keys) {
                         if (mark.x + decX === key.x && mark.y + decY === key.y) {
-                            console.log("added key at " + key.x + " " + key.y);
-                            console.log("from " + mark.x + " " + mark.y);
-                            console.log("dec: " + decX + " " + decY);
                             key.isVisible = true;
                             key.$refs.finger.value = mark.value;
                             key.$refs.finger.color = mark.color;
                             key.$refs.finger.hand = mark.hand;
+                            if (mark.arrow)
+                                key.showArrow();
 
                             if (wantToSelection) {
                                 key.$refs.finger.isSelected = true;

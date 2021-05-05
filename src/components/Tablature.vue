@@ -55,16 +55,17 @@
                             {{ currentHarpejji }}
                         </text>
                     </g>
-
-                    <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
-                        <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
-                            <Key
-                                    v-show="isVisible(posX, posY)"
-                                    :pos-x="(posX) * string_spacing + string_spacing"
-                                    :pos-y="(posY) * frets_spacing + frets_spacing / 2"
-                                    :x="(posX)" :y="(posY)"
-                                    ref="keys">
-                            </Key>
+                    <g v-if="!resetTablature">
+                        <g v-for="(j, posY) in getCurrentHarpejji.number_frets" :key="j">
+                            <g v-for="(i, posX) in getCurrentHarpejji.number_string" :key="i+';'+j">
+                                <Key
+                                        v-show="isVisible(posX, posY)"
+                                        :pos-x="(posX) * string_spacing + string_spacing"
+                                        :pos-y="(posY) * frets_spacing + frets_spacing / 2"
+                                        :x="(posX)" :y="(posY)"
+                                        ref="keys">
+                                </Key>
+                            </g>
                         </g>
                     </g>
                     <Title
@@ -110,6 +111,8 @@
                 svgWidth: 800,
                 xOffset: 0,
                 yOffset: 0,
+                allKeys: {},
+                resetTablature: false
             }
         },
         methods: {
@@ -142,6 +145,7 @@
                 this.yOffset = -this.decY * this.frets_spacing * this.scale;
 
                 this.$root.$emit('isTooSmall', this.svgWidth > window.innerWidth - 70 * 2);
+
             },
             /**
              * Return if a key is visible from the screen, or out of bounds
@@ -175,7 +179,7 @@
             save() {
                 if (this.editingZone) return;
                 let saveData = {
-                    "v": "1.3", //version
+                    "v": "1.4", //version
                     "x1": this.x1,
                     "y1": this.y1,
                     "x2": this.x2,
@@ -192,7 +196,8 @@
                         saveData.k.push({
                             "v": key.$refs.finger.value,
                             "c": key.$refs.finger.color,
-                            "h": key.$refs.finger.hand
+                            "h": key.$refs.finger.hand,
+                            "a": key.isArrowVisible() ? 1 : 0
                         });
                     } else {
                         saveData.k.push(0);
@@ -231,10 +236,8 @@
                 for (let key of this.$refs.keys) {
                     if (key.isVisible) {
                         keys.push(key);
-                        console.log("is visible !!!");
                     }
                 }
-                console.log(keys);
                 return keys;
             },
 
@@ -250,6 +253,9 @@
                 let c2_2 = this.getCurrentHarpejji.c2_2;
                 let c3 = this.getCurrentHarpejji.c3;
                 return Math.floor((x + c2 - Math.floor((y + c2_2) / 2)) / 6) + c3;
+            },
+            getKeyAt(x, y) {
+                return this.allKeys[x + '_' + y];
             }
         },
         computed: {
@@ -326,6 +332,10 @@
             this.$root.$on('changeShowNumbers', this.changeShowNumbers);
             this.$root.$on('setupChord', this.setupChord);
             window.tablature = this;
+            this.allKeys = {};
+            for (let key of this.$refs.keys) {
+                this.allKeys[key.x + '_' + key.y] = key;
+            }
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
@@ -348,9 +358,18 @@
             },
             currentHarpejji() {
                 //this.$root.$emit('fixFrame');
+                this.resetTablature = true;
+
+                setTimeout(() => {
+                    this.resetTablature = false;
+                }, 0);
                 setTimeout(() => {
                     this.calculateSize();
-                }, 1);
+                    this.allKeys = {};
+                    for (let key of this.$refs.keys) {
+                        this.allKeys[key.x + '_' + key.y] = key;
+                    }
+                }, 100);
             }
         }
     }
