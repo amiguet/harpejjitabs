@@ -298,15 +298,6 @@
                         }
                     }
 
-                    for (let j = y1; j >= 0; j--)
-                    {
-                        for (let i = x1; i >= 0; i--) {
-                            if (window.tablature.getNoteNameAt(i, j) === note) {
-                                return {i, j};
-                            }
-                        }
-                    }
-
                     for (let j = 0; j < c.number_frets - difY; j++)
                     {
                         for (let i = 0; i < c.number_string - difX; i++) {
@@ -319,12 +310,10 @@
                 }
                 let coordinate = getCoordinate();
 
-
                 let decX = coordinate.i - this.x1;
                 let decY = coordinate.j - this.y1;
 
                 if (decX !== 0 || decY !== 0) {
-
                     this.x2 = coordinate.i + difX;
                     this.y2 = coordinate.j + difY;
                     this.x1 = coordinate.i;

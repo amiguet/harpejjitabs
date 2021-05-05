@@ -84,10 +84,12 @@
                             belowKey.arrowActive = true;
                         }
                     } else {
-                        this.$refs.finger.color = '#000000';
-                        this.$refs.finger.hand = 0;
-                        this.$refs.finger.value = '1';
-                        this.$refs.finger.editing = false;
+                        if (this.$refs.finger) {
+                            this.$refs.finger.color = '#000000';
+                            this.$refs.finger.hand = 0;
+                            this.$refs.finger.value = '1';
+                            this.$refs.finger.editing = false;
+                        }
                     }
                     this.$store.commit('hasBeenModified');
                 }

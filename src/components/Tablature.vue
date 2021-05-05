@@ -364,13 +364,12 @@
                     this.resetTablature = false;
                 }, 0);
                 setTimeout(() => {
-
                     this.calculateSize();
                     this.allKeys = {};
                     for (let key of this.$refs.keys) {
                         this.allKeys[key.x + '_' + key.y] = key;
                     }
-                }, 4);
+                }, 100);
             }
         }
     }
