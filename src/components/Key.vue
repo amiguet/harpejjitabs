@@ -135,13 +135,22 @@
                     this.$store.commit('addToSelection', this);
                 }
             },
-            isArrowVisible() {
-                return this.$refs.arrow && this.$refs.arrow.isVisible;
+            isArrowVisibleUp() {
+                return this.$refs.arrow && this.$refs.arrow.isVisibleUp;
             },
-            showArrow() {
+            isArrowVisibleDown() {
+                return this.$refs.arrow && this.$refs.arrow.isVisibleDown;
+            },
+            showArrowUp() {
                 this.arrowActive = true;
                 setTimeout(() => {
-                    this.$refs.arrow.isVisible = true;
+                    this.$refs.arrow.isVisibleUp = true;
+                }, 1);
+            },
+            showArrowDown() {
+                this.arrowActive = true;
+                setTimeout(() => {
+                    this.$refs.arrow.isVisibleDown = true;
                 }, 1);
             }
         },

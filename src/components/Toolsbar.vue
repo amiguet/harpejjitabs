@@ -380,7 +380,7 @@
         color: #D32F2F;
     }
 
-    .smaller:not(.md-active) .menu-button {
+    .smaller:not(.md-active) w.menu-button {
         background-color: rgba(0,0,0,.1);;
         padding: 3px 5px;
         border: 1px solid rgba(0,0,0,.2);

@@ -179,7 +179,7 @@
             save() {
                 if (this.editingZone) return;
                 let saveData = {
-                    "v": "1.4", //version
+                    "v": "1.5", //version
                     "x1": this.x1,
                     "y1": this.y1,
                     "x2": this.x2,
@@ -197,7 +197,8 @@
                             "v": key.$refs.finger.value,
                             "c": key.$refs.finger.color,
                             "h": key.$refs.finger.hand,
-                            "a": key.isArrowVisible() ? 1 : 0
+                            "au": key.isArrowVisibleUp() ? 1 : 0,
+                            "ad": key.isArrowVisibleDown() ? 1 : 0
                         });
                     } else {
                         saveData.k.push(0);
