@@ -3,6 +3,7 @@
        @mouseover2="hover=true"
        @mouseleave2="hover=false"
        @click2.stop="toggleArrow()"
+       v-show="!isFreeMode"
     >
         <rect
                 width="2"
@@ -28,8 +29,8 @@
                 @mouseleave="hoverDown=false"
                 @click.stop="toggleArrowDown()">
         </rect>
-        <polygon points="0 -4, -3 0, 3 0" :style="{fill: arrowColorUp}"></polygon>
-        <polygon points="0 19, -3 15, 3 15" :style="{fill: arrowColorDown}"></polygon>
+        <polygon points="0 -4, -3 0, 3 0" :style="{fill: arrowColorUp}" @click.stop="toggleArrowUp()"></polygon>
+        <polygon points="0 19, -3 15, 3 15" :style="{fill: arrowColorDown}" @click.stop="toggleArrowDown()"></polygon>
     </g>
 </template>
 
@@ -87,6 +88,9 @@
                     }
                     return "#00000000";
                 }
+            },
+            isFreeMode() {
+                return this.$store.state.isFreeMode;
             }
         },
         mounted() {
