@@ -23,7 +23,7 @@
         data() {
             return {
                 showDialog: false,
-                librarySize: 5
+                librarySize: 42
             }
         },
         methods: {
