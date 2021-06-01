@@ -117,7 +117,8 @@
                         value: key.$refs.finger.value,
                         color: key.$refs.finger.color,
                         hand: key.$refs.finger.hand,
-                        arrow: key.isArrowVisible()
+                        arrowUp: key.isArrowVisibleUp(),
+                        arrowDown: key.isArrowVisibleDown()
                     });
                     //key.isVisible = false;
                     key.toggleVisible(false);
@@ -147,8 +148,10 @@
                             key.$refs.finger.value = mark.value;
                             key.$refs.finger.color = mark.color;
                             key.$refs.finger.hand = mark.hand;
-                            if (mark.arrow)
-                                key.showArrow();
+                            if (mark.arrowUp)
+                                key.showArrowUp();
+                            if (mark.arrowDown)
+                                key.showArrowDown();
 
                             if (wantToSelection) {
                                 key.$refs.finger.isSelected = true;

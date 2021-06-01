@@ -397,6 +397,12 @@
 
 <style>
     .md-list-item-container:not(.md-list-item-default):not([disabled]) > .md-list-item-content {
-        height: 48px;
+        height: 40px;
+        min-height: 40px;
+    }
+
+    .md-list-item-container:not([disabled]) > .md-list-item-content {
+        height: 30px;
+        min-height: 30px;
     }
 </style>
