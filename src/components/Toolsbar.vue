@@ -128,6 +128,10 @@
                     <md-divider></md-divider>
                 </md-list-item>
 
+                <md-list-item @click="displayLibrary" title="Scale Library">
+                    <font-awesome-icon icon="book" size="lg"/>
+                    <span class="md-list-item-text">Scale library</span>
+                </md-list-item>
                 <md-list-item @click="displayInformations" title="Information">
                     <font-awesome-icon icon="info-circle" size="lg"/>
                     <span class="md-list-item-text">Information</span>
@@ -228,6 +232,9 @@
             },
             displayInformations() {
                 this.$root.$emit('displayInformations');
+            },
+            displayLibrary() {
+                this.$root.$emit('displayLibrary');
             }
         },
         computed: {

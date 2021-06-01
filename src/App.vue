@@ -11,6 +11,7 @@
         </div>
         <Contextual></Contextual>
         <Informations></Informations>
+        <Library></Library>
     </div>
 </template>
 <script>
@@ -20,6 +21,7 @@
     import Contextual from "./components/Contextual.vue";
     import SoundPlayer from "@/components/SoundPlayer";
     import Informations from "@/components/Informations";
+    import Library from "@/components/Library";
 
     export default {
         name: 'App',
@@ -29,6 +31,7 @@
             Contextual,
             Tablature,
             Toolsbar,
+            Library
         }
     }
 </script>
