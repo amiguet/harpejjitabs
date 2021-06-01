@@ -72,3 +72,13 @@
 
 
 </style>
+<style>
+    .md-dialog-container {
+        max-height: 95% !important;
+    }
+    @media (max-width: 600px) {
+        .md-dialog-fullscreen {
+            max-height: 100% !important;
+        }
+    }
+</style>
