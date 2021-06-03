@@ -68,7 +68,7 @@ function svgUrlToPng(svgUrl, size, callback) {
     document.getElementById('hidden').appendChild(svgImage);
     svgImage.onload = function () {
         const canvas = document.createElement('canvas');
-        let pixelRatio = window.devicePixelRatio || 1;
+        let pixelRatio = (window.devicePixelRatio || 1) * 2;
         canvas.width = size.width * pixelRatio;
         canvas.height = size.height * pixelRatio;
         canvas.style.width = size.width + "px";
