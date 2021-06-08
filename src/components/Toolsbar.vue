@@ -136,6 +136,14 @@
                     <font-awesome-icon icon="info-circle" size="lg"/>
                     <span class="md-list-item-text">Information</span>
                 </md-list-item>
+                <md-list-item>
+                    <md-divider></md-divider>
+                </md-list-item>
+                <md-list-item style="height: 37px">
+                    <span class="md-list-item-text" style="height: 37px">
+                        <img src="img/logo_Marcodi.webp" alt="Logo Marcodi" class="logo-marcodi">
+                    </span>
+                </md-list-item>
 
 
             </md-list>
@@ -387,13 +395,6 @@
         color: #D32F2F;
     }
 
-    .smaller:not(.md-active) w.menu-button {
-        background-color: rgba(0,0,0,.1);;
-        padding: 3px 5px;
-        border: 1px solid rgba(0,0,0,.2);
-        border-radius: .25rem;
-    }
-
     .smaller:not(.md-active) .menu-button {
         background-color: rgba(0,0,0,.1);;
         padding: 3px 5px;
@@ -410,10 +411,17 @@
     }
 
     .md-list-item-container:not([disabled]) > .md-list-item-content {
-        height: 30px;
+        /*height: 30px;*/
         min-height: 30px;
     }
 
+    .logo-marcodi {
+        display: none;
+    }
+    .md-active .logo-marcodi {
+        width: 187px;
+        display: block;
+    }
 
 
 
