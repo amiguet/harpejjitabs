@@ -2,7 +2,12 @@
     <div>
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
-                <md-list-item @click="toggleMenu" title="Menu">
+                <md-list-item style="height: 40px" class="first-logo">
+                    <span class="md-list-item-text" style="height: 40px">
+                        <img src="img/logo_Marcodi.webp" alt="Logo Marcodi" class="logo-marcodi">
+                    </span>
+                </md-list-item>
+                <md-list-item @click="toggleMenu" title="Menu" class="first-child">
                     <span class="menu-button">
                         <font-awesome-icon icon="bars"/>
                     </span>
@@ -136,16 +141,6 @@
                     <font-awesome-icon icon="info-circle" size="lg"/>
                     <span class="md-list-item-text">Information</span>
                 </md-list-item>
-                <md-list-item>
-                    <md-divider></md-divider>
-                </md-list-item>
-                <md-list-item style="height: 37px">
-                    <span class="md-list-item-text" style="height: 37px">
-                        <img src="img/logo_Marcodi.webp" alt="Logo Marcodi" class="logo-marcodi">
-                    </span>
-                </md-list-item>
-
-
             </md-list>
         </md-drawer>
     </div>
@@ -352,11 +347,11 @@
         bottom: initial !important;
     }
 
-    .smaller:not(.md-active) ul li:not(:first-child) {
+    .smaller:not(.md-active) ul li:not(.first-child) {
         display: none;
     }
 
-    .smaller:not(.md-active) ul div:not(:first-child) {
+    .smaller:not(.md-active) ul div:not(.first-child) {
         display: none;
     }
 
@@ -418,11 +413,14 @@
     .logo-marcodi {
         display: none;
     }
+    
     .md-active .logo-marcodi {
         width: 187px;
         display: block;
+        transition: none !important;
     }
 
-
-
+    .md-drawer:not(.md-active) .first-logo {
+        display: none;
+    }
 </style>
