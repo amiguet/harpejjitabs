@@ -74,8 +74,20 @@
                     text-anchor="middle"
                     fill="#448aff"
                     style="font-size: 23px; cursor: pointer"
-                    @click="exitEditZone"
-            >Confirm
+                    @click="exitEditZone">
+                Set range
+            </text>
+        </transition>
+        <transition name="fade">
+            <text
+                    v-show="displayConfirm"
+                    :x="(x1 + x2) / 2 * string_spacing"
+                    :y="y2 * frets_spacing + frets_spacing / 2 + 40"
+                    text-anchor="middle"
+                    fill="#444"
+                    style="font-size: 15px;"
+                    @click="exitEditZone">
+                Drag the green corners to resize the area
             </text>
         </transition>
 
