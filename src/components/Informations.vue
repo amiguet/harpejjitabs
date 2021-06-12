@@ -1,11 +1,11 @@
 <template>
     <md-dialog :md-active.sync="showDialog">
-        <md-dialog-title>Harpejji Tabs</md-dialog-title>
+        <md-dialog-title>Harpejji® Tabs</md-dialog-title>
         <md-dialog-content>
             <div class="dialog-content">
-                <p>Harpejji Tabs is a web app allowing you to create and share Harpejji Tablatures.</p>
+                <p>Harpejji® Tabs is a web app allowing you to create and share Harpejji® Tablatures.</p>
                 <p>
-                    Select the Harpejji size by creating a new document
+                    Select the Harpejji® size by creating a new document
                     then select your workzone by clicking on Reframe.
                 </p>
                 <h3>Shortcuts</h3>
@@ -25,6 +25,7 @@
                     <li>
                         <span>S</span> Play sequentially
                     </li>
+                    
                     <li>
                         <span>F</span> Show frets numbers
                     </li>

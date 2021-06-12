@@ -11,7 +11,7 @@
                     <span class="menu-button">
                         <font-awesome-icon icon="bars"/>
                     </span>
-                    <span class="md-list-item-text">Harpejji Tabs</span>
+                    <span class="md-list-item-text">Harpejji® Tabs</span>
                 </md-list-item>
                 <md-list-item @click="editZone" title="Set note range (R)">
                     <font-awesome-icon icon="expand"/>
@@ -32,11 +32,11 @@
                     </md-menu>-->
                 </md-list-item>
 
-                <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji model">
+                <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji® model">
                     <md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true"
                              :md-active.sync="showHarpejjiMenu">
                         <span class="text-icon text-icon-small">{{ currentHarpejji }}</span>
-                        <span class="md-list-item-text">Change Harpejji model</span>
+                        <span class="md-list-item-text">Change Harpejji® model</span>
                         <md-menu-content>
                             <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
                             <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
@@ -413,7 +413,7 @@
     .logo-marcodi {
         display: none;
     }
-    
+
     .md-active .logo-marcodi {
         width: 187px;
         display: block;
