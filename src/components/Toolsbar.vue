@@ -230,7 +230,7 @@
                 this.$store.commit('changeHarpejji', h);
                 setTimeout(() => {
                     window.resizer.reframeToNote(...firstKeyName, cloned);
-                }, 1)
+                }, 100)
 
             },
             displayInformations() {
@@ -285,6 +285,7 @@
         },
         mounted() {
             this.$root.$on('isTooSmall', this.changeIsTooSmall);
+            this.$root.$on('changeHarpejji', this.changeHarpejji);
             document.getElementById('loadFile').addEventListener('change', this.readFile);
             Shortcut.on("R", this.editZone);
             Shortcut.on("P", this.playChord);

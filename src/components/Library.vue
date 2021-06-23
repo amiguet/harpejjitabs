@@ -16,6 +16,7 @@
 
 <script>
     import axios from "axios";
+    import {mapState} from 'vuex'
     import * as Versionning from '../js/versionning.js'
 
     export default {
@@ -31,10 +32,28 @@
                 axios
                     .get('library/' + i + '.htab')
                     .then(response => {
-                        Versionning.loadData(response.data, window.tablature);
+                        //Versionning.loadData(response.data, window.tablature);
+                        this.changeTablature(response.data);
                     });
                 this.showDialog = false;
+            },
+            changeTablature(tab) {
+                let needToChange = "";
+                if (this.currentHarpejji !== tab.s) {
+                    needToChange = this.currentHarpejji;
+                }
+                Versionning.loadData(tab, window.tablature);
+
+                if (needToChange !== "") {
+                    setTimeout(() => {
+                        this.$root.$emit('changeHarpejji', needToChange);
+                    }, 500);
+                }
+
             }
+        },
+        computed: {
+            ...mapState(['currentHarpejji'])
         },
         mounted() {
             // Listener when the user click to show the menu
