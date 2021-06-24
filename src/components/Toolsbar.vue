@@ -224,13 +224,15 @@
             },
 
             changeHarpejji(h) {
+                if (this.currentHarpejji === h)
+                    return;
                 let firstKeyName = window.tablature.getFirstVisibleKey();
                 let cloned = window.selector.cloneSelected(window.tablature.getAllKeys());
 
                 this.$store.commit('changeHarpejji', h);
                 setTimeout(() => {
                     window.resizer.reframeToNote(...firstKeyName, cloned);
-                }, 100)
+                }, 300)
 
             },
             displayInformations() {
