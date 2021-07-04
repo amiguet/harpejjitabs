@@ -11,7 +11,7 @@
                 <h3>Shortcuts</h3>
                 <ul>
                     <li>
-                        <span>R</span> Reframe
+                        <span>R</span> Set note range
                     </li>
                     <li>
                         <span>Ctrl+S</span> Save
@@ -27,10 +27,10 @@
                     </li>
                     
                     <li>
-                        <span>F</span> Show frets numbers
+                        <span>F</span> Show frets and strings numbers
                     </li>
                     <li>
-                        <span>N</span> Show notes name
+                        <span>N</span> Show notes names
                     </li>
                     <li>
                         <span>M</span> Play note on click
