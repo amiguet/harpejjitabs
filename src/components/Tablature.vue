@@ -402,8 +402,9 @@
 
 
     #tablature {
-        touch-action: none;
-        -webkit-touch-callout: none;
+        /*touch-action: none;
+        -webkit-touch-callout: none;*/
+        touch-action: pinch-zoom;
         -webkit-user-select: none;
         -khtml-user-select: none;
         -moz-user-select: none;

@@ -57,8 +57,9 @@
         margin: 0;
         padding: 0;
     }
+
     * {
-        touch-action: none;
+        /*touch-action: pinch-zoom;*/
     }
 
     #hidden {
