@@ -301,9 +301,9 @@
                 let c = this.$store.state.harpejjis[this.currentHarpejji];
 
                 function getCoordinate() {
-                    for (let j = 0; j < c.number_frets - difY; j++)
+                    for (let j = 0; j <= c.number_frets - difY + 1; j++)
                     {
-                        for (let i = 0; i < c.number_string - difX; i++) {
+                        for (let i = 0; i <= c.number_string - difX + 1; i++) {
                             if (window.tablature.getNoteNameAt(i, j) === note && window.tablature.getNoteOctaveAt(i, j) === octave) {
                                 return {i, j};
                             }
