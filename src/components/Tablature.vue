@@ -128,7 +128,12 @@
                 let app = document.getElementById('main');
                 let maxWidth = app.clientWidth;
                 //let maxHeight = Math.min(window.innerHeight - 0, 6500);
-                let maxHeight = window.innerHeight;
+                // On mobile, the window.innerHeight shouldn't change because of zooming!!
+                if (!(/Mobi|Android/i.test(navigator.userAgent)) || window.maxHeight === undefined) {
+                    window.maxHeight = window.innerHeight;
+                }
+                let maxHeight = window.maxHeight;
+
                 let maxRatio = maxHeight / maxWidth;
 
 
