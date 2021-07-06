@@ -62,8 +62,12 @@
                 setTimeout(() => {
                     var el = this.$refs.textEdit;
                     el.focus();
-                    el.select();
-                    el.setSelectionRange(0, 9999); //iOS
+
+                    if (!(/Mobi|Android/i.test(navigator.userAgent))) {
+                        // not mobile!
+                        el.select();
+                    }
+                    //el.setSelectionRange(0, 9999); //iOS
                     document.getElementById('hidden').removeChild(input);
 
                     // Summon the contextual menu

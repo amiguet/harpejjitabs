@@ -58,8 +58,8 @@
         padding: 0;
     }
 
-    * {
-        /*touch-action: pinch-zoom;*/
+    input {
+        -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
     }
 
     #hidden {
