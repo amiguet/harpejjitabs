@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="toolsbar">
         <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
             <md-list>
                 <md-list-item style="height: 40px" class="first-logo">

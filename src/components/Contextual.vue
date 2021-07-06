@@ -71,7 +71,7 @@
                 if (current) {
                     let rect = current.$el.getBoundingClientRect();
                     this.x = rect.left + rect.width / 2;
-                    this.y = rect.top;
+                    this.y = rect.top - 15;
                     this.current = current;
                     this.isVisible = true;
                 } else { // apply for selection

@@ -57,6 +57,9 @@
         margin: 0;
         padding: 0;
     }
+    * {
+        touch-action: none;
+    }
 
     #hidden {
         width: 0;
