@@ -300,6 +300,8 @@
 
                 let c = this.$store.state.harpejjis[this.currentHarpejji];
 
+                console.log("reframeToNote:", note, octave, cloned);
+
                 function getCoordinate() {
                     for (let j = 0; j <= c.number_frets - difY + 1; j++)
                     {
@@ -320,7 +322,34 @@
                     }
                     return {x1, y1};
                 }
-                let coordinate = getCoordinate();
+
+                function getExactCoordinate(note, octave) {
+                    console.log(getExactCoordinate, note, octave);
+                    for (let j = 0; j <= c.number_frets - difY + 1; j++)
+                    {
+                        for (let i = 0; i <= c.number_string - difX + 1; i++) {
+                            if (window.tablature.getNoteNameAt(i, j) === note && window.tablature.getNoteOctaveAt(i, j) === octave) {
+                                return {i, j};
+                            }
+                        }
+                    }
+                    return false;
+                }
+                let coordinate = getExactCoordinate(note, octave);
+                let i = 1, j = -1;
+                while (coordinate === false) {
+                    coordinate = getExactCoordinate(note, octave + i * j); // -1, 1, -2, 2, -3, etc
+                    if (j == 1) {
+                        i++;
+                    }
+                    j *= -1;
+                    if (i > 10) {
+                        break;
+                    }
+                }
+                if (coordinate === false) {
+                    coordinate = getCoordinate();
+                }
 
                 let decX = coordinate.i - this.x1;
                 let decY = coordinate.j - this.y1;
