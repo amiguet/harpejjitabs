@@ -300,8 +300,6 @@
 
                 let c = this.$store.state.harpejjis[this.currentHarpejji];
 
-                console.log("reframeToNote:", note, octave, cloned);
-
                 function getCoordinate() {
                     for (let j = 0; j <= c.number_frets - difY + 1; j++)
                     {
@@ -324,7 +322,6 @@
                 }
 
                 function getExactCoordinate(note, octave) {
-                    console.log(getExactCoordinate, note, octave);
                     for (let j = 0; j <= c.number_frets - difY + 1; j++)
                     {
                         for (let i = 0; i <= c.number_string - difX + 1; i++) {
