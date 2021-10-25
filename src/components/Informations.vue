@@ -35,6 +35,9 @@
                     <li>
                         <span>M</span> Play note on click
                     </li>
+                    <li>
+                        <span>L</span> Left hand mode
+                    </li>
                 </ul>
                 <h3>Credit</h3>
                 <div style="text-align: center">

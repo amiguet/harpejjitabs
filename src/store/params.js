@@ -15,6 +15,7 @@ export default new Vuex.Store({
         //number_frets_default: 19, //15, //15 //6
 
         currentHarpejji: "K24",
+        leftHandMode: false,
 
         harpejjis: {
             U12: {
@@ -104,6 +105,9 @@ export default new Vuex.Store({
         },
         changeFreeMode(state, mode) {
             state.isFreeMode = mode;
+        },
+        changeLeftHandMode(state) {
+            state.leftHandMode = !state.leftHandMode;
         }
     },
     actions: {

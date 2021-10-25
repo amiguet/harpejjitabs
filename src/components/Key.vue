@@ -155,7 +155,7 @@
             }
         },
         computed: {
-            ...mapState(['showNotes', 'playNotes', 'isFreeMode']),
+            ...mapState(['showNotes', 'playNotes', 'isFreeMode', 'leftHandMode']),
             ...mapGetters(['getCurrentHarpejji']),
             isBlack() {
                 /*
@@ -190,8 +190,12 @@
             note() {
                 // Constant 1 of the current Harpejji size
                 let c1 = this.getCurrentHarpejji.c1;
+                let x = this.x;
+                if (this.leftHandMode) {
+                    x = this.getCurrentHarpejji.number_frets - x + 2;
+                }
 
-                return notes[mod(this.x * 2 + c1 - this.y, notes.length)];
+                return notes[mod(x * 2 + c1 - this.y, notes.length)];
             },
             /**
              * Return the octave of the note
@@ -203,8 +207,13 @@
                 let c2_2 = this.getCurrentHarpejji.c2_2;
                 let c3 = this.getCurrentHarpejji.c3;
 
+                let x = this.x;
+                if (this.leftHandMode) {
+                    x = this.getCurrentHarpejji.number_frets - x + 2 + 12;
+                }
 
-                return Math.floor((this.x + c2 - Math.floor((this.y + c2_2) / 2)) / 6) + c3;
+
+                return Math.floor((x + c2 - Math.floor((this.y + c2_2) / 2)) / 6) + c3;
             },
             /**
              * Return the note name with octave like C2 or D#4
