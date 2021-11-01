@@ -67,6 +67,8 @@
         height: 0;
         overflow: hidden;
         opacity: 0;
+        position: fixed;
+        top: 50vh;
     }
 
 
