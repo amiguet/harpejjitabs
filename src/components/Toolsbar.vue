@@ -1,6 +1,6 @@
 <template>
     <div class="toolsbar">
-        <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}">
+        <md-drawer :md-active.sync="menuVisible" md-persistent="mini" :class="{smaller: isSmaller}" id="mdDrawer">
             <md-list>
                 <md-list-item style="height: 40px" class="first-logo">
                     <span class="md-list-item-text" style="height: 40px">
@@ -21,15 +21,6 @@
                 <md-list-item @click="newTablature" title="New">
                     <font-awesome-icon icon="file"/>
                     <span class="md-list-item-text">New</span>
-                    <!--<md-menu md-size="small" :md-offset-x="100" :md-offset-y="-96" :md-align-trigger="true" :md-active.sync="showHarpejjiMenu">
-                            <font-awesome-icon icon="file"/>
-                            <span class="md-list-item-text">New</span>
-                        <md-menu-content>
-                            <md-menu-item @click="changeHarpejji('U12')">U12</md-menu-item>
-                            <md-menu-item @click="changeHarpejji('G16')">G16</md-menu-item>
-                            <md-menu-item @click="changeHarpejji('K24')">K24</md-menu-item>
-                        </md-menu-content>
-                    </md-menu>-->
                 </md-list-item>
 
                 <md-list-item @click="showHarpejjiMenu = true" title="Change Harpejji® model">
@@ -45,62 +36,69 @@
                     </md-menu>
                 </md-list-item>
 
-                <md-list-item>
+                <md-list-item v-if="displayGroup3">
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="downloadPNG" title="Export to PNG">
-                    <font-awesome-icon icon="file-image" size="lg"/>
-                    <span class="md-list-item-text">Export to PNG</span>
-                </md-list-item>
-
-                <md-list-item @click="downloadSVG" title="Export to SVG">
-                    <font-awesome-icon icon="file-code" size="lg"/>
-                    <span class="md-list-item-text">Export to SVG</span>
-                </md-list-item>
-
-                <md-list-item>
-                    <md-divider></md-divider>
-                </md-list-item>
-
-                <md-list-item @click="save" title="Save (Ctrl+S)">
-                    <font-awesome-icon icon="file-download" size="lg"/>
-                    <span class="md-list-item-text">Save</span>
-                </md-list-item>
-
-                <md-list-item @click="load" title="Load (Ctrl+O)">
-                    <font-awesome-icon icon="file-upload" size="lg"/>
-                    <span class="md-list-item-text">Load</span>
-                </md-list-item>
-
-                <md-list-item>
-                    <md-divider></md-divider>
-                </md-list-item>
-
-                <md-list-item @click="playChord" title="Play simultaneously (P)">
+                <md-list-item v-if="displayGroup3" @click="playChord" title="Play simultaneously (P)">
                     <font-awesome-icon icon="play" size="lg"/>
                     <span class="md-list-item-text">Play simultaneously</span>
                 </md-list-item>
 
-                <md-list-item @click="playChordArpeggiate" title="Play sequentially (S)">
+                <md-list-item v-if="displayGroup3" @click="playChordArpeggiate" title="Play sequentially (S)">
                     <font-awesome-icon icon="music" size="lg"/>
                     <span class="md-list-item-text">
                         <label for="playDelay">Play sequentially ({{ playDelay }}s)</label>
                         <input type="range" min="0.05" max="0.5" step="0.01" v-model="playDelay" style="width: 100%;"
                                id="playDelay"/></span>
                 </md-list-item>
-                <md-list-item @click="isFreeMode = !isFreeMode" title="Free play mode">
+
+                <md-list-item v-if="displayGroup3" @click="isFreeMode = !isFreeMode" title="Free play mode">
                     <span class="stack" :class="{'danger': isFreeMode}">
                         <font-awesome-icon :icon="['far', 'play-circle']" size="lg" class="far-circle"/>
                         <font-awesome-icon v-if="!isFreeMode" icon="slash" size="lg"/>
                     </span>
                     <span class="md-list-item-text">Free play mode</span>
                 </md-list-item>
-                <md-list-item>
+
+                <md-list-item v-if="displayGroup2">
                     <md-divider></md-divider>
                 </md-list-item>
 
-                <md-list-item @click="showNumbers = !showNumbers" title="Show fret/string numbers (F)">
+                <md-list-item v-if="displayGroup2" @click="downloadPNG" title="Export to PNG">
+                    <font-awesome-icon icon="file-image" size="lg"/>
+                    <span class="md-list-item-text">Export to PNG</span>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup2" @click="downloadSVG" title="Export to SVG">
+                    <font-awesome-icon icon="file-code" size="lg"/>
+                    <span class="md-list-item-text">Export to SVG</span>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup2">
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup2" @click="save" title="Save (Ctrl+S)">
+                    <font-awesome-icon icon="file-download" size="lg"/>
+                    <span class="md-list-item-text">Save</span>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup2" @click="load" title="Load (Ctrl+O)">
+                    <font-awesome-icon icon="file-upload" size="lg"/>
+                    <span class="md-list-item-text">Load</span>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup1">
+                    <md-divider></md-divider>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup1" @click="playNotes = !playNotes" title="Play notes on click (M)">
+                    <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
+                    <span class="md-list-item-text">Play notes on click</span>
+                </md-list-item>
+
+                <md-list-item v-if="displayGroup1" @click="showNumbers = !showNumbers" title="Show fret/string numbers (F)">
                     <span class="stack">
                         <font-awesome-icon icon="list-ol" size="lg"/>
                         <font-awesome-icon v-if="!showNumbers" icon="slash" size="lg"/>
@@ -108,7 +106,7 @@
                     <span class="md-list-item-text">Show fret/string numbers</span>
                 </md-list-item>
 
-                <md-list-item @click="showNotes = !showNotes" title="Show note name (N)">
+                <md-list-item v-if="displayGroup1" @click="showNotes = !showNotes" title="Show note name (N)">
                     <span class="stack">
                         <span class="text-icon">C4</span>
                         <font-awesome-icon v-if="!showNotes" icon="slash" size="lg"/>
@@ -116,17 +114,12 @@
                     <span class="md-list-item-text">Show note names</span>
                 </md-list-item>
 
-                <md-list-item @click="showBorder = !showBorder" title="Show frame border">
+                <md-list-item v-if="displayGroup1" @click="showBorder = !showBorder" title="Show frame border">
                     <span class="stack">
                         <font-awesome-icon :icon="['far', 'square']" size="lg" class="far-square"/>
                         <font-awesome-icon v-if="!showBorder" icon="slash" size="lg"/>
                     </span>
                     <span class="md-list-item-text">Show frame border</span>
-                </md-list-item>
-
-                <md-list-item @click="playNotes = !playNotes" title="Play notes on click (M)">
-                    <font-awesome-icon :icon="playNotes ? 'volume-up' : 'volume-mute'" size="lg"/>
-                    <span class="md-list-item-text">Play notes on click</span>
                 </md-list-item>
 
                 <md-list-item>
@@ -160,7 +153,10 @@
                 menuVisible: false,
                 isSmaller: false,
                 playDelay: 0.3,
-                showHarpejjiMenu: false
+                showHarpejjiMenu: false,
+                showGroup1: true,
+                showGroup2: true,
+                showGroup3: true
             }
         },
         methods: {
@@ -240,6 +236,27 @@
             },
             displayLibrary() {
                 this.$root.$emit('displayLibrary');
+            },
+            calculateMenuSize() {
+                let drawer = document.getElementById('mdDrawer');
+                let height = drawer.getBoundingClientRect().height;
+                if (height <= 436) {
+                    this.showGroup1 = false;
+                    this.showGroup2 = false;
+                    this.showGroup3 = false;
+                } else if (height <= 656) {
+                    this.showGroup1 = false;
+                    this.showGroup2 = false;
+                    this.showGroup3 = true;
+                } else if (height <= 846) {
+                    this.showGroup1 = false;
+                    this.showGroup2 = true;
+                    this.showGroup3 = true;
+                } else {
+                    this.showGroup1 = true;
+                    this.showGroup2 = true;
+                    this.showGroup3 = true;
+                }
             }
         },
         computed: {
@@ -283,6 +300,15 @@
                     return this.$store.commit('changeFreeMode', value);
                 }
             },
+            displayGroup1() {
+                return this.showGroup1 || this.menuVisible;
+            },
+            displayGroup2() {
+                return this.showGroup2 || this.menuVisible;
+            },
+            displayGroup3() {
+                return this.showGroup3 || this.menuVisible;
+            },
             ...mapState(['currentHarpejji'])
         },
         mounted() {
@@ -299,7 +325,7 @@
             Shortcut.on("O", this.load, true);
             Shortcut.on("N", this.newTablature, true);
             Shortcut.on("L", () => this.$store.commit('changeLeftHandMode'));
-
+            window.addEventListener('resize', () => this.calculateMenuSize());
         }
     }
 </script>
@@ -316,7 +342,6 @@
         width: 24px;
 
     }
-
 
     .md-menu > *:first-child:not(.md-divider):not(.md-menu) {
         margin-right: 20px;
@@ -399,6 +424,10 @@
         padding: 3px 5px;
         border: 1px solid rgba(0,0,0,.2);
         border-radius: .25rem;
+    }
+
+    .md-active .menu-button svg{
+        margin-left: 6px;
     }
 
 </style>
