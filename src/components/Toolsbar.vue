@@ -326,6 +326,7 @@
             Shortcut.on("N", this.newTablature, true);
             Shortcut.on("L", () => this.$store.commit('changeLeftHandMode'));
             window.addEventListener('resize', () => this.calculateMenuSize());
+            setTimeout(() => this.calculateMenuSize(), 500);
         }
     }
 </script>
