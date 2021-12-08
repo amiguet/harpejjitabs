@@ -112,7 +112,8 @@
                 xOffset: 0,
                 yOffset: 0,
                 allKeys: {},
-                resetTablature: false
+                resetTablature: false,
+                parentHeight: null
             }
         },
         methods: {
@@ -131,6 +132,9 @@
                 // On mobile, the window.innerHeight shouldn't change because of zooming!!
                 if (!(/Mobi|Android/i.test(navigator.userAgent)) || window.maxHeight === undefined) {
                     window.maxHeight = window.innerHeight;
+                }
+                if (this.parentHeight) {
+                    window.maxHeight = this.parentHeight;
                 }
                 let maxHeight = window.maxHeight;
 
@@ -342,6 +346,16 @@
             for (let key of this.$refs.keys) {
                 this.allKeys[key.x + '_' + key.y] = key;
             }
+
+            window.addEventListener('message', (e) => {
+                if (e.data.event == "setVSize") {
+                    let vw = e.data?.vw;
+                    let vh = e.data?.vh;
+                    this.parentHeight = vh;
+                    setTimeout(() => this.calculateSize(), 10);
+                    this.calculateSize();
+                }
+            });
         },
         beforeDestroy() {
             window.removeEventListener('resize', this.calculateSize);
